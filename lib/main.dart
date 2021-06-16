@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:windesheimapp/providers.dart';
 import 'package:windesheimapp/route_generator.dart';
 
@@ -11,10 +10,6 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initProviders();
-
-  if (Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
-  }
 
   runApp(
     MaterialApp(
