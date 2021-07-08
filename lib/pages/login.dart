@@ -9,8 +9,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final usernameController =
-      TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   String username = '';
   String password = '';
@@ -82,7 +81,8 @@ class _LoginPageState extends State<LoginPage> {
                     setState(() {
                       loading = 'done';
                     });
-                    await navigatorKey.currentState!.pushNamed('/login-confirm', arguments: code);
+                    await navigatorKey.currentState!
+                        .pushNamed('/login-confirm', arguments: code);
                   },
                   child: const Text(
                     "Inloggen",
