@@ -1,47 +1,40 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:windesheimapp/internal/auth_failure.dart';
+import 'package:windesheimapp/services/auth/api_auth.dart';
+import 'package:windesheimapp/services/auth/auth_manager.dart';
+import 'package:windesheimapp/services/auth/elo_auth.dart';
 
 import '../main.dart';
 import '../preferences.dart';
 import '../providers.dart';
 
 class LoginConfirmPage extends StatefulWidget {
-  final String code;
+  final String email;
+  final String password;
 
-  const LoginConfirmPage({Key? key, required this.code}) : super(key: key);
+  const LoginConfirmPage(
+      {Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
-  _LoginConfirmPageState createState() => new _LoginConfirmPageState();
+  _LoginConfirmPageState createState() => _LoginConfirmPageState();
 }
 
 class _LoginConfirmPageState extends State<LoginConfirmPage> {
+  late Future<dartz.Either<AuthFailure, void>> eloResponse;
+  late Future<dartz.Either<AuthFailure, void>> apiResponse;
+
   @override
   void initState() {
     super.initState();
-    if (widget.code != '') {
-      doLogin();
-    }
-  }
 
-  void doLogin() async {
-    final response = await http.post(
-        Uri.parse(
-            "https://login.microsoftonline.com/e36377b7-70c4-4493-a338-095918d327e9/oauth2/token"),
-        body: {
-          'resource': "https://windesheimapi.azurewebsites.net/login/aad",
-          'client_id': "7cd9c6cb-1da9-4d26-93e4-7c0beb04793f",
-          'grant_type': "authorization_code",
-          'code': widget.code,
-          'redirect_uri': "https://localhost"
-        });
-    print(response.body);
-    Map<String, dynamic> json = jsonDecode(response.body);
-    print(json.keys);
-    prefs.accessToken = json['access_token'];
-    prefs.refreshToken = json['refresh_token'];
+    eloResponse = AuthManager.loginElo(widget.email, widget.password);
+    apiResponse = AuthManager.loginApi(widget.email, widget.password);
   }
 
   @override
@@ -60,29 +53,57 @@ class _LoginConfirmPageState extends State<LoginConfirmPage> {
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w600,
                     fontSize: 36)),
-            ChangeNotifierProvider.value(
-              value: prefs,
-              child:
-                  Consumer<Preferences>(builder: (context, preferences, child) {
-                if (preferences.accessToken != '') {
-                  final String data = preferences.accessToken.split('.')[1];
-                  final String payload =
-                      utf8.decode(base64Url.decode(base64Url.normalize(data)));
-                  final payloadMap = json.decode(payload);
-                  return Text('Welkom ' + payloadMap['given_name']);
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              }),
-            ),
+            const Text("ELO:"),
+            FutureBuilder<dartz.Either<AuthFailure, void>>(
+                future: eloResponse,
+                builder: (BuildContext context,
+                    AsyncSnapshot<dartz.Either<AuthFailure, void>> snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data!.fold((error) {
+                      return Text(error.message);
+                    }, (code) {
+                      return const Icon(Icons.check_circle_outline, size: 36.0, color: Colors.lightGreenAccent);
+                    });
+                  } else if (snapshot.hasError) {
+                    return const Text("Error occurred");
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }),
+            const Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
+            const Text("API:"),
+            FutureBuilder<dartz.Either<AuthFailure, void>>(
+                future: apiResponse,
+                builder: (BuildContext context,
+                    AsyncSnapshot<dartz.Either<AuthFailure, void>> snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data!.fold((error) {
+                      return Text(error.message);
+                    }, (code) {
+                      return const Icon(Icons.check_circle_outline, size: 36.0, color: Colors.lightGreenAccent);
+                    });
+                  } else if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Text("Error occurred");
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }),
+            const Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
             ElevatedButton(
                 onPressed: () {
-                  prefs.accessToken = '';
-                  prefs.refreshToken = '';
+                  AuthManager.logout();
                   navigatorKey.currentState!
                       .pushNamedAndRemoveUntil("/", (r) => false);
                 },
-                child: Text('Uitloggen'))
+                child: const Text('Uitloggen'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                navigatorKey.currentState!.pushNamed("/rooster");
+              },
+              child: const Text('Continue'),
+            )
           ],
         ),
       ),

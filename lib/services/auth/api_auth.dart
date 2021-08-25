@@ -1,14 +1,24 @@
 import 'dart:convert';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/material.dart';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:windesheimapp/internal/auth_failure.dart';
+
+class ApiTokens {
+  String accessToken;
+  String refreshToken;
+
+  ApiTokens(this.accessToken, this.refreshToken);
+}
 
 class ApiAuth {
-  static Future<String> login(String username, String password) async {
+  static Future<Either<AuthFailure, ApiTokens>> login(String username, String password) async {
     CookieJar cj = CookieJar();
     Dio dio = Dio();
     dio.interceptors.add(CookieManager(cj));
@@ -33,9 +43,11 @@ class ApiAuth {
           'username': username,
           'originalRequest': originalRequest,
         });
-    String redirectUrl = (response.data['Credentials']
+    String? redirectUrl = (response.data['Credentials']
         as Map<String, dynamic>)['FederationRedirectUrl'];
-
+    if(redirectUrl == null){
+      return Left(AuthFailure("Incorrect email"));
+    }
     response = await dio.post(
       redirectUrl,
       data: {
@@ -51,7 +63,9 @@ class ApiAuth {
         contentType: Headers.formUrlEncodedContentType,
       ),
     );
-
+    if(response.headers['location'] == null){
+      return Left(AuthFailure("Incorrect email or password"));
+    }
     response = await dio.get(response.headers['location']![0].toString());
 
     body = response.data;
@@ -72,6 +86,38 @@ class ApiAuth {
 
     Uri codeUrl = Uri.parse(response.headers['location']![0].toString());
     print(codeUrl.queryParameters['session_state']);
-    return codeUrl.queryParameters['code']!;
+
+    var code = codeUrl.queryParameters['code']!;
+    response = await dio.post(
+        "https://login.microsoftonline.com/e36377b7-70c4-4493-a338-095918d327e9/oauth2/token",
+        data: {
+          'resource': "https://windesheimapi.azurewebsites.net/login/aad",
+          'client_id': "7cd9c6cb-1da9-4d26-93e4-7c0beb04793f",
+          'grant_type': "authorization_code",
+          'code': code,
+          'redirect_uri': "https://localhost"
+        },
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+      ));
+    print(response.data);
+    var tokens = ApiTokens(response.data['access_token'], response.data['refresh_token']);
+    return Right(tokens);
+  }
+
+  static Future<Either<AuthFailure, ApiTokens>> refreshToken(String refreshToken) async{
+    final response = await Dio().post(
+      "https://login.microsoftonline.com/e36377b7-70c4-4493-a338-095918d327e9/oauth2/v2.0/token",
+      data: {
+        'client_id': "7cd9c6cb-1da9-4d26-93e4-7c0beb04793f",
+        'grant_type': "refresh_token",
+        'refresh_token': refreshToken,
+      },
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType
+      )
+    );
+    var tokens = ApiTokens(response.data['access_token'], response.data['refresh_token']);
+    return Right(tokens);
   }
 }

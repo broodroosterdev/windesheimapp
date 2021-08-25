@@ -18,4 +18,12 @@ class Preferences extends ChangeNotifier {
     sharedPrefs.refreshToken = value;
     notifyListeners();
   }
+
+  String _eloCookie = sharedPrefs.eloCookie;
+  String get eloCookie => _eloCookie;
+  set eloCookie(String value) {
+    _eloCookie = value;
+    sharedPrefs.eloCookie = value;
+    notifyListeners();
+  }
 }

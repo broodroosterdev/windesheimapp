@@ -26,6 +26,14 @@ class SharedPrefs {
     setString('refresh-token', refreshToken);
   }
 
+  String get eloCookie {
+    return prefs.getString('elo-cookie') ?? '';
+  }
+
+  set eloCookie(String eloCookie) {
+    setString('elo-cookie', eloCookie);
+  }
+
   void setString(String key, String? value) {
     prefs.setString(key, value ?? '');
   }

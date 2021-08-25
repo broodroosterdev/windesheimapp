@@ -1,4 +1,8 @@
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:windesheimapp/internal/auth_failure.dart';
+import 'package:windesheimapp/services/auth/api_auth.dart';
 import 'package:windesheimapp/services/auth/elo_auth.dart';
 
 import '../main.dart';
@@ -73,16 +77,8 @@ class _LoginPageState extends State<LoginPage> {
                     }),
                   ),
                   onPressed: () async {
-                    setState(() {
-                      loading = 'Loading';
-                    });
-                    String code = await EloAuth.login(
-                        usernameController.text, passwordController.text);
-                    setState(() {
-                      loading = 'done';
-                    });
                     await navigatorKey.currentState!
-                        .pushNamed('/login-confirm', arguments: code);
+                        .pushNamed('/login-confirm', arguments: {'email': usernameController.text, 'password': passwordController.text});
                   },
                   child: const Text(
                     "Inloggen",

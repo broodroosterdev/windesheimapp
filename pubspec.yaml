@@ -30,13 +30,14 @@ dependencies:
   flutter:
     sdk: flutter
   cookie_jar: ^3.0.1
-  cupertino_icons: ^1.0.2
   dio: ^4.0.0
   dio_cookie_manager: ^2.0.0
   html: ^0.15.0
   http: ^0.13.3
   provider: ^5.0.0
   shared_preferences: ^2.0.6
+  dartz: ^0.10.0-nullsafety.2
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:
