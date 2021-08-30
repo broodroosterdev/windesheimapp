@@ -13,6 +13,7 @@ import '../main.dart';
 import '../preferences.dart';
 import '../providers.dart';
 
+@deprecated
 class LoginConfirmPage extends StatefulWidget {
   final String email;
   final String password;

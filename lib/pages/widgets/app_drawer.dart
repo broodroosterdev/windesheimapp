@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:windesheimapp/services/auth/auth_manager.dart';
+
+import '../../main.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -32,6 +35,15 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context)
                 ..pop()
                 ..pushNamed("/settings");
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Uitloggen'),
+            onTap: () {
+              AuthManager.logout();
+              navigatorKey.currentState!
+                  .pushNamedAndRemoveUntil("/", (r) => false);
             }
           ),
         ],
