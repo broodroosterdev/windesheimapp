@@ -37,4 +37,12 @@ class SharedPrefs {
   void setString(String key, String? value) {
     prefs.setString(key, value ?? '');
   }
+
+  String get schedules {
+    return prefs.getString('schedules') ?? '[]';
+  }
+
+  set schedules(String value){
+    setString('schedules', value);
+  }
 }

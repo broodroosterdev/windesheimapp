@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:windesheimapp/providers.dart';
+
+import 'model/schedule.dart';
 
 class Preferences extends ChangeNotifier {
   String _accessToken = sharedPrefs.accessToken;
@@ -24,6 +28,18 @@ class Preferences extends ChangeNotifier {
   set eloCookie(String value) {
     _eloCookie = value;
     sharedPrefs.eloCookie = value;
+    notifyListeners();
+  }
+
+  String _schedules = sharedPrefs.schedules;
+  List<Schedule> get schedules{
+    List<Map<String, dynamic>> jsonList = (jsonDecode(_schedules) as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
+    return jsonList.map((json) => Schedule.fromJson(json)).toList();
+  }
+  set schedules(List<Schedule> value) {
+    final String json = jsonEncode(value);
+    _schedules = json;
+    sharedPrefs.schedules = json;
     notifyListeners();
   }
 }

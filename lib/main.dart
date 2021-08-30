@@ -11,10 +11,17 @@ Future main() async {
 
   await initProviders();
 
+
+
   runApp(
     MaterialApp(
       title: 'WindesheimApp',
       theme: ThemeData(
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all(Colors.white)
+          )
+        ),
         brightness: Brightness.dark,
         primaryColor: const Color.fromRGBO(255, 203, 5, 1.0),
         fontFamily: 'Roboto',

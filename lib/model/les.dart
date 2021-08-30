@@ -54,7 +54,6 @@ class Les {
   Les.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         lokaal = json["lokaal"],
-        //starttijd = DateTime.fromMillisecondsSinceEpoch(json["starttijd"]).add(DateTime.parse(json["roosterdatum"]).timeZoneOffset),
         starttijd = DateTime.fromMillisecondsSinceEpoch(json["starttijd"], isUtc: true),
         eindtijd = DateTime.fromMillisecondsSinceEpoch(json["eindtijd"], isUtc: true),
         changed = json["changed"],

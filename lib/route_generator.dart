@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:windesheimapp/pages/login.dart';
 import 'package:windesheimapp/pages/login_confirm.dart';
-import 'package:windesheimapp/pages/rooster.dart';
+import 'package:windesheimapp/pages/schedule/rooster.dart';
+import 'package:windesheimapp/pages/settings/add_schedule_page.dart';
+import 'package:windesheimapp/pages/settings/settings_page.dart';
 import 'package:windesheimapp/providers.dart';
 import 'package:windesheimapp/services/auth/auth_manager.dart';
 
@@ -13,7 +15,7 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
           if(AuthManager.loggedIn) {
-            return MaterialPageRoute(builder: (_) => RoosterPage());
+            return MaterialPageRoute(builder: (_) => SchedulePage());
           } else {
             return MaterialPageRoute(builder: (_) => LoginPage());
           }
@@ -23,7 +25,13 @@ class RouteGenerator {
             builder: (_) => LoginConfirmPage(email: arguments['email']!, password: arguments['password']!));
       case '/rooster':
         return MaterialPageRoute(
-          builder: (_) => RoosterPage());
+          builder: (_) => SchedulePage());
+      case '/settings':
+        return MaterialPageRoute(
+          builder: (_) => SettingsPage());
+      case '/add-schedule':
+        return MaterialPageRoute(
+          builder: (_) => AddSchedulePage());
       default:
         return _errorRoute();
     }
