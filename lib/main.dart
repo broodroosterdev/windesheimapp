@@ -7,6 +7,8 @@ import 'package:windesheimapp/route_generator.dart';
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 Future main() async {
+
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await initProviders();

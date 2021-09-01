@@ -68,4 +68,25 @@ class Les {
         vaknaam = json["vaknaam"],
         vakcode = json["vakcode"],
         docentnamen = List.from(json["docentnamen"]);
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = {};
+    json["id"] = id;
+    json['lokaal'] = lokaal;
+    json['starttijd'] = starttijd.millisecondsSinceEpoch;
+    json['eindtijd'] = eindtijd.millisecondsSinceEpoch;
+    json['changed'] = changed;
+    json['docentcode'] = docentcode;
+    json['roosterdatum'] = roosterdatum.toIso8601String();
+    json['commentaar'] = commentaar;
+    json['leeractiviteit'] = leeractiviteit;
+    json['publicatietekst'] = publicatietekst;
+    json['status'] = status;
+    json['roostercode'] = roostercode;
+    json['groepcode'] = groepcode;
+    json['vaknaam'] = vaknaam;
+    json['vakcode'] = vakcode;
+    json['docentnamen'] = docentnamen;
+    return json;
+  }
 }
