@@ -27,11 +27,24 @@ class _SchedulePageState extends State<SchedulePage> {
       GlobalKey<RefreshIndicatorState>();
   final PageController _pageController = PageController();
 
-  static Future<List<Les>> getLessen() async {
+  static Future<List<Les>> getLessen({bool forceSync = false}) async {
+    Map<String, List<Les>> lessonsCache = prefs.lessonsCache;
     List<Schedule> schedules = prefs.schedules;
     List<Les> lessons = [];
+    bool updated = false;
     for(Schedule schedule in schedules){
-      lessons.addAll(await Lessen.getLessen(schedule.code));
+      if(prefs.lastSynced.millisecondsSinceEpoch == 0 || forceSync || !lessonsCache.containsKey(schedule.code)){
+        final data = await Lessen.getLessen(schedule.code);
+        lessons.addAll(data);
+        lessonsCache[schedule.code] = data;
+        updated = true;
+      } else {
+        lessons.addAll(lessonsCache[schedule.code]!);
+      }
+    }
+    if(updated) {
+      prefs.lessonsCache = lessonsCache;
+      prefs.lastSynced = DateTime.now();
     }
     lessons.sort((item1, item2) => item1.starttijd.compareTo(item2.starttijd));
     return lessons;
@@ -63,7 +76,7 @@ class _SchedulePageState extends State<SchedulePage> {
                             return
                               RefreshIndicator(
                                 onRefresh: () async {
-                              var lessen = await getLessen();
+                              var lessen = await getLessen(forceSync: true);
                               setState(() {
                                 lessenFuture = Future.value(lessen);
                               });

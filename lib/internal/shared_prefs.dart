@@ -34,9 +34,7 @@ class SharedPrefs {
     setString('elo-cookie', eloCookie);
   }
 
-  void setString(String key, String? value) {
-    prefs.setString(key, value ?? '');
-  }
+
 
   String get schedules {
     return prefs.getString('schedules') ?? '[]';
@@ -45,4 +43,25 @@ class SharedPrefs {
   set schedules(String value){
     setString('schedules', value);
   }
+
+  int get lastSynced {
+    return prefs.getInt('last-synced') ?? 0;
+  }
+
+  set lastSynced(int value){
+    prefs.setInt('last-synced', value);
+  }
+
+  String get lessonsCache {
+    return prefs.getString('lessons-cache') ?? '{}';
+  }
+
+  set lessonsCache(String value){
+    setString('lessons-cache', value);
+  }
+
+  void setString(String key, String? value) {
+    prefs.setString(key, value ?? '');
+  }
+
 }

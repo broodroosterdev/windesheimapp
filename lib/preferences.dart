@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:windesheimapp/providers.dart';
 
+import 'model/les.dart';
 import 'model/schedule.dart';
 
 class Preferences extends ChangeNotifier {
@@ -32,7 +33,7 @@ class Preferences extends ChangeNotifier {
   }
 
   String _schedules = sharedPrefs.schedules;
-  List<Schedule> get schedules{
+  List<Schedule> get schedules {
     List<Map<String, dynamic>> jsonList = (jsonDecode(_schedules) as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
     return jsonList.map((json) => Schedule.fromJson(json)).toList();
   }
@@ -42,4 +43,33 @@ class Preferences extends ChangeNotifier {
     sharedPrefs.schedules = json;
     notifyListeners();
   }
+
+  int _lastSynced = sharedPrefs.lastSynced;
+  DateTime get lastSynced => DateTime.fromMillisecondsSinceEpoch(_lastSynced);
+  set lastSynced(DateTime value){
+    int timestamp = value.millisecondsSinceEpoch;
+    _lastSynced = timestamp;
+    sharedPrefs.lastSynced = timestamp;
+    notifyListeners();
+  }
+
+  String _lessonsCache = sharedPrefs.lessonsCache;
+  Map<String, List<Les>> get lessonsCache {
+    Map<String, dynamic> jsonMap = (jsonDecode(_lessonsCache) as Map<String, dynamic>);
+    Map<String, List<Les>> result = {};
+    jsonMap.forEach((key, value) {
+      result[key] = [];
+      value.forEach((json) {
+        result[key]!.add(Les.fromJson(json));
+      });
+    });
+    return result;
+  }
+  set lessonsCache(Map<String, List<Les>> value) {
+    final String json = jsonEncode(value);
+    _lessonsCache = json;
+    sharedPrefs.lessonsCache = json;
+    notifyListeners();
+  }
+
 }
