@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/model/schedule.dart';
+import 'package:wind/model/schedule.dart';
 
 class RoosterTile extends StatelessWidget {
   final Schedule schedule;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/utils/time.dart';
+import 'package:wind/utils/time.dart';
 
 class DateSeparator extends StatelessWidget {
   final DateTime day;

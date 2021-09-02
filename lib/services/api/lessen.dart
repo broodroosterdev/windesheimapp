@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:windesheimapp/model/les.dart';
-import 'package:windesheimapp/services/auth/auth_manager.dart';
+import 'package:wind/model/les.dart';
+import 'package:wind/services/auth/auth_manager.dart';
 
 import '../../providers.dart';
 

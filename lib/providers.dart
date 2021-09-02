@@ -1,5 +1,5 @@
-import 'package:windesheimapp/internal/shared_prefs.dart';
-import 'package:windesheimapp/preferences.dart';
+import 'package:wind/internal/shared_prefs.dart';
+import 'package:wind/preferences.dart';
 
 class _ProvidersSingleton {
   _ProvidersSingleton._();

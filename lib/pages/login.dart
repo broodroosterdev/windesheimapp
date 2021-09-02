@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:windesheimapp/services/auth/auth_manager.dart';
+import 'package:wind/services/auth/auth_manager.dart';
 
 import '../main.dart';
 

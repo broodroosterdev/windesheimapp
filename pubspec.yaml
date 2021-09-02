@@ -1,4 +1,4 @@
-name: windesheimapp
+name: wind
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -39,6 +39,8 @@ dependencies:
   dartz: ^0.10.0-nullsafety.2
   equatable: ^2.0.3
   flutter_colorpicker: ^0.4.0
+  internet_connection_checker: ^0.0.1+2
+
 
 dev_dependencies:
   flutter_test:

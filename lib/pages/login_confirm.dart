@@ -4,10 +4,10 @@ import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:windesheimapp/internal/auth_failure.dart';
-import 'package:windesheimapp/services/auth/api_auth.dart';
-import 'package:windesheimapp/services/auth/auth_manager.dart';
-import 'package:windesheimapp/services/auth/elo_auth.dart';
+import 'package:wind/internal/auth_failure.dart';
+import 'package:wind/services/auth/api_auth.dart';
+import 'package:wind/services/auth/auth_manager.dart';
+import 'package:wind/services/auth/elo_auth.dart';
 
 import '../main.dart';
 import '../preferences.dart';

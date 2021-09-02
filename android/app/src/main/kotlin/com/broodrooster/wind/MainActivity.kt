@@ -1,4 +1,4 @@
-package com.broodrooster.windesheimapp
+package com.broodrooster.wind
 
 import io.flutter.embedding.android.FlutterActivity
 

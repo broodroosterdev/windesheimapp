@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/dom.dart';
-import 'package:windesheimapp/internal/auth_failure.dart';
+import 'package:wind/internal/auth_failure.dart';
 
 class EloAuth {
   static Future<Either<AuthFailure, String>> login(String username, String password) async {
