@@ -8,7 +8,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:windesheimapp/internal/auth_failure.dart';
+import 'package:wind/internal/auth_failure.dart';
 
 class ApiTokens {
   String accessToken;

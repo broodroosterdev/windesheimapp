@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/providers.dart';
-import 'package:windesheimapp/route_generator.dart';
+import 'package:wind/providers.dart';
+import 'package:wind/route_generator.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
@@ -17,7 +17,7 @@ Future main() async {
 
   runApp(
     MaterialApp(
-      title: 'WindesheimApp',
+      title: 'wind',
       theme: ThemeData(
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(

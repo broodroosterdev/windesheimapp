@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:windesheimapp/utils/time.dart';
+import 'package:wind/utils/time.dart';
 
 void main() {
   test("getTodayDate is at 0:00", () {

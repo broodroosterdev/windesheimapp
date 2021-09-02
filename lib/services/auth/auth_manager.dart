@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/internal/auth_failure.dart';
-import 'package:windesheimapp/providers.dart';
-import 'package:windesheimapp/services/auth/api_auth.dart';
+import 'package:wind/internal/auth_failure.dart';
+import 'package:wind/providers.dart';
+import 'package:wind/services/auth/api_auth.dart';
 import 'elo_auth.dart';
 
 class AuthManager {

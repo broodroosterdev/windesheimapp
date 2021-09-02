@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/pages/login.dart';
-import 'package:windesheimapp/pages/login_confirm.dart';
-import 'package:windesheimapp/pages/schedule/rooster.dart';
-import 'package:windesheimapp/pages/settings/add_schedule_page.dart';
-import 'package:windesheimapp/pages/settings/settings_page.dart';
-import 'package:windesheimapp/providers.dart';
-import 'package:windesheimapp/services/auth/auth_manager.dart';
+import 'package:wind/pages/login.dart';
+import 'package:wind/pages/login_confirm.dart';
+import 'package:wind/pages/schedule/rooster.dart';
+import 'package:wind/pages/settings/add_schedule_page.dart';
+import 'package:wind/pages/settings/settings_page.dart';
+import 'package:wind/providers.dart';
+import 'package:wind/services/auth/auth_manager.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

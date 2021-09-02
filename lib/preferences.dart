@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:windesheimapp/providers.dart';
+import 'package:wind/providers.dart';
 
 import 'model/les.dart';
 import 'model/schedule.dart';

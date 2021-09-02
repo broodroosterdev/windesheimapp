@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/model/schedule.dart';
-import 'package:windesheimapp/pages/widgets/app_drawer.dart';
-import 'package:windesheimapp/services/api/lessen.dart';
+import 'package:wind/model/schedule.dart';
+import 'package:wind/pages/widgets/app_drawer.dart';
+import 'package:wind/services/api/lessen.dart';
 
 import '../../providers.dart';
 

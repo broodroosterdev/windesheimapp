@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:windesheimapp/model/schedule.dart';
-import 'package:windesheimapp/pages/settings/widgets/add_rooster_tile.dart';
-import 'package:windesheimapp/pages/settings/widgets/rooster_tile.dart';
-import 'package:windesheimapp/pages/widgets/app_drawer.dart';
+import 'package:wind/model/schedule.dart';
+import 'package:wind/pages/settings/widgets/add_rooster_tile.dart';
+import 'package:wind/pages/settings/widgets/rooster_tile.dart';
+import 'package:wind/pages/widgets/app_drawer.dart';
 
 import '../../preferences.dart';
 import '../../providers.dart';

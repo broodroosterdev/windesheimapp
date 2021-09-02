@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:windesheimapp/model/les.dart';
-import 'package:windesheimapp/pages/schedule/widgets/time_box.dart';
+import 'package:wind/model/les.dart';
+import 'package:wind/pages/schedule/widgets/time_box.dart';
 
 class LesTile extends StatelessWidget {
   final Les les;

@@ -1,17 +1,16 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
-import 'package:windesheimapp/model/les.dart';
-import 'package:windesheimapp/model/schedule.dart';
-import 'package:windesheimapp/pages/schedule/widgets/bottom_navigator.dart';
-import 'package:windesheimapp/pages/schedule/widgets/date_separator.dart';
-import 'package:windesheimapp/pages/schedule/widgets/les_tile.dart';
-import 'package:windesheimapp/pages/widgets/app_drawer.dart';
-import 'package:windesheimapp/providers.dart';
-import 'package:windesheimapp/services/api/lessen.dart';
-import 'package:windesheimapp/services/auth/auth_manager.dart';
-import 'package:windesheimapp/utils/time.dart';
+import 'package:wind/model/les.dart';
+import 'package:wind/model/schedule.dart';
+import 'package:wind/pages/schedule/widgets/bottom_navigator.dart';
+import 'package:wind/pages/schedule/widgets/date_separator.dart';
+import 'package:wind/pages/schedule/widgets/les_tile.dart';
+import 'package:wind/pages/widgets/app_drawer.dart';
+import 'package:wind/providers.dart';
+import 'package:wind/services/api/lessen.dart';
+import 'package:wind/utils/time.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
@@ -34,10 +33,14 @@ class _SchedulePageState extends State<SchedulePage> {
     bool updated = false;
     for(Schedule schedule in schedules){
       if(prefs.lastSynced.millisecondsSinceEpoch == 0 || forceSync || !lessonsCache.containsKey(schedule.code)){
-        final data = await Lessen.getLessen(schedule.code);
-        lessons.addAll(data);
-        lessonsCache[schedule.code] = data;
-        updated = true;
+        if(await InternetConnectionChecker().hasConnection) {
+          final data = await Lessen.getLessen(schedule.code);
+          lessons.addAll(data);
+          lessonsCache[schedule.code] = data;
+          updated = true;
+        } else {
+          throw "No connection available";
+        }
       } else {
         lessons.addAll(lessonsCache[schedule.code]!);
       }
@@ -76,10 +79,25 @@ class _SchedulePageState extends State<SchedulePage> {
                             return
                               RefreshIndicator(
                                 onRefresh: () async {
-                              var lessen = await getLessen(forceSync: true);
-                              setState(() {
-                                lessenFuture = Future.value(lessen);
-                              });
+                                  try{
+                                    var lessen = await getLessen(forceSync: true);
+                                    setState(() {
+                                      lessenFuture = Future.value(lessen);
+                                    });
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Theme.of(context).backgroundColor.withAlpha(40),
+                                        margin: EdgeInsets.only(bottom: 60),
+                                        content: Text(
+                                            e.toString(),
+                                          style: Theme.of(context).textTheme.subtitle1
+                                        ),
+                                      )
+                                    );
+                                  }
+
                             },
                               child: SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
