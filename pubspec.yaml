@@ -40,6 +40,7 @@ dependencies:
   equatable: ^2.0.3
   flutter_colorpicker: ^0.4.0
   internet_connection_checker: ^0.0.1+2
+  animations: ^2.0.1
 
 
 dev_dependencies:

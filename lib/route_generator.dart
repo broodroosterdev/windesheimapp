@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wind/pages/login.dart';
 import 'package:wind/pages/login_confirm.dart';
+import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/rooster.dart';
 import 'package:wind/pages/settings/add_schedule_page.dart';
 import 'package:wind/pages/settings/settings_page.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/auth/auth_manager.dart';
+
+import 'model/les.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -26,6 +29,10 @@ class RouteGenerator {
       case '/rooster':
         return MaterialPageRoute(
           builder: (_) => SchedulePage());
+      case '/lesson-details':
+        final arguments = args as Map<String, dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => LessonDetailsPage(lesson: arguments['lesson'] as Les, color: arguments['color'] as Color));
       case '/settings':
         return MaterialPageRoute(
           builder: (_) => SettingsPage());

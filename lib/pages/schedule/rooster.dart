@@ -1,9 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/model/schedule.dart';
+import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/widgets/bottom_navigator.dart';
 import 'package:wind/pages/schedule/widgets/date_separator.dart';
 import 'package:wind/pages/schedule/widgets/les_tile.dart';
@@ -144,7 +146,16 @@ class _SchedulePageState extends State<SchedulePage> {
             les.roosterdatum.month != day.month) {
           continue;
         }
-        widgets.add(LesTile(les: les, color: getColorFromLesson(schedules, les)));
+        widgets.add(
+            Container(
+                margin: const EdgeInsets.only(left: 15, right: 15),
+                color: Theme.of(context).backgroundColor.withAlpha(40),
+                child: OpenContainer(
+    closedColor: Theme.of(context).backgroundColor.withAlpha(40),
+    closedBuilder: (BuildContext context, VoidCallback open) => LesTile(les: les, color: getColorFromLesson(schedules, les)),
+                  openBuilder: (BuildContext context, _) => LessonDetailsPage(lesson: les, color: getColorFromLesson(schedules, les)),
+                )
+        ));
 
         widgets.add(const SizedBox(height: 10));
       }
