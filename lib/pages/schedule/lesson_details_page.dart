@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
+import 'package:wind/pages/schedule/widgets/link_preview.dart';
 import 'package:wind/pages/schedule/widgets/time_box.dart';
 
 class LessonDetailsPage extends StatefulWidget {
@@ -14,6 +15,20 @@ class LessonDetailsPage extends StatefulWidget {
 }
 
 class _LessonDetailsPageState extends State<LessonDetailsPage> {
+  List<String> getUrlsFromDescription(){
+    RegExp urlRegex = RegExp(r"[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?");
+    String text = widget.lesson.publicatietekst;
+    Iterable<RegExpMatch> matches = urlRegex.allMatches(text);
+    return matches.map((match) => text.substring(match.start, match.end)).where((url) {
+      try {
+          Uri.parse(url);
+          return true;
+      } catch(_){
+          return false;
+      }
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,61 +49,61 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
             SizedBox(
               height: 10,
             ),
-                Row(
-                  children: [
-                    Icon(Icons.access_time,
-                        size: 36,
-                        color: Theme.of(context).primaryColor),
-                    SizedBox(width: 5,),
-                    Text("${widget.lesson.starttijd.hour}:${widget.lesson.starttijd.minute}-${widget.lesson.eindtijd.hour}:${widget.lesson.eindtijd.minute}",
-                      style: Theme.of(context).textTheme.subtitle1,)
-                  ],
-                ),
+            Row(
+              children: [
+                Icon(Icons.access_time,
+                    size: 36, color: Theme.of(context).primaryColor),
                 SizedBox(
-                  height: 10,
+                  width: 5,
                 ),
+                Text(
+                  "${widget.lesson.starttijd.hour}:${widget.lesson.starttijd.minute}-${widget.lesson.eindtijd.hour}:${widget.lesson.eindtijd.minute}",
+                  style: Theme.of(context).textTheme.subtitle1,
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 Icon(Icons.pin_drop_outlined,
-                    size: 36,
-                    color: Theme.of(context).primaryColor),
-                SizedBox(width: 5,),
-                Text(widget.lesson.lokaal,
-                style: Theme.of(context).textTheme.subtitle1,)
+                    size: 36, color: Theme.of(context).primaryColor),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  widget.lesson.lokaal,
+                  style: Theme.of(context).textTheme.subtitle1,
+                )
               ],
             ),
-                SizedBox(
-                  height: 10,
-                ),
-                ...widget.lesson.docentnamen.map((docent) {
-                  return Row(
-                    children: [
-                      Icon(Icons.person_outline,
-                          size: 36,
-                          color: Theme.of(context).primaryColor),
-                      Text(docent,
-                        style: Theme.of(context).textTheme.subtitle1,)
-                    ],
-                  );
-                }),
-                SizedBox(height: 20,),
-                Text("Deze les is ook online te volgen via de volgende link: https://teams.microsoft.com/meeting?id=552dadad-31277aa-4663dd-43463346",
-                style: Theme.of(context).textTheme.bodyText2,),
-                SizedBox(height: 20,),
-                Card(
-                  child: ListTile(
-                    leading: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Image.network(
-                        'https://teams.microsoft.com/favicon.ico',
-                    )),
-                    title: Text('Teams joinen'),
-                    subtitle: Text('Volg deze link om teams te joinen'),
-                    trailing: Icon(Icons.open_in_new),
+            SizedBox(
+              height: 10,
+            ),
+            ...widget.lesson.docentnamen.map((docent) {
+              return Row(
+                children: [
+                  Icon(Icons.person_outline,
+                      size: 36, color: Theme.of(context).primaryColor),
+                  Text(
+                    docent,
+                    style: Theme.of(context).textTheme.subtitle1,
                   )
-                )
-
+                ],
+              );
+            }),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              widget.lesson.publicatietekst,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ...getUrlsFromDescription().map((e) => LinkPreviewTile(url: e))
           ]),
         ),
       ),
