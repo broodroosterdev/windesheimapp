@@ -4,6 +4,7 @@ import 'package:wind/model/les.dart';
 import 'package:wind/pages/schedule/views/day/day_view.dart';
 import 'package:wind/pages/schedule/views/week/week_view.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
+import 'package:wind/providers.dart';
 import 'package:wind/repositories/lessen_repository.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -27,7 +28,9 @@ class _SchedulePageState extends State<SchedulePage> {
   Future<List<Les>?> load({bool forceSync = false}) async {
     try {
       var lessen = await LessenRepository.getLessen(forceSync: forceSync);
-      setState(() => lessenFuture = Future.value(lessen));
+      setState(() {
+        lessenFuture = Future.value(lessen);
+      });
       return lessen;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -58,12 +61,34 @@ class _SchedulePageState extends State<SchedulePage> {
       body: FutureBuilder<List<Les>?>(
         future: lessenFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Les>?> lessen) {
-          return WeekView(
+          return LessenView(
             onRefresh: refresh,
             lessen: lessen.data,
           );
         },
       ),
     );
+  }
+}
+
+class LessenView extends StatelessWidget {
+  final List<Les>? lessen;
+  final RefreshCallback onRefresh;
+
+  const LessenView({
+    Key? key,
+    this.lessen,
+    required this.onRefresh,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    switch (prefs.roosterView) {
+      case 'day':
+        return DayView(onRefresh: onRefresh, lessen: lessen);
+      case 'week':
+      default:
+        return WeekView(onRefresh: onRefresh, lessen: lessen);
+    }
   }
 }
