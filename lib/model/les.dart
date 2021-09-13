@@ -1,3 +1,6 @@
+import 'package:wind/model/schedule.dart';
+import 'package:wind/providers.dart';
+
 class Les {
   //UUID v4: "d6753626-8ec0-462d-869e-0067c6a243d9"
   String id;
@@ -45,17 +48,35 @@ class Les {
   // Lijst met namen van docenten: [ "M.J. Schegget, ter", "TSA Boose", "E.R. Bolt", "M Krop", "ECR Roden, van", "EJ Voorhoeve", "M.D.J. Witsenburg" ]
   List<String> docentnamen;
 
-  Les(this.id, this.lokaal, this.starttijd, this.eindtijd, this.changed,
-      this.docentcode, this.roosterdatum, this.commentaar,
-      this.leeractiviteit, this.publicatietekst, this.status,
-      this.roostercode, this.groepcode, this.vaknaam,
-      this.vakcode, this.docentnamen);
+  Schedule? get schedule {
+    return prefs.schedules.firstWhere((les) => les.classCode == roostercode);
+  }
+
+  Les(
+      this.id,
+      this.lokaal,
+      this.starttijd,
+      this.eindtijd,
+      this.changed,
+      this.docentcode,
+      this.roosterdatum,
+      this.commentaar,
+      this.leeractiviteit,
+      this.publicatietekst,
+      this.status,
+      this.roostercode,
+      this.groepcode,
+      this.vaknaam,
+      this.vakcode,
+      this.docentnamen);
 
   Les.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         lokaal = json["lokaal"],
-        starttijd = DateTime.fromMillisecondsSinceEpoch(json["starttijd"], isUtc: true),
-        eindtijd = DateTime.fromMillisecondsSinceEpoch(json["eindtijd"], isUtc: true),
+        starttijd =
+            DateTime.fromMillisecondsSinceEpoch(json["starttijd"], isUtc: true),
+        eindtijd =
+            DateTime.fromMillisecondsSinceEpoch(json["eindtijd"], isUtc: true),
         changed = json["changed"],
         docentcode = json["docentcode"],
         roosterdatum = DateTime.parse(json["roosterdatum"]),
