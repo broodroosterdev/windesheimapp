@@ -9,7 +9,9 @@ import 'model/schedule.dart';
 
 class Preferences extends ChangeNotifier {
   String _accessToken = sharedPrefs.accessToken;
+
   String get accessToken => _accessToken;
+
   set accessToken(String value) {
     _accessToken = value;
     sharedPrefs.accessToken = value;
@@ -17,7 +19,9 @@ class Preferences extends ChangeNotifier {
   }
 
   String _refreshToken = sharedPrefs.refreshToken;
+
   String get refreshToken => _refreshToken;
+
   set refreshToken(String value) {
     _refreshToken = value;
     sharedPrefs.refreshToken = value;
@@ -25,7 +29,9 @@ class Preferences extends ChangeNotifier {
   }
 
   String _eloCookie = sharedPrefs.eloCookie;
+
   String get eloCookie => _eloCookie;
+
   set eloCookie(String value) {
     _eloCookie = value;
     sharedPrefs.eloCookie = value;
@@ -33,10 +39,15 @@ class Preferences extends ChangeNotifier {
   }
 
   String _schedules = sharedPrefs.schedules;
+
   List<Schedule> get schedules {
-    List<Map<String, dynamic>> jsonList = (jsonDecode(_schedules) as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
+    List<Map<String, dynamic>> jsonList =
+        (jsonDecode(_schedules) as List<dynamic>)
+            .map((data) => data as Map<String, dynamic>)
+            .toList();
     return jsonList.map((json) => Schedule.fromJson(json)).toList();
   }
+
   set schedules(List<Schedule> value) {
     final String json = jsonEncode(value);
     _schedules = json;
@@ -45,8 +56,10 @@ class Preferences extends ChangeNotifier {
   }
 
   int _lastSynced = sharedPrefs.lastSynced;
+
   DateTime get lastSynced => DateTime.fromMillisecondsSinceEpoch(_lastSynced);
-  set lastSynced(DateTime value){
+
+  set lastSynced(DateTime value) {
     int timestamp = value.millisecondsSinceEpoch;
     _lastSynced = timestamp;
     sharedPrefs.lastSynced = timestamp;
@@ -54,8 +67,10 @@ class Preferences extends ChangeNotifier {
   }
 
   String _lessonsCache = sharedPrefs.lessonsCache;
+
   Map<String, List<Les>> get lessonsCache {
-    Map<String, dynamic> jsonMap = (jsonDecode(_lessonsCache) as Map<String, dynamic>);
+    Map<String, dynamic> jsonMap =
+        (jsonDecode(_lessonsCache) as Map<String, dynamic>);
     Map<String, List<Les>> result = {};
     jsonMap.forEach((key, value) {
       result[key] = [];
@@ -65,6 +80,7 @@ class Preferences extends ChangeNotifier {
     });
     return result;
   }
+
   set lessonsCache(Map<String, List<Les>> value) {
     final String json = jsonEncode(value);
     _lessonsCache = json;
@@ -72,4 +88,13 @@ class Preferences extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _roosterView = sharedPrefs.roosterView;
+
+  String get roosterView => _roosterView;
+
+  set roosterView(String value) {
+    _roosterView = value;
+    sharedPrefs.roosterView = value;
+    notifyListeners();
+  }
 }
