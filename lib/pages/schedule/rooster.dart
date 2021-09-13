@@ -1,14 +1,11 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/model/schedule.dart';
-import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/widgets/bottom_navigator.dart';
-import 'package:wind/pages/schedule/widgets/date_separator.dart';
-import 'package:wind/pages/schedule/widgets/les_tile.dart';
+import 'package:wind/pages/schedule/widgets/day_view.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/api/lessen.dart';
@@ -33,9 +30,11 @@ class _SchedulePageState extends State<SchedulePage> {
     List<Schedule> schedules = prefs.schedules;
     List<Les> lessons = [];
     bool updated = false;
-    for(Schedule schedule in schedules){
-      if(prefs.lastSynced.millisecondsSinceEpoch == 0 || forceSync || !lessonsCache.containsKey(schedule.code)){
-        if(await InternetConnectionChecker().hasConnection) {
+    for (Schedule schedule in schedules) {
+      if (prefs.lastSynced.millisecondsSinceEpoch == 0 ||
+          forceSync ||
+          !lessonsCache.containsKey(schedule.code)) {
+        if (await InternetConnectionChecker().hasConnection) {
           final data = await Lessen.getLessen(schedule.code);
           lessons.addAll(data);
           lessonsCache[schedule.code] = data;
@@ -47,7 +46,7 @@ class _SchedulePageState extends State<SchedulePage> {
         lessons.addAll(lessonsCache[schedule.code]!);
       }
     }
-    if(updated) {
+    if (updated) {
       prefs.lessonsCache = lessonsCache;
       prefs.lastSynced = DateTime.now();
     }
@@ -70,48 +69,48 @@ class _SchedulePageState extends State<SchedulePage> {
                 children: [
                   Expanded(
                     child: PageView.builder(
-                          itemCount: 5,
-                          controller: _pageController,
-                          onPageChanged: (value) {
-                            setState(() {
-                              pageNumber = value;
-                            });
-                          },
-                          itemBuilder: (BuildContext context, int index) {
-                            return
-                              RefreshIndicator(
-                                onRefresh: () async {
-                                  try{
-                                    var lessen = await getLessen(forceSync: true);
-                                    setState(() {
-                                      lessenFuture = Future.value(lessen);
-                                    });
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        behavior: SnackBarBehavior.floating,
-                                        backgroundColor: Theme.of(context).backgroundColor.withAlpha(40),
-                                        margin: EdgeInsets.only(bottom: 60),
-                                        content: Text(
-                                            e.toString(),
-                                          style: Theme.of(context).textTheme.subtitle1
-                                        ),
-                                      )
-                                    );
-                                  }
-
-                            },
+                        itemCount: 5,
+                        controller: _pageController,
+                        onPageChanged: (value) {
+                          setState(() {
+                            pageNumber = value;
+                          });
+                        },
+                        itemBuilder: (BuildContext context, int index) {
+                          return RefreshIndicator(
+                              onRefresh: () async {
+                                try {
+                                  var lessen = await getLessen(forceSync: true);
+                                  setState(() {
+                                    lessenFuture = Future.value(lessen);
+                                  });
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Theme.of(context)
+                                        .backgroundColor
+                                        .withAlpha(40),
+                                    margin: EdgeInsets.only(bottom: 60),
+                                    content: Text(e.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1),
+                                  ));
+                                }
+                              },
                               child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: dataReady
-                                    ? buildRooster(context, lessen.data!, index)
-                                    : [const Text("Loading")],
-                              ),
-                            ));
-                          }),
-                    ),
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: dataReady
+                                      ? buildRooster(
+                                          context, lessen.data!, index)
+                                      : [const Text("Loading")],
+                                ),
+                              ));
+                        }),
+                  ),
                   ChangeNotifierProvider.value(
                     value: _pageController,
                     child: BottomNavigator(
@@ -121,9 +120,9 @@ class _SchedulePageState extends State<SchedulePage> {
                               curve: Curves.fastOutSlowIn);
                         },
                         onForward: () {
-                            _pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.fastOutSlowIn);
+                          _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.fastOutSlowIn);
                         },
                         text: "Week ${pageNumber + 1}/5"),
                   ),
@@ -136,36 +135,12 @@ class _SchedulePageState extends State<SchedulePage> {
       BuildContext context, List<Les> lessen, int weekNummer) {
     List<Widget> widgets = [];
     List<DateTime> week = Time.getWeek(weekNummer);
-    List<Schedule> schedules = prefs.schedules;
 
     for (DateTime day in week) {
-      widgets.add(DateSeparator(day: day));
-
-      for (Les les in lessen) {
-        if (les.roosterdatum.day != day.day ||
-            les.roosterdatum.month != day.month) {
-          continue;
-        }
-        widgets.add(
-            Container(
-                margin: const EdgeInsets.only(left: 15, right: 15),
-                color: Theme.of(context).backgroundColor.withAlpha(40),
-                child: OpenContainer(
-    closedColor: Theme.of(context).backgroundColor.withAlpha(40),
-    closedBuilder: (BuildContext context, VoidCallback open) => LesTile(les: les, color: getColorFromLesson(schedules, les)),
-                  openBuilder: (BuildContext context, _) => LessonDetailsPage(lesson: les, color: getColorFromLesson(schedules, les)),
-                )
-        ));
-
-        widgets.add(const SizedBox(height: 10));
-      }
+      var list =
+          lessen.where((les) => les.roosterdatum.isSameDate(day)).toList();
+      widgets.add(new DayView(day: day, lessen: list));
     }
     return widgets;
-  }
-
-  Color getColorFromLesson(List<Schedule> schedules, Les lesson){
-    return schedules
-        .firstWhere((schedule) => "Class-${schedule.code}" == lesson.roostercode)
-        .color;
   }
 }
