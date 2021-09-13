@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/pages/schedule/lesson_details_page.dart';
 
-import 'date_separator.dart';
-import 'les_tile.dart';
+import '../widgets/date_separator.dart';
+import '../widgets/les_tile.dart';
 
 class DayView extends StatelessWidget {
   final List<Les> lessen;

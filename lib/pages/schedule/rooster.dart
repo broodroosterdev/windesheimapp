@@ -4,12 +4,11 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/model/schedule.dart';
+import 'package:wind/pages/schedule/views/week_view.dart';
 import 'package:wind/pages/schedule/widgets/bottom_navigator.dart';
-import 'package:wind/pages/schedule/widgets/day_view.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/api/lessen.dart';
-import 'package:wind/utils/time.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
@@ -101,13 +100,10 @@ class _SchedulePageState extends State<SchedulePage> {
                               },
                               child: SingleChildScrollView(
                                 physics: const AlwaysScrollableScrollPhysics(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: dataReady
-                                      ? buildRooster(
-                                          context, lessen.data!, index)
-                                      : [const Text("Loading")],
-                                ),
+                                child: dataReady
+                                    ? WeekView(
+                                        lessen: lessen.data!, weekNumber: index)
+                                    : const Text("Loading"),
                               ));
                         }),
                   ),
@@ -129,18 +125,5 @@ class _SchedulePageState extends State<SchedulePage> {
                 ]);
           },
         ));
-  }
-
-  List<Widget> buildRooster(
-      BuildContext context, List<Les> lessen, int weekNummer) {
-    List<Widget> widgets = [];
-    List<DateTime> week = Time.getWeek(weekNummer);
-
-    for (DateTime day in week) {
-      var list =
-          lessen.where((les) => les.roosterdatum.isSameDate(day)).toList();
-      widgets.add(new DayView(day: day, lessen: list));
-    }
-    return widgets;
   }
 }
