@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/utils/time.dart';
 
-import 'day_view.dart';
+import '../day/day_element.dart';
 
-class WeekView extends StatelessWidget {
+class WeekElement extends StatelessWidget {
   final List<Les> lessen;
   final int weekNumber;
 
-  const WeekView({
+  const WeekElement({
     Key? key,
     this.lessen = const [],
     this.weekNumber = 0,
@@ -23,7 +23,7 @@ class WeekView extends StatelessWidget {
           var list =
               lessen.where((les) => les.roosterdatum.isSameDate(day)).toList();
 
-          return DayView(day: day, lessen: list);
+          return DayElement(day: day, lessen: list);
         })
       ],
     );

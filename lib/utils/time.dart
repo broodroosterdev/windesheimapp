@@ -60,7 +60,20 @@ class Time {
 
 extension DateOnlyCompare on DateTime {
   bool isSameDate(DateTime other) {
-    return this.year == other.year && this.month == other.month
-        && this.day == other.day;
+    return this.year == other.year &&
+        this.month == other.month &&
+        this.day == other.day;
+  }
+
+  String toDateString() {
+    final now = DateTime.now();
+    int daysTill = difference(now).inDays;
+    if (daysTill == 0 && day == now.day) {
+      return "Vandaag";
+    } else if (daysTill == 0) {
+      return "Morgen";
+    } else {
+      return "${Time.getWeekdayName(weekday)} $day ${Time.getMonthName(month)}";
+    }
   }
 }
