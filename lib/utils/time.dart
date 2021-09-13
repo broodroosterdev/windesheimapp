@@ -12,7 +12,7 @@ class Time {
 
   //Get a whole week from monday till sunday
   //Week 0 being this week
-  static List<DateTime> getWeek(int weekNumber){
+  static List<DateTime> getWeek(int weekNumber) {
     final today = getTodayDate();
     final monday = today
         .subtract(Duration(days: today.weekday - 1))
@@ -20,7 +20,7 @@ class Time {
 
     List<DateTime> days = [];
     days.add(monday);
-    for(int i = 1; i <= 6; i++){
+    for (int i = 1; i <= 6; i++) {
       days.add(monday.add(Duration(days: i)));
     }
     return days;
@@ -39,7 +39,7 @@ class Time {
     return dagen[weekday - 1];
   }
 
-  static String getMonthName(int month){
+  static String getMonthName(int month) {
     const maanden = [
       "Januari",
       "Februari",
@@ -56,6 +56,11 @@ class Time {
     ];
     return maanden[month - 1];
   }
+}
 
-
+extension DateOnlyCompare on DateTime {
+  bool isSameDate(DateTime other) {
+    return this.year == other.year && this.month == other.month
+        && this.day == other.day;
+  }
 }
