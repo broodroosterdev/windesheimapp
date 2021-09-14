@@ -27,41 +27,38 @@ class _DayViewState extends State<DayView> {
     return DateTime.now().add(Duration(days: pageNumber));
   }
 
-  List<Les>? get lessen {
-    return widget.lessen
-        ?.where((les) => les.roosterdatum.isSameDate(day))
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: PageView.custom(
+          child: PageView.builder(
             controller: _pageController,
             onPageChanged: (value) {
               setState(() => pageNumber = value);
             },
-            childrenDelegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return RefreshIndicator(
-                  onRefresh: widget.onRefresh,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(top: 10),
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: lessen != null
-                        ? DayElement(
-                            lessen: lessen!,
-                            day: day,
-                            showDate: false,
-                          )
-                        : const Text("Loading"),
-                  ),
-                );
-              },
-            ),
+            itemBuilder: (BuildContext context, int index) {
+              var d = DateTime.now().add(Duration(days: index));
+              var lessen = widget.lessen
+                  ?.where((les) => les.roosterdatum.isSameDate(d))
+                  .toList();
+
+              return RefreshIndicator(
+                onRefresh: widget.onRefresh,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(top: 10),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: lessen != null
+                      ? DayElement(
+                    lessen: lessen,
+                    day: d,
+                    showDate: false,
+                  )
+                      : const Text("Loading"),
+                ),
+              );
+            },
           ),
         ),
         DaySelector(
