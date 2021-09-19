@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/model/studyroute.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
@@ -42,8 +43,30 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
                   final route = routes[index];
                   return ListTile(
                     onTap: () => Navigator.of(context).pushNamed('/studycontent', arguments: {'studyRouteId': route.id}),
-                    leading: route.imageUrl != null ? CircleAvatar(backgroundImage: NetworkImage("https://elo.windesheim.nl/" + route.imageUrl!))
-                        :  Icon(Icons.book),
+                    leading: route.imageUrl != null ? CachedNetworkImage(
+                      imageUrl: "https://elo.windesheim.nl/" + route.imageUrl!,
+                      imageBuilder: (BuildContext context, ImageProvider<Object>? provider) {
+                        return CircleAvatar(
+                          backgroundImage: provider,
+                        );
+                      },
+                      placeholder: (BuildContext context, url) {
+                        return CircleAvatar(
+                          backgroundColor: Colors.yellow.shade800,
+                          child: Text(route.name[0]),
+                        );
+                      },
+                      errorWidget: (BuildContext context, url, error) {
+                        return CircleAvatar(
+                          backgroundColor: Colors.yellow.shade800,
+                          child: Text(route.name[0]),
+                        );
+                      },
+                    ) : CircleAvatar(
+                    backgroundColor: Colors.yellow.shade800,
+                    child: Text(route.name[0]),
+                    ),
+
                     title: Text(route.name),
                   );
                 },
