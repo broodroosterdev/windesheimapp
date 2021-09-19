@@ -47,15 +47,19 @@ class ELO {
   }
 
   static Future<bool> downloadFile(String url, String path, CancelToken token, void Function(int, int)? progressCallback) async {
-    var response = await Dio().download(
-      url,
-      path,
-      onReceiveProgress: progressCallback,
-      cancelToken: token,
-      options: Options(
-        headers: {"Cookie": "N%40TCookie=${prefs.eloCookie}"}
-      )
-    );
-    return response.statusCode == null ? false : response.statusCode! < 400;
+    try {
+      var response = await Dio().download(
+          url,
+          path,
+          onReceiveProgress: progressCallback,
+          cancelToken: token,
+          options: Options(
+              headers: {"Cookie": "N%40TCookie=${prefs.eloCookie}"}
+          )
+      );
+      return response.statusCode == null ? false : response.statusCode! < 400;
+    } catch(e) {
+      return false;
+    }
   }
 }
