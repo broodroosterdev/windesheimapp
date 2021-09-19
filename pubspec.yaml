@@ -43,6 +43,7 @@ dependencies:
   animations: ^2.0.1
   link_preview_generator: ^1.1.0
   url_launcher: ^6.0.10
+  path_provider: ^2.0.4
 
 
 dev_dependencies:
