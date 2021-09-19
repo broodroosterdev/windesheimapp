@@ -29,7 +29,16 @@ class AppDrawer extends StatelessWidget {
             }
           ),
           ListTile(
-            leading: Icon(Icons.settings),
+              leading: Icon(Icons.book_outlined),
+              title: Text('ELO'),
+              onTap: () {
+                Navigator.of(context)
+                  ..pop()
+                  ..pushNamed("/studyroutes");
+              }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_outlined),
             title: Text('Instellingen'),
             onTap: () {
               Navigator.of(context)
