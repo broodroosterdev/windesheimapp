@@ -8,8 +8,8 @@ import 'package:wind/internal/auth_failure.dart';
 import '../../providers.dart';
 
 class EloAuth {
-  static CookieJar jar = CookieJar();
   static Future<Either<AuthFailure, String>> login(String username, String password) async {
+    CookieJar jar = CookieJar();
     Dio dio = Dio();
     dio.interceptors.add(CookieManager(jar));
 
@@ -114,6 +114,7 @@ class EloAuth {
 
   static Future<Either<AuthFailure, String>> refresh() async {
     Dio dio = Dio();
+    CookieJar jar = CookieJar();
     dio.interceptors.add(CookieManager(jar));
 
  /*     Response LoginELOResponse = await dio.get("https://elo.windesheim.nl/Security/WAYF/Login.aspx");

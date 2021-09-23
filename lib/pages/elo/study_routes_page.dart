@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/model/studyroute.dart';
+import 'package:wind/pages/elo/widgets/study_route_tile.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/elo.dart';
-
-import '../../providers.dart';
 
 
 class StudyRoutesPage extends StatefulWidget {
@@ -34,41 +32,18 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
           builder: (BuildContext context,
               AsyncSnapshot<List<StudyRoute>> snapshot) {
             if (!snapshot.hasData || snapshot.data == null)
-              return Text("Loading");
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.yellow,
+                ),
+              );
             else {
               final List<StudyRoute> routes = snapshot.data!;
               return ListView.builder(
                 itemCount: routes.length,
                 itemBuilder: (BuildContext context, int index) {
                   final route = routes[index];
-                  return ListTile(
-                    onTap: () => Navigator.of(context).pushNamed('/studycontent', arguments: {'studyRouteId': route.id}),
-                    leading: route.imageUrl != null ? CachedNetworkImage(
-                      imageUrl: "https://elo.windesheim.nl/" + route.imageUrl!,
-                      imageBuilder: (BuildContext context, ImageProvider<Object>? provider) {
-                        return CircleAvatar(
-                          backgroundImage: provider,
-                        );
-                      },
-                      placeholder: (BuildContext context, url) {
-                        return CircleAvatar(
-                          backgroundColor: Colors.yellow.shade800,
-                          child: Text(route.name[0]),
-                        );
-                      },
-                      errorWidget: (BuildContext context, url, error) {
-                        return CircleAvatar(
-                          backgroundColor: Colors.yellow.shade800,
-                          child: Text(route.name[0]),
-                        );
-                      },
-                    ) : CircleAvatar(
-                    backgroundColor: Colors.yellow.shade800,
-                    child: Text(route.name[0]),
-                    ),
-
-                    title: Text(route.name),
-                  );
+                  return StudyRouteTile(route);
                 },
               );
             }
