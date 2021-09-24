@@ -44,6 +44,20 @@ class ELO {
     return content;
   }
 
+  static Future<void> toggleFavourite(int studyRouteId) async {
+    final String url = "https://elo.windesheim.nl/Home/StudyRoute/StudyRoute/ToggleFavorite";
+    Response<dynamic> response = await Dio().post(url,
+        data: {
+          'studyrouteId': studyRouteId
+        },
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) => status! < 500,
+            headers: {"Cookie": "N%40TCookie=${prefs.eloCookie}"},
+            contentType: Headers.formUrlEncodedContentType
+        ));
+  }
+
   static Future<bool> downloadFile(String url, String path, CancelToken token, void Function(int, int)? progressCallback) async {
     try {
       var response = await Dio().download(
