@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/pages/schedule/widgets/link_preview.dart';
-import 'package:wind/pages/schedule/widgets/time_box.dart';
 
 class LessonDetailsPage extends StatefulWidget {
-  Les lesson;
-  Color color;
+  final Les lesson;
+  final Color color;
 
   LessonDetailsPage({Key? key, required this.lesson, required this.color})
       : super(key: key);

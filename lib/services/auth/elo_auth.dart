@@ -5,8 +5,6 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/dom.dart';
 import 'package:wind/internal/auth_failure.dart';
 
-import '../../providers.dart';
-
 class EloAuth {
   static Future<Either<AuthFailure, String>> login(String username, String password) async {
     CookieJar jar = CookieJar();

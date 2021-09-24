@@ -3,7 +3,7 @@ import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkPreviewTile extends StatefulWidget {
-  String url;
+  final String url;
 
   LinkPreviewTile({Key? key, required this.url}) : super(key: key);
 

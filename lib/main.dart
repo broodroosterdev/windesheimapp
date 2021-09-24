@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/route_generator.dart';

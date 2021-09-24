@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wind/model/studyroute.dart';
 
 class StudyRouteTile extends StatelessWidget {
-  StudyRoute route;
+  final StudyRoute route;
 
   StudyRouteTile(this.route);
 

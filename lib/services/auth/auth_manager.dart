@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:wind/internal/auth_failure.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/auth/api_auth.dart';

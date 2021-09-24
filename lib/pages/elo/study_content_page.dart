@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:wind/model/studycontent.dart';
 import 'package:wind/pages/elo/widgets/study_content_tile.dart';
-import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/elo.dart';
 
 class StudyContentPage extends StatefulWidget {
-  int studyRouteId;
-  int? parentId;
+  final int studyRouteId;
+  final int? parentId;
   StudyContentPage({Key? key, required this.studyRouteId, required this.parentId}) : super(key: key);
 
   @override

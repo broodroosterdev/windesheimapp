@@ -1,19 +1,17 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wind/model/studycontent.dart';
 import 'package:wind/providers.dart';
-import 'package:wind/services/api/elo.dart';
 import 'package:wind/services/download/download_manager.dart';
 import 'package:wind/services/download/download_task.dart';
 
 class StudyContentTile extends StatefulWidget {
-  StudyContent studyContent;
-  int studyRouteId;
+  final StudyContent studyContent;
+  final int studyRouteId;
 
   StudyContentTile(
       {Key? key, required this.studyContent, required this.studyRouteId})
