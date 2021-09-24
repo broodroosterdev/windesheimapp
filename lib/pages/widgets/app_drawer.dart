@@ -23,27 +23,24 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.calendar_today),
             title: Text('Rooster'),
             onTap: () {
-              Navigator.of(context)
-                  ..pop()
-                  ..pushNamed("/rooster");
+              navigatorKey.currentState!
+                  .pushNamedAndRemoveUntil("/rooster", (_) => false);
             }
           ),
           ListTile(
               leading: Icon(Icons.book_outlined),
               title: Text('ELO'),
               onTap: () {
-                Navigator.of(context)
-                  ..pop()
-                  ..pushNamed("/studyroutes");
+                navigatorKey.currentState!
+                    .pushNamedAndRemoveUntil("/studyroutes", (_) => false);
               }
           ),
           ListTile(
             leading: Icon(Icons.settings_outlined),
             title: Text('Instellingen'),
             onTap: () {
-              Navigator.of(context)
-                ..pop()
-                ..pushNamed("/settings");
+              navigatorKey.currentState!
+                  .pushNamedAndRemoveUntil("/settings", (_) => false);
             }
           ),
           ListTile(
