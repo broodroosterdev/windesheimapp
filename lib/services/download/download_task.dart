@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:wind/services/api/elo.dart';
@@ -14,15 +16,17 @@ class DownloadTask extends ChangeNotifier {
 
   Future<void> startDownload() async{
     cancelToken = CancelToken();
-    await ELO.downloadFile(
+    bool downloadSuccess = await ELO.downloadFile(
         "https://elo.windesheim.nl" + url,
-        tempDir.path + path,
+        tempDir.path + path + '.download',
         cancelToken,
         (count, total) {
           progress = count / total;
           notifyListeners();
         },
     );
+    if(downloadSuccess)
+      await File(tempDir.path + path + '.download').rename(tempDir.path + path);
   }
 
   void cancelDownload(){

@@ -15,6 +15,12 @@ class DownloadManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void cancelTask(int id){
+    getTask(id)?.cancelDownload();
+    tasks.remove(id);
+    notifyListeners();
+  }
+
   bool hasTask(int id){
     return tasks.containsKey(id);
   }
