@@ -14,17 +14,19 @@ import 'package:wind/services/download/download_task.dart';
 class StudyContentTile extends StatefulWidget {
   StudyContent studyContent;
   int studyRouteId;
-  StudyContentTile({Key? key, required this.studyContent, required this.studyRouteId}) : super(key: key);
+
+  StudyContentTile(
+      {Key? key, required this.studyContent, required this.studyRouteId})
+      : super(key: key);
 
   @override
   _StudyContentTileState createState() => _StudyContentTileState();
 }
 
 class _StudyContentTileState extends State<StudyContentTile> {
-
   void onLongPress() async {
-    if(widget.studyContent.type == ItemType.File){
-      if(isDownloaded()){
+    if (widget.studyContent.type == ItemType.File) {
+      if (isDownloaded()) {
         await File(tempDir.path + widget.studyContent.path!).delete();
         setState(() {});
       }
@@ -33,25 +35,24 @@ class _StudyContentTileState extends State<StudyContentTile> {
 
   void onTap() async {
     if (widget.studyContent.type == ItemType.Folder) {
-      Navigator.of(context).pushNamed('/studycontent',
-          arguments: {
-            'studyRouteId': widget.studyRouteId,
-            'parentId': widget.studyContent.id
-          });
-    } else if(widget.studyContent.type == ItemType.Link){
-      if(await canLaunch(widget.studyContent.url!)){
+      Navigator.of(context).pushNamed('/studycontent', arguments: {
+        'studyRouteId': widget.studyRouteId,
+        'parentId': widget.studyContent.id
+      });
+    } else if (widget.studyContent.type == ItemType.Link) {
+      if (await canLaunch(widget.studyContent.url!)) {
         await launch(widget.studyContent.url!);
       }
     } else if (widget.studyContent.type == ItemType.File) {
       if (downloadManager.hasTask(widget.studyContent.id)) {
-        downloadManager.getTask(widget.studyContent.id)!.cancelDownload();
+        downloadManager.cancelTask(widget.studyContent.id);
       } else if (isDownloaded()) {
         await OpenFile.open(tempDir.path + widget.studyContent.path!);
       } else {
-        downloadManager.addTask(widget.studyContent.id, DownloadTask(
-            widget.studyContent.url!,
-            widget.studyContent.path!
-        ));
+        downloadManager.addTask(
+          widget.studyContent.id,
+          DownloadTask(widget.studyContent.url!, widget.studyContent.path!),
+        );
       }
     }
   }
@@ -61,27 +62,29 @@ class _StudyContentTileState extends State<StudyContentTile> {
     return ChangeNotifierProvider.value(
         value: downloadManager,
         child: Consumer<DownloadManager>(
-            builder: (context, model, _) => model.hasTask(widget.studyContent.id) ?
-            ChangeNotifierProvider.value(value: model.getTask(widget.studyContent.id)!,
-        child: Consumer<DownloadTask>(
-                  builder: (context, model, _) => ListTile(
-                onLongPress: onLongPress,
-                onTap: onTap,
-                leading: getTileIcon(),
-                trailing: getDownloadIcon(task: model),
-                title: Text(widget.studyContent.name),
-              ))) : ListTile(
-          onLongPress: onLongPress,
-          onTap: onTap,
-          leading: getTileIcon(),
-          trailing: getDownloadIcon(),
-          title: Text(widget.studyContent.name),
-        )
-    ));
+            builder: (context, model, _) =>
+                model.hasTask(widget.studyContent.id)
+                    ? ChangeNotifierProvider.value(
+                        value: model.getTask(widget.studyContent.id)!,
+                        child: Consumer<DownloadTask>(
+                            builder: (context, model, _) => ListTile(
+                                  onLongPress: onLongPress,
+                                  onTap: onTap,
+                                  leading: getTileIcon(),
+                                  trailing: getDownloadIcon(task: model),
+                                  title: Text(widget.studyContent.name),
+                                )))
+                    : ListTile(
+                        onLongPress: onLongPress,
+                        onTap: onTap,
+                        leading: getTileIcon(),
+                        trailing: getDownloadIcon(),
+                        title: Text(widget.studyContent.name),
+                      )));
   }
 
-  Widget? getTileIcon(){
-    switch(widget.studyContent.type){
+  Widget? getTileIcon() {
+    switch (widget.studyContent.type) {
       case ItemType.Folder:
         return Icon(Icons.folder);
       case ItemType.Link:
@@ -91,17 +94,18 @@ class _StudyContentTileState extends State<StudyContentTile> {
     }
   }
 
-  Widget? getDownloadIcon({DownloadTask? task = null}){
-    if(widget.studyContent.type == ItemType.Link){
+  Widget? getDownloadIcon({DownloadTask? task = null}) {
+    if (widget.studyContent.type == ItemType.Link) {
       return Icon(Icons.open_in_new);
-    } else if(widget.studyContent.type == ItemType.File) {
-      if(task != null){
+    } else if (widget.studyContent.type == ItemType.File) {
+      if (task != null) {
         return SizedBox(
           height: 24,
-            width: 24,
-            child: CircularProgressIndicator(value: task.progress, color: Colors.yellow, strokeWidth: 3.0),
+          width: 24,
+          child: CircularProgressIndicator(
+              value: task.progress, color: Colors.yellow, strokeWidth: 3.0),
         );
-      } else if(isDownloaded()) {
+      } else if (isDownloaded()) {
         return Icon(Icons.file_download_done_sharp);
       } else {
         return Icon(Icons.download_sharp);
@@ -111,7 +115,7 @@ class _StudyContentTileState extends State<StudyContentTile> {
     }
   }
 
-  bool isDownloaded(){
+  bool isDownloaded() {
     return File(tempDir.path + widget.studyContent.path!).existsSync();
   }
 }
