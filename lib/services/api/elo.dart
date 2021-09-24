@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:wind/model/studycontent.dart';
 import 'package:wind/model/studyroute.dart';
-import 'package:wind/services/auth/auth_manager.dart';
-import 'package:wind/services/auth/elo_auth.dart';
 
 import '../../providers.dart';
 

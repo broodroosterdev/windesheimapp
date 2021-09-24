@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wind/pages/elo/study_content_page.dart';
 import 'package:wind/pages/elo/study_routes_page.dart';
 import 'package:wind/pages/login.dart';
-import 'package:wind/pages/login_confirm.dart';
 import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/rooster.dart';
 import 'package:wind/pages/settings/add_schedule_page.dart';
 import 'package:wind/pages/settings/settings_page.dart';
-import 'package:wind/providers.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 
 import 'model/les.dart';
@@ -24,10 +22,6 @@ class RouteGenerator {
           } else {
             return MaterialPageRoute(builder: (_) => LoginPage());
           }
-      case '/login-confirm':
-        final arguments = args as Map<String, String>;
-        return MaterialPageRoute(
-            builder: (_) => LoginConfirmPage(email: arguments['email']!, password: arguments['password']!));
       case '/rooster':
         return MaterialPageRoute(
           builder: (_) => SchedulePage());

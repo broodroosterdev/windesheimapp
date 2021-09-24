@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/material.dart';
 
 import 'package:html/dom.dart';
-import 'package:html/parser.dart' as parser;
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:wind/internal/auth_failure.dart';

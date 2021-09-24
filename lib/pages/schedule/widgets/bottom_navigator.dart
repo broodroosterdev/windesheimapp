@@ -31,6 +31,6 @@ class BottomNavigator extends StatelessWidget {
           child: TextButton(
               onPressed: onForward,
               child: const Icon(Icons.chevron_right, size: 48)))
-    ]);;
+    ]);
   }
 }
