@@ -52,6 +52,11 @@ class _StudyContentTileState extends State<StudyContentTile> {
           DownloadTask(widget.studyContent.url!, widget.studyContent.path!),
         );
       }
+    } else if(widget.studyContent.type == ItemType.Page) {
+      Navigator.of(context).pushNamed('/studydocument', arguments: {
+        'url': 'https://elo.windesheim.nl' + widget.studyContent.url!,
+        'name': widget.studyContent.name
+      });
     }
   }
 

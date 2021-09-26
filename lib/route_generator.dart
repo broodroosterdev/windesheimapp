@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wind/pages/elo/study_content_page.dart';
+import 'package:wind/pages/elo/study_document_page.dart';
 import 'package:wind/pages/elo/study_routes_page.dart';
 import 'package:wind/pages/login.dart';
 import 'package:wind/pages/schedule/lesson_details_page.dart';
@@ -40,6 +41,9 @@ class RouteGenerator {
       case '/studycontent':
         final arguments = args as Map<String, dynamic>;
         return MaterialPageRoute(builder: (_) => StudyContentPage(studyRouteId: arguments['studyRouteId'], parentId: arguments['parentId']));
+      case '/studydocument':
+        final arguments = args as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (_) => StudyDocumentPage(arguments['url'], arguments['name']));
       default:
         return _errorRoute();
     }
