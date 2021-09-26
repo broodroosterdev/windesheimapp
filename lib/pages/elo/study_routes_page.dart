@@ -51,7 +51,6 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('ELO')),
       drawer: AppDrawer(),
-      backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(

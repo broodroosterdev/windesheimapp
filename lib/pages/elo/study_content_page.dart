@@ -27,7 +27,6 @@ class _StudyContentPageState extends State<StudyContentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('ELO')),
-        backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
         body: FutureBuilder(
           future: studyContentFuture,
           builder: (BuildContext context,
