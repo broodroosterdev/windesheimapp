@@ -54,7 +54,7 @@ class _StudyContentTileState extends State<StudyContentTile> {
       }
     } else if(widget.studyContent.type == ItemType.Page) {
       Navigator.of(context).pushNamed('/studydocument', arguments: {
-        'url': 'https://elo.windesheim.nl' + widget.studyContent.url!,
+        'url': widget.studyContent.url!,
         'name': widget.studyContent.name
       });
     } else if(widget.studyContent.type == ItemType.Handin){
