@@ -64,7 +64,8 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
             SizedBox(
               height: 10,
             ),
-            Row(
+            Expanded(
+                child: Row(
               children: [
                 Icon(Icons.pin_drop_outlined,
                     size: 36, color: Theme.of(context).primaryColor),
@@ -76,7 +77,7 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                   style: Theme.of(context).textTheme.subtitle1,
                 )
               ],
-            ),
+            )),
             SizedBox(
               height: 10,
             ),

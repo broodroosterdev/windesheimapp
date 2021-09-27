@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wind/model/handin_details.dart';
 import 'package:wind/model/studycontent.dart';
 import 'package:wind/model/studyroute.dart';
 
@@ -42,6 +43,14 @@ class ELO {
         .toList();
     final List<StudyContent> content = rawContent.map((raw) => StudyContent.fromJson(raw)).toList();
     return content;
+  }
+
+  static Future<HandinDetails> getHandinDetails(int resourceId) async {
+    final String url = "https://elo.windesheim.nl/services/Studyroutemobile.asmx/LoadUserHandinDetails?studyRouteResourceId=${resourceId}";
+    Response<dynamic> response = await makeRequest(url);
+    final rawContent = ((response.data['STUDYROUTE_USER_HANDINDETAILS'] as List<dynamic>)[0]) as Map<String, dynamic>;
+    final HandinDetails details = HandinDetails.fromJson(rawContent);
+    return details;
   }
 
   static Future<void> toggleFavourite(int studyRouteId) async {
