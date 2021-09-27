@@ -38,21 +38,21 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
       backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.only(left: 20, top: 10, right: 20),
+          padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text(
               widget.lesson.leeractiviteit.replaceAll(" ,", ""),
               style: Theme.of(context).textTheme.headline4,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: [
                 Icon(Icons.access_time,
                     size: 36, color: Theme.of(context).primaryColor),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(
@@ -61,15 +61,14 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Expanded(
-                child: Row(
+            Row(
               children: [
                 Icon(Icons.pin_drop_outlined,
                     size: 36, color: Theme.of(context).primaryColor),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(
@@ -77,8 +76,8 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                   style: Theme.of(context).textTheme.subtitle1,
                 )
               ],
-            )),
-            SizedBox(
+            ),
+            const SizedBox(
               height: 10,
             ),
             ...widget.lesson.docentnamen.map((docent) {
@@ -93,14 +92,14 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                 ],
               );
             }),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               widget.lesson.publicatietekst,
               style: Theme.of(context).textTheme.bodyText2,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ...getUrlsFromDescription().map((e) => LinkPreviewTile(url: e))
