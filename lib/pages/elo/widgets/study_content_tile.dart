@@ -57,6 +57,11 @@ class _StudyContentTileState extends State<StudyContentTile> {
         'url': 'https://elo.windesheim.nl' + widget.studyContent.url!,
         'name': widget.studyContent.name
       });
+    } else if(widget.studyContent.type == ItemType.Handin){
+      Navigator.of(context).pushNamed('/studyhandin', arguments: {
+        'resourceId': widget.studyContent.resourceId!,
+        'name': widget.studyContent.name
+      });
     }
   }
 
@@ -92,6 +97,8 @@ class _StudyContentTileState extends State<StudyContentTile> {
         return Icon(Icons.folder);
       case ItemType.Link:
         return Icon(Icons.insert_link);
+      case ItemType.Handin:
+        return Icon(Icons.archive);
       default:
         return Icon(Icons.description);
     }

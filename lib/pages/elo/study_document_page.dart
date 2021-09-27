@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:wind/pages/elo/widgets/document_view.dart';
 
 import '../../providers.dart';
 
@@ -18,34 +19,9 @@ class _StudyDocumentPageState extends State<StudyDocumentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(widget.name)),
-        body: FutureBuilder(
-          future: getDocument(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if(!snapshot.hasData){
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.yellow,
-                ),
-              );
-            } else {
-              return SingleChildScrollView(
-                child: Html(
-                  data: snapshot.data
-                )
-              );
-            }
-          },
-
-        )
+        body: DocumentView(widget.url)
     );
   }
 
-  Future<String> getDocument() async{
-    final response = await Dio().get(widget.url,
-        options: Options(
-            followRedirects: false,
-            validateStatus: (status) => status! < 500,
-            headers: {"Cookie": "N%40TCookie=${prefs.eloCookie}"}));
-    return response.data;
-  }
+
 }

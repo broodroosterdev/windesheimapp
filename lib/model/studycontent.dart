@@ -4,13 +4,15 @@ class StudyContent {
   ItemType type;
   String? url;
   String? path;
+  int? resourceId;
 
   StudyContent(
     this.id,
     this.name,
     this.type,
     this.url,
-      this.path,
+    this.path,
+    this.resourceId
   );
 
   StudyContent.fromJson(Map<String, dynamic> json)
@@ -18,10 +20,11 @@ class StudyContent {
         name = json["NAME"],
         type = getType(json["ITEMTYPE"]),
         url = json["URL"],
-        path = json["PATH"];
+        path = json["PATH"],
+        resourceId = json["STUDYROUTE_RESOURCE_ID"] == -1 ? null : json["STUDYROUTE_RESOURCE_ID"];
 }
 
-enum ItemType { Folder, File, Link, Page, Assignment }
+enum ItemType { Folder, File, Link, Page, Handin }
 
 ItemType getType(int data) {
   switch (data) {
@@ -32,7 +35,7 @@ ItemType getType(int data) {
     case 3:
       return ItemType.Link;
     case 9:
-      return ItemType.Assignment;
+      return ItemType.Handin;
     case 10:
       return ItemType.File;
     default:
