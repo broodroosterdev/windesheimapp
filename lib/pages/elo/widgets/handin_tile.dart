@@ -20,7 +20,7 @@ class HandinTile extends StatelessWidget {
   }
 
   String buildSubtitle(){
-    final DateFormat formatter = DateFormat('dd-MM-yyyy H:m');
+    final DateFormat formatter = DateFormat('dd-MM-yyyy H:mm');
     return 'Inleverdatum: ${formatter.format(details.submitDate!)}\n' + (details.plagiarism == null ? '' : 'Plagiaat: ${details.plagiarism}%');
   }
 
