@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/pages/schedule/widgets/time_box.dart';
+import 'package:wind/utils/time.dart';
 
 class LesTile extends StatelessWidget {
   final Les les;
@@ -24,11 +25,11 @@ class LesTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TimeBox(
-                      time: "${les.starttijd.hour}:${les.starttijd.minute}",
+                      time: Time.getFormattedTime(les.starttijd),
                       opacity: 100,
                     ),
                     TimeBox(
-                      time: "${les.eindtijd.hour}:${les.eindtijd.minute}",
+                      time: Time.getFormattedTime(les.eindtijd),
                       opacity: 50,
                     ),
                   ])),

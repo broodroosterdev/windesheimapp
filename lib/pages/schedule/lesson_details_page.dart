@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/pages/schedule/widgets/link_preview.dart';
+import 'package:wind/utils/time.dart';
 
 class LessonDetailsPage extends StatefulWidget {
   final Les lesson;
@@ -56,7 +57,7 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                   width: 5,
                 ),
                 Text(
-                  "${widget.lesson.starttijd.hour}:${widget.lesson.starttijd.minute}-${widget.lesson.eindtijd.hour}:${widget.lesson.eindtijd.minute}",
+                  "${Time.getFormattedTime(widget.lesson.starttijd)}-${Time.getFormattedTime(widget.lesson.eindtijd)}",
                   style: Theme.of(context).textTheme.subtitle1,
                 )
               ],

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Time {
   static DateTime getTodayDate() {
     DateTime newDate = DateTime.now();
@@ -10,13 +12,23 @@ class Time {
     ));
   }
 
+  static String getFormattedTime(DateTime date){
+    DateFormat timeFormat = DateFormat.Hm();
+    return timeFormat.format(date);
+  }
+
+  static String getFormattedDate(DateTime date){
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    return dateFormat.format(date);
+  }
+
   //Get a whole week from monday till sunday
   //Week 0 being this week
-  static List<DateTime> getWeek(int weekNumber) {
+  static List<DateTime> getWeek(int weekOffset) {
     final today = getTodayDate();
     final monday = today
         .subtract(Duration(days: today.weekday - 1))
-        .add(Duration(days: 7 * weekNumber));
+        .add(Duration(days: 7 * weekOffset));
 
     List<DateTime> days = [];
     days.add(monday);

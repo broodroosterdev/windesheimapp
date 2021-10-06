@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wind/model/handin_details.dart';
+import 'package:wind/utils/time.dart';
 
 class HandinTile extends StatelessWidget {
   final HandinDetails details;
 
-  HandinTile(this.details);
+  const HandinTile(this.details, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +21,12 @@ class HandinTile extends StatelessWidget {
   }
 
   String buildSubtitle(){
-    final DateFormat formatter = DateFormat('dd-MM-yyyy H:mm');
-    return 'Inleverdatum: ${formatter.format(details.submitDate!)}\n' + (details.plagiarism == null ? '' : 'Plagiaat: ${details.plagiarism}%');
+    return 'Inleverdatum: ${Time.getFormattedDate(details.submitDate!)} ${Time.getFormattedTime(details.submitDate!)}  \n' + (details.plagiarism == null ? '' : 'Plagiaat: ${details.plagiarism}%');
   }
 
   void onTap(){
     if(details.submitUrl == null)
       return;
+    //TODO: Add download for handin
   }
 }
