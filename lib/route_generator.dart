@@ -8,6 +8,7 @@ import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/rooster.dart';
 import 'package:wind/pages/settings/add_schedule_page.dart';
 import 'package:wind/pages/settings/settings_page.dart';
+import 'package:wind/pages/study/study_page.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 
 import 'model/les.dart';
@@ -48,6 +49,8 @@ class RouteGenerator {
       case '/studyhandin':
         final arguments = args as Map<String, dynamic>;
         return MaterialPageRoute(builder: (_) => StudyHandinPage(arguments['resourceId'], arguments['name']));
+      case '/study':
+        return MaterialPageRoute(builder: (_) => StudyPage());
       default:
         return _errorRoute();
     }
