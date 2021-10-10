@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wind/model/course_result.dart';
 import 'package:wind/model/study_progress.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 
@@ -29,6 +30,16 @@ class Study {
     final rawContent = (response.data as List<dynamic>)[0] as Map<String, dynamic>;
     final StudyProgress progress = StudyProgress.fromJson(rawContent);
     return progress;
+  }
+
+  static Future<List<CourseResult>> getCourseResults(String code) async {
+    final String url = 'https://windesheimapi.azurewebsites.net/api/v1/Persons/s1144816/Study/$code/CourseResults?onlyCurrent=false&onlydata=true&culture=EN&\$orderby=lastmodified desc,course/name';
+    Response<dynamic> response = await makeRequest(url);
+    final rawContent = (response.data as List<dynamic>)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+    final List<CourseResult> results = rawContent.map((raw) => CourseResult.fromJson(raw)).toList();
+    return results;
   }
 
 }
