@@ -77,19 +77,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Text(
-                "Debug",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: ElevatedButton(onPressed: () {
-              prefs.eloCookie = '';
-            }, child: Text("Remove ELO cookie"),),
-      ),
           ],
         ),
       ),

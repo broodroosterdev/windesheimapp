@@ -25,7 +25,8 @@ class Study {
   }
 
   static Future<StudyProgress> getStudyProgress() async {
-    final String url = "https://windesheimapi.azurewebsites.net/api/v1/Persons/s1144816/Study?onlydata=true&culture=EN";
+    final String studentCode = prefs.email.replaceAll('@student.windesheim.nl', '');
+    final String url = "https://windesheimapi.azurewebsites.net/api/v1/Persons/$studentCode/Study?onlydata=true&culture=EN";
     Response<dynamic> response = await makeRequest(url);
     final rawContent = (response.data as List<dynamic>)[0] as Map<String, dynamic>;
     final StudyProgress progress = StudyProgress.fromJson(rawContent);
