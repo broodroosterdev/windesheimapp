@@ -97,4 +97,25 @@ class Preferences extends ChangeNotifier {
     sharedPrefs.roosterView = value;
     notifyListeners();
   }
+
+  String _email = sharedPrefs.email;
+
+  String get email => _email;
+
+  set email(String value){
+    _email = value;
+    sharedPrefs.email = value;
+    notifyListeners();
+  }
+
+  String _password = sharedPrefs.password;
+
+  String get password => _password;
+
+  set password(String value){
+    _password = value;
+    sharedPrefs.password = value;
+    notifyListeners();
+  }
+
 }

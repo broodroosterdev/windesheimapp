@@ -33,6 +33,8 @@ class AuthManager {
           return Left(l);
         },
         (r) {
+          prefs.email = email;
+          prefs.password = password;
           prefs.accessToken = r.accessToken;
           prefs.refreshToken = r.refreshToken;
           return const Right(null);
@@ -52,6 +54,19 @@ class AuthManager {
         prefs.refreshToken = r.refreshToken;
         return const Right(null);
       },
+    );
+  }
+
+  static Future<Either<AuthFailure, void>> refreshElo() async {
+    return (await EloAuth.login(prefs.email, prefs.password)).fold(
+        (l) {
+          print("error: " + l.message);
+          return Left(l);
+        },
+        (r) {
+          prefs.eloCookie = r;
+          return const Right(null);
+        }
     );
   }
 

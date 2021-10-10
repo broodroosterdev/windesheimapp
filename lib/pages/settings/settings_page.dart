@@ -5,6 +5,7 @@ import 'package:wind/model/schedule.dart';
 import 'package:wind/pages/settings/widgets/add_rooster_tile.dart';
 import 'package:wind/pages/settings/widgets/rooster_tile.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
+import 'package:wind/services/auth/elo_auth.dart';
 
 import '../../preferences.dart';
 import '../../providers.dart';
@@ -76,6 +77,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: Text(
+                "Debug",
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: ElevatedButton(onPressed: () {
+              prefs.eloCookie = '';
+            }, child: Text("Remove ELO cookie"),),
+      ),
           ],
         ),
       ),

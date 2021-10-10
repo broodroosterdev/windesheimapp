@@ -69,4 +69,20 @@ class SharedPrefs {
   void setString(String key, String? value) {
     prefs.setString(key, value ?? '');
   }
+
+  String get email {
+    return prefs.getString('email') ?? '';
+  }
+
+  set email(String value){
+    setString('email', value);
+  }
+
+  String get password {
+    return prefs.getString('password') ?? '';
+  }
+
+  set password(String value){
+    setString('password', value);
+  }
 }

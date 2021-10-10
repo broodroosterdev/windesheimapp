@@ -2,24 +2,26 @@ import 'package:dio/dio.dart';
 import 'package:wind/model/handin_details.dart';
 import 'package:wind/model/studycontent.dart';
 import 'package:wind/model/studyroute.dart';
+import 'package:wind/services/auth/auth_manager.dart';
+import 'package:wind/services/auth/elo_auth.dart';
 
 import '../../providers.dart';
 
 class ELO {
   static Future<Response<dynamic>> makeRequest(String url) async {
-    //await EloAuth.refresh();
     Response<dynamic> response = await Dio().get(url,
         options: Options(
             followRedirects: false,
             validateStatus: (status) => status! < 500,
             headers: {"Cookie": "N%40TCookie=${prefs.eloCookie}"}));
 
-    if (response.statusCode != 200) {
-      throw "Cookie timed out pls help";
+    if (response.statusCode != 200 || response.data.runtimeType == String) {
+      await AuthManager.refreshElo();
       response = await Dio().get(url,
           options: Options(
               followRedirects: false,
-              headers: {"Authorization": "Bearer " + prefs.accessToken}));
+              validateStatus: (status) => status! < 500,
+              headers: {"Cookie": "N%40TCookie=${prefs.eloCookie}"}));
     }
     return response;
   }
