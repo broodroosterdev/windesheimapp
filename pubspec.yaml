@@ -49,6 +49,7 @@ dependencies:
   implicitly_animated_reorderable_list: ^0.4.1
   flutter_html: ^2.1.2
   intl: ^0.17.0
+  percent_indicator: ^3.4.0
 
 
 dev_dependencies:

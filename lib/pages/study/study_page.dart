@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/study_progress.dart';
-import 'package:wind/pages/study/widgets/e_c_counter.dart';
+import 'package:wind/pages/study/widgets/course_list.dart';
+import 'package:wind/pages/study/widgets/ec_counter.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/study.dart';
 
@@ -37,13 +38,14 @@ class _StudyPageState extends State<StudyPage> {
                 );
               } else {
                 StudyProgress progress = snapshot.data!;
-                return Column(children: [
+                return SingleChildScrollView(
+                    child: Column(children: [
                   SizedBox(height: 10),
                   Text(
                       progress.name,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -51,9 +53,12 @@ class _StudyPageState extends State<StudyPage> {
                       SizedBox(width: 30),
                       ECCounter(progress.study, "Complete study"),
                     ],
-                  )
-                ]);
+                  ),
+                  SizedBox(height: 20),
+                  CourseList(progress.code)
+                ]));
               }
-            }));
+            }),
+    );
   }
 }
