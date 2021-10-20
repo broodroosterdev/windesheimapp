@@ -82,8 +82,10 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
   }
 
   void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.black,
         content: Text(
