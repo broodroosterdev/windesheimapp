@@ -55,7 +55,7 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lessen')),
+      appBar: AppBar(title: const Text('Rooster')),
       drawer: AppDrawer(),
       backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
       body: FutureBuilder<List<Les>?>(

@@ -25,7 +25,7 @@ class _StudyPageState extends State<StudyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Study')),
+        appBar: AppBar(title: const Text('Studie')),
         drawer: AppDrawer(),
         body: FutureBuilder(
             future: future,
@@ -51,7 +51,7 @@ class _StudyPageState extends State<StudyPage> {
                     children: [
                       ECCounter(progress.propedeuse, "Propedeuse"),
                       SizedBox(width: 30),
-                      ECCounter(progress.study, "Complete study"),
+                      ECCounter(progress.study, "Complete studie"),
                     ],
                   ),
                   SizedBox(height: 20),
