@@ -55,6 +55,16 @@ class _StudyPageState extends State<StudyPage> {
                     ],
                   ),
                   SizedBox(height: 20),
+                  SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
+                        child: Text(
+                          "Vakken",
+                          style: Theme.of(context).textTheme.headline5,
+                          textAlign: TextAlign.start,
+                  ),
+                      )),
                   CourseList(progress.code)
                 ]));
               }
