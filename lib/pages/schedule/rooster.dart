@@ -37,7 +37,7 @@ class _SchedulePageState extends State<SchedulePage> {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           backgroundColor: Theme.of(context).backgroundColor.withAlpha(40),
-          margin: EdgeInsets.only(bottom: 60),
+          margin: const EdgeInsets.only(bottom: 60),
           content: Text(
             e.toString(),
             style: Theme.of(context).textTheme.subtitle1,

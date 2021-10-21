@@ -14,22 +14,22 @@ class DownloadTask extends ChangeNotifier {
 
   DownloadTask(this.url, this.path);
 
-  Future<void> startDownload() async{
+  Future<void> startDownload() async {
     cancelToken = CancelToken();
     bool downloadSuccess = await ELO.downloadFile(
-        "https://elo.windesheim.nl" + url,
-        tempDir.path + path + '.download',
-        cancelToken,
-        (count, total) {
-          progress = count / total;
-          notifyListeners();
-        },
+      "https://elo.windesheim.nl" + url,
+      tempDir.path + path + '.download',
+      cancelToken,
+      (count, total) {
+        progress = count / total;
+        notifyListeners();
+      },
     );
-    if(downloadSuccess)
+    if (downloadSuccess)
       await File(tempDir.path + path + '.download').rename(tempDir.path + path);
   }
 
-  void cancelDownload(){
+  void cancelDownload() {
     cancelToken.cancel();
   }
 }

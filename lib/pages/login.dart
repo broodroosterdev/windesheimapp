@@ -5,8 +5,10 @@ import 'package:wind/services/auth/auth_manager.dart';
 import '../main.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -14,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   String email = '';
   String password = '';
-  String? error = null;
+  String? error;
   bool loading = false;
   bool visiblePassword = false;
 
@@ -33,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     setState(() {
       loading = true;
-      this.error = null;
+      error = null;
     });
 
     //Don't try both login's at once because this will cause a rapid deactivation of your password...
@@ -56,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void showError(String error) {
     setState(() {
-      this.loading = false;
+      loading = false;
       this.error = error;
     });
   }
@@ -82,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 36)),
                 TextField(
                   controller: usernameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person),
                     labelText: "Email",
                     // errorText: error,
@@ -95,11 +97,13 @@ class _LoginPageState extends State<LoginPage> {
                   controller: passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.password),
+                    prefixIcon: const Icon(Icons.password),
                     labelText: "Wachtwoord",
                     suffixIcon: IconButton(
                       icon: Icon(
-                        visiblePassword ? Icons.visibility : Icons.visibility_off,
+                        visiblePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () =>
                           setState(() => visiblePassword = !visiblePassword),
@@ -115,15 +119,18 @@ class _LoginPageState extends State<LoginPage> {
                     height: 70,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) => Theme.of(context).primaryColor),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) =>
+                                    Theme.of(context).primaryColor),
                       ),
                       onPressed: loading ? null : login,
                       child: loading
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : const Text(
                               "Inloggen",
-                              style: TextStyle(fontSize: 33, color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 33, color: Colors.black),
                             ),
                     ),
                   ),

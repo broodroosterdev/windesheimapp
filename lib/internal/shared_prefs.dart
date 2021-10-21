@@ -74,7 +74,7 @@ class SharedPrefs {
     return prefs.getString('email') ?? '';
   }
 
-  set email(String value){
+  set email(String value) {
     setString('email', value);
   }
 
@@ -82,7 +82,7 @@ class SharedPrefs {
     return prefs.getString('password') ?? '';
   }
 
-  set password(String value){
+  set password(String value) {
     setString('password', value);
   }
 }

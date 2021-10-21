@@ -5,7 +5,6 @@ import 'package:wind/model/schedule.dart';
 import 'package:wind/pages/settings/widgets/add_rooster_tile.dart';
 import 'package:wind/pages/settings/widgets/rooster_tile.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
-import 'package:wind/services/auth/elo_auth.dart';
 
 import '../../preferences.dart';
 import '../../providers.dart';
@@ -43,7 +42,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ...buildRoosterTiles(context, model.schedules),
-                      AddRoosterTile()
+                      const AddRoosterTile()
                     ]);
               }),
             ),
@@ -60,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 builder: (BuildContext context, Preferences model, _) {
                   return DropdownButton(
                     value: prefs.roosterView,
-                    items: [
+                    items: const [
                       DropdownMenuItem(
                         value: "day",
                         child: Text("Dag"),

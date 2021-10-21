@@ -7,7 +7,7 @@ class LessonDetailsPage extends StatefulWidget {
   final Les lesson;
   final Color color;
 
-  LessonDetailsPage({Key? key, required this.lesson, required this.color})
+  const LessonDetailsPage({Key? key, required this.lesson, required this.color})
       : super(key: key);
 
   @override
@@ -15,16 +15,19 @@ class LessonDetailsPage extends StatefulWidget {
 }
 
 class _LessonDetailsPageState extends State<LessonDetailsPage> {
-  List<String> getUrlsFromDescription(){
-    RegExp urlRegex = RegExp(r"[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?");
+  List<String> getUrlsFromDescription() {
+    RegExp urlRegex = RegExp(
+        r"[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?");
     String text = widget.lesson.publicatietekst;
     Iterable<RegExpMatch> matches = urlRegex.allMatches(text);
-    return matches.map((match) => text.substring(match.start, match.end)).where((url) {
+    return matches
+        .map((match) => text.substring(match.start, match.end))
+        .where((url) {
       try {
-          Uri.parse(url);
-          return true;
-      } catch(_){
-          return false;
+        Uri.parse(url);
+        return true;
+      } catch (_) {
+        return false;
       }
     }).toList();
   }

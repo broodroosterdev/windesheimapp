@@ -6,7 +6,9 @@ import 'package:wind/services/api/elo.dart';
 class StudyContentPage extends StatefulWidget {
   final int studyRouteId;
   final int? parentId;
-  StudyContentPage({Key? key, required this.studyRouteId, required this.parentId}) : super(key: key);
+  const StudyContentPage(
+      {Key? key, required this.studyRouteId, required this.parentId})
+      : super(key: key);
 
   @override
   _StudyContentPageState createState() => _StudyContentPageState();
@@ -16,11 +18,10 @@ class _StudyContentPageState extends State<StudyContentPage> {
   late Future<List<StudyContent>> studyContentFuture;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    print('studyRoute: ${widget.studyRouteId}');
-    print('parentId: ${widget.parentId}');
-    studyContentFuture = ELO.getStudyContent(widget.studyRouteId, widget.parentId);
+    studyContentFuture =
+        ELO.getStudyContent(widget.studyRouteId, widget.parentId);
   }
 
   @override
@@ -31,15 +32,15 @@ class _StudyContentPageState extends State<StudyContentPage> {
           future: studyContentFuture,
           builder: (BuildContext context,
               AsyncSnapshot<List<StudyContent>> snapshot) {
-            if (!snapshot.hasData || snapshot.data == null)
-              return Center(
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(
                 child: CircularProgressIndicator(
                   color: Colors.yellow,
                 ),
               );
-            else {
+            } else {
               final List<StudyContent> content = snapshot.data!;
-              if(content.length != 0) {
+              if (content.isNotEmpty) {
                 return ListView.builder(
                   itemCount: content.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -53,15 +54,14 @@ class _StudyContentPageState extends State<StudyContentPage> {
               }
             }
           },
-        )
-    );
+        ));
   }
 
-  Widget emptyFolder(){
+  Widget emptyFolder() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           Icon(Icons.folder, size: 60),
           Text("Lege map"),
         ],

@@ -7,11 +7,12 @@ import 'package:wind/internal/auth_failure.dart';
 import 'package:wind/providers.dart';
 
 class EloAuth {
-  static void removeCookie(){
+  static void removeCookie() {
     prefs.eloCookie = '';
   }
 
-  static Future<Either<AuthFailure, String>> login(String username, String password) async {
+  static Future<Either<AuthFailure, String>> login(
+      String username, String password) async {
     CookieJar jar = CookieJar();
     Dio dio = Dio();
     dio.interceptors.add(CookieManager(jar));
@@ -28,10 +29,7 @@ class EloAuth {
 
     response = await dio.post(
       'https://engine.surfconext.nl/authentication/idp/single-sign-on',
-      data: {
-        'SAMLRequest': samlToken,
-        'RelayState': relayState
-      },
+      data: {'SAMLRequest': samlToken, 'RelayState': relayState},
       options: Options(
         followRedirects: false,
         validateStatus: (status) {
@@ -64,7 +62,7 @@ class EloAuth {
       ),
     );
 
-    if(response.headers['location'] == null){
+    if (response.headers['location'] == null) {
       return Left(AuthFailure("Incorrect email or password"));
     }
     response = await dio.get(response.headers['location']![0]);
@@ -72,7 +70,8 @@ class EloAuth {
     body = response.data;
     doc = Document.html(body);
 
-    String samlResponse = doc.querySelector('[name=SAMLResponse]')!.attributes['value']!;
+    String samlResponse =
+        doc.querySelector('[name=SAMLResponse]')!.attributes['value']!;
 
     response = await dio.post(
       'https://engine.surfconext.nl:443/authentication/sp/consume-assertion',
@@ -90,15 +89,13 @@ class EloAuth {
 
     body = response.data;
     doc = Document.html(body);
-    samlResponse = doc.querySelector('[name=SAMLResponse]')!.attributes['value']!;
+    samlResponse =
+        doc.querySelector('[name=SAMLResponse]')!.attributes['value']!;
     relayState = doc.querySelector('[name=RelayState]')!.attributes['value']!;
 
     response = await dio.post(
       'https://elo.windesheim.nl/Security/SAML2/AssertionConsumerService.aspx',
-      data: {
-        'SAMLResponse': samlResponse,
-        'RelayState': relayState
-      },
+      data: {'SAMLResponse': samlResponse, 'RelayState': relayState},
       options: Options(
         followRedirects: false,
         validateStatus: (status) {
@@ -108,9 +105,8 @@ class EloAuth {
       ),
     );
 
-    var cookies = await jar.loadForRequest(Uri.parse('https://elo.windesheim.nl'));
-
-
+    var cookies =
+        await jar.loadForRequest(Uri.parse('https://elo.windesheim.nl'));
 
     return Right(cookies[0].value);
   }

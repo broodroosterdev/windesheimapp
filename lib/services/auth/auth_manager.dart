@@ -12,7 +12,7 @@ class AuthManager {
     Either<AuthFailure, String> eloResponse =
         await EloAuth.login(email, password);
     return eloResponse.fold(
-          (l) {
+      (l) {
         print("error: " + l.message);
         return Left(l);
       },
@@ -28,28 +28,29 @@ class AuthManager {
     Either<AuthFailure, ApiTokens> apiResponse =
         await ApiAuth.login(email, password);
     return apiResponse.fold(
-        (l) {
-          print("error: " + l.message);
-          return Left(l);
-        },
-        (r) {
-          prefs.email = email;
-          prefs.password = password;
-          prefs.accessToken = r.accessToken;
-          prefs.refreshToken = r.refreshToken;
-          return const Right(null);
-        },
+      (l) {
+        print("error: " + l.message);
+        return Left(l);
+      },
+      (r) {
+        prefs.email = email;
+        prefs.password = password;
+        prefs.accessToken = r.accessToken;
+        prefs.refreshToken = r.refreshToken;
+        return const Right(null);
+      },
     );
   }
 
   static Future<Either<AuthFailure, void>> refreshApi() async {
-    Either<AuthFailure, ApiTokens> apiResponse = await ApiAuth.refreshToken(prefs.refreshToken);
+    Either<AuthFailure, ApiTokens> apiResponse =
+        await ApiAuth.refreshToken(prefs.refreshToken);
     return apiResponse.fold(
-          (l) {
+      (l) {
         print("error: " + l.message);
         return Left(l);
       },
-          (r) {
+      (r) {
         prefs.accessToken = r.accessToken;
         prefs.refreshToken = r.refreshToken;
         return const Right(null);
@@ -58,16 +59,13 @@ class AuthManager {
   }
 
   static Future<Either<AuthFailure, void>> refreshElo() async {
-    return (await EloAuth.login(prefs.email, prefs.password)).fold(
-        (l) {
-          print("error: " + l.message);
-          return Left(l);
-        },
-        (r) {
-          prefs.eloCookie = r;
-          return const Right(null);
-        }
-    );
+    return (await EloAuth.login(prefs.email, prefs.password)).fold((l) {
+      print("error: " + l.message);
+      return Left(l);
+    }, (r) {
+      prefs.eloCookie = r;
+      return const Right(null);
+    });
   }
 
   static logout() {

@@ -37,7 +37,7 @@ class LesTile extends StatelessWidget {
             decoration: BoxDecoration(color: color),
             width: 8,
             height: 100,
-            margin: EdgeInsets.only(right: 8),
+            margin: const EdgeInsets.only(right: 8),
           ),
           Expanded(
             flex: 4,
@@ -56,7 +56,7 @@ class LesTile extends StatelessWidget {
                       style: Theme.of(context).textTheme.subtitle2),
                 )
               ]),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 Icon(Icons.person, color: Colors.yellow[800]),
                 Expanded(

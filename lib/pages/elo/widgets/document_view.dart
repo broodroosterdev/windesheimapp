@@ -6,37 +6,32 @@ import '../../../providers.dart';
 
 class DocumentView extends StatefulWidget {
   final String url;
-  DocumentView(this.url, {Key? key}) : super(key: key);
+  const DocumentView(this.url, {Key? key}) : super(key: key);
 
   @override
   _DocumentViewState createState() => _DocumentViewState();
 }
 
 class _DocumentViewState extends State<DocumentView> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getPage(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if(!snapshot.hasData){
-          return Center(
+        if (!snapshot.hasData) {
+          return const Center(
             child: CircularProgressIndicator(
               color: Colors.yellow,
             ),
           );
         } else {
-          return SingleChildScrollView(
-              child: Html(
-                  data: snapshot.data
-              )
-          );
+          return SingleChildScrollView(child: Html(data: snapshot.data));
         }
       },
     );
   }
 
-  Future<String> getPage() async{
+  Future<String> getPage() async {
     final response = await Dio().get('https://elo.windesheim.nl' + widget.url,
         options: Options(
             followRedirects: false,

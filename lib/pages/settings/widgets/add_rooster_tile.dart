@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddRoosterTile extends StatelessWidget {
+  const AddRoosterTile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

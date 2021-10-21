@@ -18,7 +18,6 @@ class Lessen {
           options: Options(
               followRedirects: false,
               headers: {"Authorization": "Bearer " + prefs.accessToken}));
-
     }
     return response;
   }
@@ -36,10 +35,12 @@ class Lessen {
   }
 
   static Future<List<String>> getCodes() async {
-    const String url =
-        "https://windesheimapi.azurewebsites.net/api/v2/Klas";
+    const String url = "https://windesheimapi.azurewebsites.net/api/v2/Klas";
     Response<dynamic> response = await makeRequest(url);
-    final codes = (response.data as List<dynamic>).map((e) => e as Map<String,dynamic>).map((e) => e['id'] as String).toList();
+    final codes = (response.data as List<dynamic>)
+        .map((e) => e as Map<String, dynamic>)
+        .map((e) => e['id'] as String)
+        .toList();
     return codes;
   }
 }

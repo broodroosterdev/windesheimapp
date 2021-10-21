@@ -7,13 +7,7 @@ class StudyContent {
   int? resourceId;
 
   StudyContent(
-    this.id,
-    this.name,
-    this.type,
-    this.url,
-    this.path,
-    this.resourceId
-  );
+      this.id, this.name, this.type, this.url, this.path, this.resourceId);
 
   StudyContent.fromJson(Map<String, dynamic> json)
       : id = json["ID"],
@@ -21,24 +15,26 @@ class StudyContent {
         type = getType(json["ITEMTYPE"]),
         url = json["URL"],
         path = json["PATH"],
-        resourceId = json["STUDYROUTE_RESOURCE_ID"] == -1 ? null : json["STUDYROUTE_RESOURCE_ID"];
+        resourceId = json["STUDYROUTE_RESOURCE_ID"] == -1
+            ? null
+            : json["STUDYROUTE_RESOURCE_ID"];
 }
 
-enum ItemType { Folder, File, Link, Page, Handin }
+enum ItemType { folder, file, link, page, handin }
 
 ItemType getType(int data) {
   switch (data) {
     case 0:
-      return ItemType.Folder;
+      return ItemType.folder;
     case 1:
-      return ItemType.Page;
+      return ItemType.page;
     case 3:
-      return ItemType.Link;
+      return ItemType.link;
     case 9:
-      return ItemType.Handin;
+      return ItemType.handin;
     case 10:
-      return ItemType.File;
+      return ItemType.file;
     default:
-      return ItemType.Folder;
+      return ItemType.folder;
   }
 }

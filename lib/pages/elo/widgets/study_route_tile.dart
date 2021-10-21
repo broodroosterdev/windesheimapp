@@ -1,39 +1,42 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/model/studyroute.dart';
-import 'package:wind/services/api/elo.dart';
 
 class StudyRouteTile extends StatelessWidget {
   final StudyRoute route;
   final Function() onFavourite;
 
-  StudyRouteTile(this.route, this.onFavourite);
+  const StudyRouteTile(this.route, this.onFavourite, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => Navigator.of(context).pushNamed('/studycontent', arguments: {'studyRouteId': route.id}),
+      onTap: () => Navigator.of(context)
+          .pushNamed('/studycontent', arguments: {'studyRouteId': route.id}),
       leading: route.imageUrl != null ? getThumbnailImage() : getLetterImage(),
       trailing: getFavouriteIcon(),
       title: Text(route.name),
     );
   }
 
-  Widget getFavouriteIcon(){
+  Widget getFavouriteIcon() {
     return IconButton(
       onPressed: onFavourite,
-      icon: route.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border_outlined),
+      icon: route.isFavorite
+          ? const Icon(Icons.star)
+          : const Icon(Icons.star_border_outlined),
     );
   }
 
-  Widget getLetterImage(){
+  Widget getLetterImage() {
     return CircleAvatar(
       backgroundColor: Colors.yellow.shade800,
       child: Text(route.name[0]),
     );
   }
 
-  Widget getThumbnailImage(){
+  Widget getThumbnailImage() {
     return CachedNetworkImage(
       key: Key(route.imageUrl!),
       width: 40,

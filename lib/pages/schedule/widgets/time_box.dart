@@ -4,11 +4,8 @@ class TimeBox extends StatelessWidget {
   final String time;
   final int opacity;
 
-  const TimeBox({
-    Key? key,
-    required this.time,
-    required this.opacity
-  }) : super(key: key);
+  const TimeBox({Key? key, required this.time, required this.opacity})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

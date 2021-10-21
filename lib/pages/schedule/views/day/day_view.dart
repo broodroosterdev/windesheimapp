@@ -8,7 +8,7 @@ class DayView extends StatefulWidget {
   final List<Les>? lessen;
   final RefreshCallback onRefresh;
 
-  DayView({
+  const DayView({
     Key? key,
     this.lessen,
     required this.onRefresh,
@@ -51,10 +51,10 @@ class _DayViewState extends State<DayView> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: lessen != null
                       ? DayElement(
-                    lessen: lessen,
-                    day: d,
-                    showDate: false,
-                  )
+                          lessen: lessen,
+                          day: d,
+                          showDate: false,
+                        )
                       : const Text("Loading"),
                 ),
               );

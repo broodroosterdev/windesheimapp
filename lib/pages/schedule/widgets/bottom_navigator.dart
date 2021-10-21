@@ -5,12 +5,12 @@ class BottomNavigator extends StatelessWidget {
   final void Function() onForward;
   final String text;
 
-  const BottomNavigator({
-    Key? key,
-    required this.onBack,
-    required this.onForward,
-    required this.text
-  }) : super(key: key);
+  const BottomNavigator(
+      {Key? key,
+      required this.onBack,
+      required this.onForward,
+      required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -29,4 +29,5 @@ Future<void> initProviders() async =>
 Preferences get prefs => _ProvidersSingleton.instance._prefs;
 SharedPrefs get sharedPrefs => _ProvidersSingleton.instance._sharedPrefs;
 Directory get tempDir => _ProvidersSingleton.instance._temporaryDirectory;
-DownloadManager get downloadManager => _ProvidersSingleton.instance._downloadManager;
+DownloadManager get downloadManager =>
+    _ProvidersSingleton.instance._downloadManager;

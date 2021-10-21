@@ -12,10 +12,7 @@ class ECCounter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-            name,
-          style: Theme.of(context).textTheme.subtitle1
-        ),
+        Text(name, style: Theme.of(context).textTheme.subtitle1),
         SizedBox(height: 10),
         CircularPercentIndicator(
           radius: 90.0,

@@ -12,12 +12,12 @@ class Time {
     ));
   }
 
-  static String getFormattedTime(DateTime date){
+  static String getFormattedTime(DateTime date) {
     DateFormat timeFormat = DateFormat.Hm();
     return timeFormat.format(date);
   }
 
-  static String getFormattedDate(DateTime date){
+  static String getFormattedDate(DateTime date) {
     DateFormat dateFormat = DateFormat('dd-MM-yyyy');
     return dateFormat.format(date);
   }
@@ -72,9 +72,7 @@ class Time {
 
 extension DateOnlyCompare on DateTime {
   bool isSameDate(DateTime other) {
-    return this.year == other.year &&
-        this.month == other.month &&
-        this.day == other.day;
+    return year == other.year && month == other.month && day == other.day;
   }
 
   String toDateString() {

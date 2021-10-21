@@ -102,7 +102,7 @@ class Preferences extends ChangeNotifier {
 
   String get email => _email;
 
-  set email(String value){
+  set email(String value) {
     _email = value;
     sharedPrefs.email = value;
     notifyListeners();
@@ -112,10 +112,9 @@ class Preferences extends ChangeNotifier {
 
   String get password => _password;
 
-  set password(String value){
+  set password(String value) {
     _password = value;
     sharedPrefs.password = value;
     notifyListeners();
   }
-
 }

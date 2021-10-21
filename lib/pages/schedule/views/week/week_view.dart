@@ -7,7 +7,7 @@ class WeekView extends StatefulWidget {
   final List<Les>? lessen;
   final RefreshCallback onRefresh;
 
-  WeekView({
+  const WeekView({
     Key? key,
     this.lessen,
     required this.onRefresh,

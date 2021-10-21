@@ -23,7 +23,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
         body: Column(children: [
           Padding(
-              padding: EdgeInsets.only(left: 15, right: 15),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: TextField(
                 onChanged: (text) {
                   setState(() {
@@ -65,7 +65,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
               ))
         ]));
   }
-  
+
   void selectCode(String code) {
     final schedule = Schedule(code: code, color: Colors.green);
     List<Schedule> schedules = prefs.schedules;

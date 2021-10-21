@@ -13,7 +13,7 @@ class StudyContentTile extends StatefulWidget {
   final StudyContent studyContent;
   final int studyRouteId;
 
-  StudyContentTile(
+  const StudyContentTile(
       {Key? key, required this.studyContent, required this.studyRouteId})
       : super(key: key);
 
@@ -23,7 +23,7 @@ class StudyContentTile extends StatefulWidget {
 
 class _StudyContentTileState extends State<StudyContentTile> {
   void onLongPress() async {
-    if (widget.studyContent.type == ItemType.File) {
+    if (widget.studyContent.type == ItemType.file) {
       if (isDownloaded()) {
         await File(tempDir.path + widget.studyContent.path!).delete();
         setState(() {});
@@ -32,16 +32,16 @@ class _StudyContentTileState extends State<StudyContentTile> {
   }
 
   void onTap() async {
-    if (widget.studyContent.type == ItemType.Folder) {
+    if (widget.studyContent.type == ItemType.folder) {
       Navigator.of(context).pushNamed('/studycontent', arguments: {
         'studyRouteId': widget.studyRouteId,
         'parentId': widget.studyContent.id
       });
-    } else if (widget.studyContent.type == ItemType.Link) {
+    } else if (widget.studyContent.type == ItemType.link) {
       if (await canLaunch(widget.studyContent.url!)) {
         await launch(widget.studyContent.url!);
       }
-    } else if (widget.studyContent.type == ItemType.File) {
+    } else if (widget.studyContent.type == ItemType.file) {
       if (downloadManager.hasTask(widget.studyContent.id)) {
         downloadManager.cancelTask(widget.studyContent.id);
       } else if (isDownloaded()) {
@@ -52,12 +52,12 @@ class _StudyContentTileState extends State<StudyContentTile> {
           DownloadTask(widget.studyContent.url!, widget.studyContent.path!),
         );
       }
-    } else if(widget.studyContent.type == ItemType.Page) {
+    } else if (widget.studyContent.type == ItemType.page) {
       Navigator.of(context).pushNamed('/studydocument', arguments: {
         'url': widget.studyContent.url!,
         'name': widget.studyContent.name
       });
-    } else if(widget.studyContent.type == ItemType.Handin){
+    } else if (widget.studyContent.type == ItemType.handin) {
       Navigator.of(context).pushNamed('/studyhandin', arguments: {
         'resourceId': widget.studyContent.resourceId!,
         'name': widget.studyContent.name
@@ -93,21 +93,21 @@ class _StudyContentTileState extends State<StudyContentTile> {
 
   Widget? getTileIcon() {
     switch (widget.studyContent.type) {
-      case ItemType.Folder:
-        return Icon(Icons.folder);
-      case ItemType.Link:
-        return Icon(Icons.insert_link);
-      case ItemType.Handin:
-        return Icon(Icons.archive);
+      case ItemType.folder:
+        return const Icon(Icons.folder);
+      case ItemType.link:
+        return const Icon(Icons.insert_link);
+      case ItemType.handin:
+        return const Icon(Icons.archive);
       default:
-        return Icon(Icons.description);
+        return const Icon(Icons.description);
     }
   }
 
-  Widget? getDownloadIcon({DownloadTask? task = null}) {
-    if (widget.studyContent.type == ItemType.Link) {
-      return Icon(Icons.open_in_new);
-    } else if (widget.studyContent.type == ItemType.File) {
+  Widget? getDownloadIcon({DownloadTask? task}) {
+    if (widget.studyContent.type == ItemType.link) {
+      return const Icon(Icons.open_in_new);
+    } else if (widget.studyContent.type == ItemType.file) {
       if (task != null) {
         return SizedBox(
           height: 24,
@@ -116,9 +116,9 @@ class _StudyContentTileState extends State<StudyContentTile> {
               value: task.progress, color: Colors.yellow, strokeWidth: 3.0),
         );
       } else if (isDownloaded()) {
-        return Icon(Icons.file_download_done_sharp);
+        return const Icon(Icons.file_download_done_sharp);
       } else {
-        return Icon(Icons.download_sharp);
+        return const Icon(Icons.download_sharp);
       }
     } else {
       return null;

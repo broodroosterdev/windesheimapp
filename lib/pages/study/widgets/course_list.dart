@@ -18,33 +18,29 @@ class _CourseListState extends State<CourseList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Study.getCourseResults(widget.code),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.yellow,
-            ),
-          );
-        } else {
-          List<CourseResult> results = snapshot.data;
-          return Column(
-            children: [
-              ...results.map(buildTile).toList()
-          ]);
-        }
-      }
-    );
+        future: Study.getCourseResults(widget.code),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.yellow,
+              ),
+            );
+          } else {
+            List<CourseResult> results = snapshot.data;
+            return Column(children: [...results.map(buildTile).toList()]);
+          }
+        });
   }
 
-  Widget buildTile(CourseResult result){
+  Widget buildTile(CourseResult result) {
     return OpenContainer(
       closedShape: const BeveledRectangleBorder(),
       openShape: const BeveledRectangleBorder(),
       closedColor: Theme.of(context).scaffoldBackgroundColor,
       middleColor: Theme.of(context).scaffoldBackgroundColor,
       openColor: const Color.fromRGBO(17, 18, 19, 1.0),
-      closedBuilder: (BuildContext context, VoidCallback open){
+      closedBuilder: (BuildContext context, VoidCallback open) {
         return Card(
           child: ListTile(
             onTap: open,
@@ -54,7 +50,12 @@ class _CourseListState extends State<CourseList> {
                 child: Center(
                   child: Text(
                     result.result ?? result.grade ?? "-",
-                    style: result.result == null ? Theme.of(context).textTheme.headline4!.copyWith(color: Colors.white) : Theme.of(context).textTheme.headline6,
+                    style: result.result == null
+                        ? Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(color: Colors.white)
+                        : Theme.of(context).textTheme.headline6,
                     textAlign: TextAlign.center,
                   ),
                 )),

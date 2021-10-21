@@ -17,8 +17,9 @@ class _ResultListState extends State<ResultList> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getResults(),
-      builder: (BuildContext context, AsyncSnapshot<List<TestResult>> snapshot) {
-        if(!snapshot.hasData){
+      builder:
+          (BuildContext context, AsyncSnapshot<List<TestResult>> snapshot) {
+        if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.yellow,
@@ -27,19 +28,20 @@ class _ResultListState extends State<ResultList> {
         } else {
           final List<TestResult> results = snapshot.data!;
           return Column(
-            children: results.map((result) => buildTile(context, result)).toList(),
+            children:
+                results.map((result) => buildTile(context, result)).toList(),
           );
         }
       },
-
     );
   }
 
-  Widget buildTile(BuildContext context, TestResult result){
+  Widget buildTile(BuildContext context, TestResult result) {
     String subtitle = "";
 
-    if(result.testDate != null){
-      subtitle = "${Time.getFormattedDate(result.testDate!)} - ${result.isFinal ? "Definitief" : "Voorlopig"}";
+    if (result.testDate != null) {
+      subtitle =
+          "${Time.getFormattedDate(result.testDate!)} - ${result.isFinal ? "Definitief" : "Voorlopig"}";
     }
 
     return Card(
@@ -50,7 +52,12 @@ class _ResultListState extends State<ResultList> {
           child: Center(
             child: Text(
               result.result ?? result.grade ?? "-",
-              style: result.result == null ? Theme.of(context).textTheme.headline4!.copyWith(color: Colors.white) : Theme.of(context).textTheme.headline6,
+              style: result.result == null
+                  ? Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: Colors.white)
+                  : Theme.of(context).textTheme.headline6,
             ),
           )),
       title: Text(result.description),
@@ -58,7 +65,7 @@ class _ResultListState extends State<ResultList> {
     ));
   }
 
-  Future<List<TestResult>> getResults() async{
+  Future<List<TestResult>> getResults() async {
     return Study.getTestResults(widget.studyCode, widget.courseCode);
   }
 }

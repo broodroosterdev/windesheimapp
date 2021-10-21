@@ -6,7 +6,12 @@ class RoosterTile extends StatelessWidget {
   final void Function() onEdit;
   final void Function() onDelete;
 
-  const RoosterTile({Key? key, required this.schedule, required this.onEdit, required this.onDelete}) : super(key: key);
+  const RoosterTile(
+      {Key? key,
+      required this.schedule,
+      required this.onEdit,
+      required this.onDelete})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +34,10 @@ class RoosterTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          TextButton(onPressed: onEdit, child: const Icon(Icons.edit, size: 24)),
-          TextButton(onPressed: onDelete, child: const Icon(Icons.delete, size: 24))
+          TextButton(
+              onPressed: onEdit, child: const Icon(Icons.edit, size: 24)),
+          TextButton(
+              onPressed: onDelete, child: const Icon(Icons.delete, size: 24))
         ]),
       ],
     );

@@ -20,35 +20,41 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-          if(AuthManager.loggedIn) {
-            return MaterialPageRoute(builder: (_) => SchedulePage());
-          } else {
-            return MaterialPageRoute(builder: (_) => LoginPage());
-          }
+        if (AuthManager.loggedIn) {
+          return MaterialPageRoute(builder: (_) => SchedulePage());
+        } else {
+          return MaterialPageRoute(builder: (_) => LoginPage());
+        }
       case '/rooster':
-        return MaterialPageRoute(
-          builder: (_) => SchedulePage());
+        return MaterialPageRoute(builder: (_) => SchedulePage());
       case '/lesson-details':
         final arguments = args as Map<String, dynamic>;
         return MaterialPageRoute(
-            builder: (_) => LessonDetailsPage(lesson: arguments['lesson'] as Les, color: arguments['color'] as Color));
+            builder: (_) => LessonDetailsPage(
+                lesson: arguments['lesson'] as Les,
+                color: arguments['color'] as Color));
       case '/settings':
-        return MaterialPageRoute(
-          builder: (_) => SettingsPage());
+        return MaterialPageRoute(builder: (_) => SettingsPage());
       case '/add-schedule':
-        return MaterialPageRoute(
-          builder: (_) => AddSchedulePage());
+        return MaterialPageRoute(builder: (_) => AddSchedulePage());
       case '/studyroutes':
         return MaterialPageRoute(builder: (_) => StudyRoutesPage());
       case '/studycontent':
         final arguments = args as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (_) => StudyContentPage(studyRouteId: arguments['studyRouteId'], parentId: arguments['parentId']));
+        return MaterialPageRoute(
+            builder: (_) => StudyContentPage(
+                studyRouteId: arguments['studyRouteId'],
+                parentId: arguments['parentId']));
       case '/studydocument':
         final arguments = args as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (_) => StudyDocumentPage(arguments['url'], arguments['name']));
+        return MaterialPageRoute(
+            builder: (_) =>
+                StudyDocumentPage(arguments['url'], arguments['name']));
       case '/studyhandin':
         final arguments = args as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (_) => StudyHandinPage(arguments['resourceId'], arguments['name']));
+        return MaterialPageRoute(
+            builder: (_) =>
+                StudyHandinPage(arguments['resourceId'], arguments['name']));
       case '/study':
         return MaterialPageRoute(builder: (_) => StudyPage());
       default:

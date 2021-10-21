@@ -21,13 +21,13 @@ class Les {
   // Date with timezone offset: "2021-09-06T00:00:00Z"
   DateTime roosterdatum;
 
-  // Description
+  // Geen idee
   String commentaar;
 
   // Name of lesson: "Theoretische Informatica College ,"
   String leeractiviteit;
 
-  // Geen idee
+  // Description
   String publicatietekst;
 
   // Geen idee

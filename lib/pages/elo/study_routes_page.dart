@@ -7,7 +7,7 @@ import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/elo.dart';
 
 class StudyRoutesPage extends StatefulWidget {
-  StudyRoutesPage({Key? key}) : super(key: key);
+  const StudyRoutesPage({Key? key}) : super(key: key);
 
   @override
   _StudyRoutesPageState createState() => _StudyRoutesPageState();
@@ -52,7 +52,7 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
       appBar: AppBar(title: const Text('ELO')),
       drawer: AppDrawer(),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: Colors.yellow,
               ),
@@ -76,9 +76,12 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
 
   Future<void> toggleFavourite(StudyRoute item) async {
     await ELO.toggleFavourite(item.id);
-    showSnackbar(item.isFavorite ? "${item.name} verwijderd van favorieten" : "${item.name} toegevoegd aan favorieten");
+    showSnackbar(item.isFavorite
+        ? "${item.name} verwijderd van favorieten"
+        : "${item.name} toegevoegd aan favorieten");
     await refreshRoutes();
-    await scrollController.animateTo(0.0, duration: Duration(milliseconds: 200), curve: Curves.easeOut);
+    await scrollController.animateTo(0.0,
+        duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
   }
 
   void showSnackbar(String message) {

@@ -51,7 +51,7 @@ class _LesElement extends StatelessWidget {
         margin: const EdgeInsets.only(left: 15, right: 15),
         color: Theme.of(context).backgroundColor.withAlpha(40),
         child: OpenContainer(
-          transitionDuration: Duration(milliseconds: 200),
+          transitionDuration: const Duration(milliseconds: 200),
           closedColor: Theme.of(context).backgroundColor.withAlpha(40),
           middleColor: Theme.of(context).backgroundColor.withAlpha(40),
           openColor: const Color.fromRGBO(17, 18, 19, 1.0),

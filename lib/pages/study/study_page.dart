@@ -6,7 +6,7 @@ import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/study.dart';
 
 class StudyPage extends StatefulWidget {
-  StudyPage({Key? key}) : super(key: key);
+  const StudyPage({Key? key}) : super(key: key);
 
   @override
   _StudyPageState createState() => _StudyPageState();
@@ -25,50 +25,51 @@ class _StudyPageState extends State<StudyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Studie')),
-        drawer: AppDrawer(),
-        body: FutureBuilder(
-            future: future,
-            builder: (context, AsyncSnapshot<StudyProgress> snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.yellow,
-                  ),
-                );
-              } else {
-                StudyProgress progress = snapshot.data!;
-                return SingleChildScrollView(
-                    child: Column(children: [
-                  SizedBox(height: 10),
-                  Text(
-                      progress.name,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ECCounter(progress.propedeuse, "Propedeuse"),
-                      SizedBox(width: 30),
-                      ECCounter(progress.study, "Complete studie"),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
-                        child: Text(
-                          "Vakken",
-                          style: Theme.of(context).textTheme.headline5,
-                          textAlign: TextAlign.start,
-                  ),
-                      )),
-                  CourseList(progress.code)
-                ]));
-              }
-            }),
+      appBar: AppBar(title: const Text('Studie')),
+      drawer: AppDrawer(),
+      body: FutureBuilder(
+          future: future,
+          builder: (context, AsyncSnapshot<StudyProgress> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.yellow,
+                ),
+              );
+            } else {
+              StudyProgress progress = snapshot.data!;
+              return SingleChildScrollView(
+                  child: Column(children: [
+                SizedBox(height: 10),
+                Text(
+                  progress.name,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ECCounter(progress.propedeuse, "Propedeuse"),
+                    SizedBox(width: 30),
+                    ECCounter(progress.study, "Complete studie"),
+                  ],
+                ),
+                SizedBox(height: 20),
+                SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15, top: 8, bottom: 8),
+                      child: Text(
+                        "Vakken",
+                        style: Theme.of(context).textTheme.headline5,
+                        textAlign: TextAlign.start,
+                      ),
+                    )),
+                CourseList(progress.code)
+              ]));
+            }
+          }),
     );
   }
 }

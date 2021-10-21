@@ -16,7 +16,8 @@ class ApiTokens {
 }
 
 class ApiAuth {
-  static Future<Either<AuthFailure, ApiTokens>> login(String username, String password) async {
+  static Future<Either<AuthFailure, ApiTokens>> login(
+      String username, String password) async {
     CookieJar cj = CookieJar();
     Dio dio = Dio();
     dio.interceptors.add(CookieManager(cj));
@@ -43,7 +44,7 @@ class ApiAuth {
         });
     String? redirectUrl = (response.data['Credentials']
         as Map<String, dynamic>)['FederationRedirectUrl'];
-    if(redirectUrl == null){
+    if (redirectUrl == null) {
       return Left(AuthFailure("Incorrect email"));
     }
     response = await dio.post(
@@ -61,7 +62,7 @@ class ApiAuth {
         contentType: Headers.formUrlEncodedContentType,
       ),
     );
-    if(response.headers['location'] == null){
+    if (response.headers['location'] == null) {
       return Left(AuthFailure("Incorrect email or password"));
     }
     response = await dio.get(response.headers['location']![0].toString());
@@ -95,27 +96,27 @@ class ApiAuth {
           'code': code,
           'redirect_uri': "https://localhost"
         },
-      options: Options(
-        contentType: Headers.formUrlEncodedContentType,
-      ));
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ));
     print(response.data);
-    var tokens = ApiTokens(response.data['access_token'], response.data['refresh_token']);
+    var tokens = ApiTokens(
+        response.data['access_token'], response.data['refresh_token']);
     return Right(tokens);
   }
 
-  static Future<Either<AuthFailure, ApiTokens>> refreshToken(String refreshToken) async{
+  static Future<Either<AuthFailure, ApiTokens>> refreshToken(
+      String refreshToken) async {
     final response = await Dio().post(
-      "https://login.microsoftonline.com/e36377b7-70c4-4493-a338-095918d327e9/oauth2/v2.0/token",
-      data: {
-        'client_id': "7cd9c6cb-1da9-4d26-93e4-7c0beb04793f",
-        'grant_type': "refresh_token",
-        'refresh_token': refreshToken,
-      },
-      options: Options(
-        contentType: Headers.formUrlEncodedContentType
-      )
-    );
-    var tokens = ApiTokens(response.data['access_token'], response.data['refresh_token']);
+        "https://login.microsoftonline.com/e36377b7-70c4-4493-a338-095918d327e9/oauth2/v2.0/token",
+        data: {
+          'client_id': "7cd9c6cb-1da9-4d26-93e4-7c0beb04793f",
+          'grant_type': "refresh_token",
+          'refresh_token': refreshToken,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType));
+    var tokens = ApiTokens(
+        response.data['access_token'], response.data['refresh_token']);
     return Right(tokens);
   }
 }
