@@ -1,14 +1,10 @@
 import 'package:animations/animations.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:skeletons/skeletons.dart';
 import 'package:wind/model/news_item.dart';
 import 'package:wind/pages/news/widgets/news_tile.dart';
 import 'package:wind/pages/news/widgets/skeleton_news_tile.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/news.dart';
-import 'package:wind/services/auth/auth_manager.dart';
-import 'package:wind/utils/time.dart';
 
 import 'news_item_page.dart';
 
@@ -42,8 +38,7 @@ class _NewsPageState extends State<NewsPage> {
           if(loading){
             return skeletonView();
           } else {
-            var items = snapshot.data!;
-            return loadedView(items);
+            return loadedView(snapshot.data!);
           }
         },
       ),
@@ -62,7 +57,7 @@ class _NewsPageState extends State<NewsPage> {
             return NewsTile(item);
           },
           openBuilder: (BuildContext context, _) {
-            return NewsItemPage(item);
+            return NewsItemPage(item, key: Key(item.id));
           },
         );
       },

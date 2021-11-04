@@ -54,6 +54,9 @@ dependencies:
   xml: ^5.3.1
   html_unescape: ^2.0.0
   skeletons: ^0.0.3
+  html2md: ^1.2.5
+  flutter_markdown: ^0.6.8
+  markdown: ^4.0.0
 
 
 dev_dependencies:
