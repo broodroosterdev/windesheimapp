@@ -85,4 +85,20 @@ class SharedPrefs {
   set password(String value) {
     setString('password', value);
   }
+
+  String get sharepointCookie {
+    return prefs.getString('sharepointCookie') ?? '';
+  }
+
+  set sharepointCookie(String value){
+    setString('sharepointCookie', value);
+  }
+
+  int get sharepointExpiry {
+    return prefs.getInt('sharepointExpiry') ?? 0;
+  }
+
+  set sharepointExpiry(int value){
+    prefs.setInt('sharepointExpiry', value);
+  }
 }

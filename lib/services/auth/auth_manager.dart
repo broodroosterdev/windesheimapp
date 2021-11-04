@@ -2,9 +2,17 @@ import 'package:dartz/dartz.dart';
 import 'package:wind/internal/auth_failure.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/auth/api_auth.dart';
+import 'package:wind/services/auth/sharepoint_auth.dart';
 import 'elo_auth.dart';
 
 class AuthManager {
+  static Future<String> getSharepointCookie() async {
+    if(DateTime.fromMillisecondsSinceEpoch(prefs.sharepointExpiry).isBefore(DateTime.now())){
+      await refreshSharepoint();
+    }
+    return prefs.sharepointCookie;
+  }
+
   static bool get loggedIn => prefs.eloCookie != '' && prefs.accessToken != '';
 
   static Future<Either<AuthFailure, void>> loginElo(
@@ -66,6 +74,12 @@ class AuthManager {
       prefs.eloCookie = r;
       return const Right(null);
     });
+  }
+
+  static Future refreshSharepoint() async {
+    final cookie = await SharepointAuth.login(prefs.email, prefs.password);
+    prefs.sharepointCookie = cookie.cookie;
+    prefs.sharepointExpiry = cookie.expiresAt;
   }
 
   static logout() {

@@ -4,6 +4,7 @@ import 'package:wind/pages/elo/study_document_page.dart';
 import 'package:wind/pages/elo/study_handin_page.dart';
 import 'package:wind/pages/elo/study_routes_page.dart';
 import 'package:wind/pages/login.dart';
+import 'package:wind/pages/news/news_page.dart';
 import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/rooster.dart';
 import 'package:wind/pages/settings/add_schedule_page.dart';
@@ -56,7 +57,9 @@ class RouteGenerator {
             builder: (_) =>
                 StudyHandinPage(arguments['resourceId'], arguments['name']));
       case '/study':
-        return MaterialPageRoute(builder: (_) => StudyPage());
+        return MaterialPageRoute(builder: (_) => const StudyPage());
+      case '/news':
+        return MaterialPageRoute(builder: (_) => const NewsPage());
       default:
         return _errorRoute();
     }

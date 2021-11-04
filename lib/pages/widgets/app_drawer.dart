@@ -42,6 +42,13 @@ class AppDrawer extends StatelessWidget {
                     .pushNamedAndRemoveUntil("/study", (_) => false);
               }),
           ListTile(
+              leading: Icon(Icons.feed_outlined),
+              title: Text('Nieuws'),
+              onTap: () {
+                navigatorKey.currentState!
+                  .pushNamedAndRemoveUntil("/news", (_) => false);
+          }),
+          ListTile(
               leading: Icon(Icons.settings_outlined),
               title: Text('Instellingen'),
               onTap: () {
