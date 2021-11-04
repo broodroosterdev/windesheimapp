@@ -117,4 +117,24 @@ class Preferences extends ChangeNotifier {
     sharedPrefs.password = value;
     notifyListeners();
   }
+
+  String _sharepointCookie = sharedPrefs.sharepointCookie;
+
+  String get sharepointCookie => _sharepointCookie;
+
+  set sharepointCookie(String value){
+    _sharepointCookie = value;
+    sharedPrefs.sharepointCookie = value;
+    notifyListeners();
+  }
+
+  int _sharepointExpiry = sharedPrefs.sharepointExpiry;
+
+  int get sharepointExpiry => _sharepointExpiry;
+
+  set sharepointExpiry(int value){
+    _sharepointExpiry = value;
+    sharedPrefs.sharepointExpiry = value;
+    notifyListeners();
+  }
 }

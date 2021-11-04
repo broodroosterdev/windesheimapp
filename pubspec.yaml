@@ -50,6 +50,10 @@ dependencies:
   flutter_html: ^2.1.2
   intl: ^0.17.0
   percent_indicator: ^3.4.0
+  dotenv: ^3.0.0
+  xml: ^5.3.1
+  html_unescape: ^2.0.0
+  skeletons: ^0.0.3
 
 
 dev_dependencies:
