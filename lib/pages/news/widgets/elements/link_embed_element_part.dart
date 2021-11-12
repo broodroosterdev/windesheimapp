@@ -34,7 +34,7 @@ class LinkEmbedElementPart extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               flex: 5,
               child: Column(

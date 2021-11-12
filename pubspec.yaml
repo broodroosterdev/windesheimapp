@@ -57,6 +57,7 @@ dependencies:
   html2md: ^1.2.5
   flutter_markdown: ^0.6.8
   markdown: ^4.0.0
+  extended_sliver: ^2.0.1
 
 
 dev_dependencies:
