@@ -19,6 +19,8 @@ class NewsTile extends StatelessWidget {
         item.title,
         style:
         Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16),
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         Time.getFormattedDate(item.lastModify),
@@ -55,6 +57,7 @@ class NewsTile extends StatelessWidget {
           );
         } else {
           return CachedNetworkImage(
+              memCacheHeight: 100,
               fit: BoxFit.cover,
               imageUrl: item.imageUrl!,
               httpHeaders: {'Cookie': snapshot.data!});

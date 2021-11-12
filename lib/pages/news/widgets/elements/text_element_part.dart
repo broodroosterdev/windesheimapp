@@ -5,6 +5,8 @@ import 'package:wind/utils/html_transform.dart';
 import 'package:html2md/html2md.dart' as html2md;
 import 'package:markdown/markdown.dart' as md;
 
+import 'image_embed_element_part.dart';
+
 class TextElementPart extends StatelessWidget {
   final TextElement element;
   late final String markdown;
@@ -25,6 +27,16 @@ class TextElementPart extends StatelessWidget {
           if (url != null && await canLaunch(url)) {
             await launch(url);
           }
+        },
+        imageBuilder: (Uri uri, String? title, String? alt) {
+          late String url;
+          if(!uri.isAbsolute){
+            url = "https://liveadminwindesheim.sharepoint.com" + uri.toString();
+          } else {
+            url = uri.toString();
+          }
+
+          return ImageEmbedElementPart(ImageEmbedElement(url, !uri.isAbsolute));
         },
       ),
     );
