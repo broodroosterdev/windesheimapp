@@ -4,6 +4,8 @@ import 'package:skeletons/skeletons.dart';
 import 'news_tile_template.dart';
 
 class SkeletonNewsTile extends StatelessWidget {
+  const SkeletonNewsTile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return NewsTileTemplate(

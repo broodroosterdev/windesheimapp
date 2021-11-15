@@ -24,8 +24,17 @@ class TextElementPart extends StatelessWidget {
         extensionSet: md.ExtensionSet.none,
         data: markdown,
         onTapLink: (text, url, title) async {
-          if (url != null && await canLaunch(url)) {
-            await launch(url);
+          if(url == null) {
+            return;
+          }
+
+          String usableUrl = url;
+          if(!Uri.parse(url).isAbsolute){
+            usableUrl = "https://liveadminwindesheim.sharepoint.com" + url;
+          }
+
+          if (await canLaunch(usableUrl)) {
+            await launch(usableUrl);
           }
         },
         imageBuilder: (Uri uri, String? title, String? alt) {

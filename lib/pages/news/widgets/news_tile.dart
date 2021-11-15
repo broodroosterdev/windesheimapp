@@ -50,11 +50,7 @@ class NewsTile extends StatelessWidget {
       future: AuthManager.getSharepointCookie(),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.yellow,
-            ),
-          );
+          return const ColoredBox(color: Colors.black);
         } else {
           return CachedNetworkImage(
               memCacheHeight: 100,

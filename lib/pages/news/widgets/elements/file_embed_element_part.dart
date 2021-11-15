@@ -16,7 +16,7 @@ class FileEmbedElementPart extends StatelessWidget {
             await launch(element.url);
           }
         },
-        leading: Icon(Icons.insert_drive_file, size:24),
+        leading: const Icon(Icons.insert_drive_file, size:24),
         title: Text(
           element.filename,
           overflow: TextOverflow.ellipsis,
@@ -27,7 +27,7 @@ class FileEmbedElementPart extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           softWrap: false,
         ),
-        trailing: Icon(Icons.open_in_new),
+        trailing: const Icon(Icons.open_in_new),
 
       )
     );
