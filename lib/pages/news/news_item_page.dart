@@ -1,15 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 import 'package:wind/model/news_item.dart';
 import 'package:wind/pages/news/widgets/elements/file_embed_element_part.dart';
 import 'package:wind/pages/news/widgets/elements/image_embed_element_part.dart';
 import 'package:wind/pages/news/widgets/elements/link_embed_element_part.dart';
 import 'package:wind/pages/news/widgets/elements/text_element_part.dart';
 import 'package:wind/services/auth/auth_manager.dart';
-import 'package:html2md/html2md.dart' as html2md;
 import 'package:wind/utils/html_transform.dart';
 import 'package:wind/utils/time.dart';
 
@@ -30,21 +27,8 @@ class _NewsItemPageState extends State<NewsItemPage> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController()
-      ..addListener(() {
-        //print("offset = ${_scrollController.offset}");
-        double newOpacity = 1.0;
-        if(_scrollController.offset < 150){
-          newOpacity = _scrollController.offset / 150;
-        }
+    _scrollController = ScrollController();
 
-        if(titleOpacity != newOpacity){
-          setState(() {
-            titleOpacity = newOpacity;
-          });
-        }
-        //print("titleOpacity is now ${titleOpacity}");
-      });
     if (widget.newsItem.type == NewsType.announcement) {
       elements.add(HtmlTransform.parseAsText(widget.newsItem.content));
     } else {
@@ -52,11 +36,22 @@ class _NewsItemPageState extends State<NewsItemPage> {
     }
   }
 
+  double getTitleOpacityFromOffset() {
+    if (!_scrollController.position.hasContentDimensions ||
+        _scrollController.position.maxScrollExtent < 150) {
+      return 0.0;
+    }
+
+    if (_scrollController.offset < 150) {
+      return _scrollController.offset / 150;
+    }
+
+    return 1.0;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        //appBar: AppBar(title: Text(widget.newsItem.title)),
-        body: buildArticleView(context));
+    return Scaffold(body: buildArticleView(context));
   }
 
   @override
@@ -70,63 +65,76 @@ class _NewsItemPageState extends State<NewsItemPage> {
       controller: _scrollController,
       slivers: [
         SliverAppBar(
-          title: ConstrainedBox(
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width - 50),
-            child: Opacity(
-              opacity: titleOpacity,
-              child: Text(
-                  widget.newsItem.title,
-                  style: Theme.of(context).textTheme.subtitle1,
-                  maxLines: 1,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-          ),
+          title: buildTitle(),
           expandedHeight: 200,
           pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Stack(
-              children: [
-                Positioned.fill(
-                  child: buildImage(context),
-                ),
-                Positioned(
-                  bottom: 16,
-                  left: 18,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width - 16),
-                    child: Text(
-                      widget.newsItem.title,
-                      maxLines: 3,
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          flexibleSpace: buildFlexibleSpace(),
         ),
         SliverList(
           delegate: SliverChildListDelegate([
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Bron: ${widget.newsItem.source}\n"
-                  "Laatst bijgewerkt: ${Time.getFormattedDate(widget.newsItem.lastModify)} om ${Time.getFormattedTime(widget.newsItem.lastModify)}",
+              child: Text(
+                "Bron: ${widget.newsItem.source}\n"
+                "Laatst bijgewerkt: ${Time.getFormattedDate(widget.newsItem.lastModify)} om ${Time.getFormattedTime(widget.newsItem.lastModify)}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             ...elements.map((element) => buildElement(context, element)),
-            const SizedBox(height: 10),
-
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
           ]),
-        )
-        //...elements.map((element) => buildElement(context, element)),
+        ),
       ],
+    );
+  }
+
+  Widget buildTitle() {
+    double maxWidth = MediaQuery.of(context).size.width - 50;
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: AnimatedBuilder(
+        animation: _scrollController,
+        builder: (BuildContext context, Widget? child) {
+          return Opacity(
+            opacity: getTitleOpacityFromOffset(),
+            child: Text(
+              widget.newsItem.title,
+              style: Theme.of(context).textTheme.subtitle1,
+              maxLines: 1,
+              overflow: TextOverflow.fade,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildFlexibleSpace() {
+    return FlexibleSpaceBar(
+      background: Stack(
+        children: [
+          Positioned.fill(
+            child: buildImage(context),
+          ),
+          Positioned(
+            bottom: 16,
+            left: 9,
+            right: 9,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width - 16),
+              child: Text(
+                widget.newsItem.title,
+                maxLines: 3,
+                softWrap: true,
+                overflow: TextOverflow.visible,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -136,11 +144,7 @@ class _NewsItemPageState extends State<NewsItemPage> {
             future: AuthManager.getSharepointCookie(),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.yellow,
-                  ),
-                );
+                return const ColoredBox(color: Colors.black);
               } else {
                 return CachedNetworkImage(
                     memCacheWidth: MediaQuery.of(context).size.width.toInt(),
@@ -161,10 +165,8 @@ class _NewsItemPageState extends State<NewsItemPage> {
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(Icons.announcement_rounded, size: 54),
-                    Text("Mededeling",
-                        style: Theme.of(context).textTheme.subtitle1)
                   ]),
             ),
           );

@@ -52,7 +52,9 @@ class _NewsPageState extends State<NewsPage> {
         final NewsItem item = items[index];
 
         return OpenContainer(
-          closedColor: Colors.transparent,
+          closedShape: const RoundedRectangleBorder(),
+          closedColor: Theme.of(context).scaffoldBackgroundColor,
+          openColor: Theme.of(context).scaffoldBackgroundColor,
           closedBuilder: (BuildContext context, VoidCallback open){
             return NewsTile(item);
           },
@@ -65,21 +67,8 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   Widget skeletonView(){
-    return ListView.builder(
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int _){
-          return SkeletonNewsTile();
-        }
+    return ListView(
+      children: List.filled(10, const SkeletonNewsTile()),
     );
   }
-
-  /*Widget skeletonItem(BuildContext context){
-    return SkeletonListTile(
-      padding: EdgeInsets.only(left: 1, right: 1, bottom: 6, top: 6),
-      leadingStyle: ,
-      titleStyle: const SkeletonLineStyle(randomLength: false, width: 220),
-      subtitleStyle: const SkeletonLineStyle(randomLength: false, width: 150),
-      hasSubtitle: true,
-    );
-  }*/
 }
