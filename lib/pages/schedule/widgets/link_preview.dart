@@ -33,7 +33,7 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
                 if (await canLaunch(widget.url)) {
                   await launch(widget.url);
                 } else {
-                  print("Cant launch");
+                  print("Cant launch ${widget.url}");
                 }
               },
               leading: SizedBox(

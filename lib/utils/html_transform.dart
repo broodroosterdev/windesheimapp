@@ -37,11 +37,22 @@ class HtmlTransform {
               rawJson.substring(rawJson.indexOf("\"embedCode\""),
                   rawJson.indexOf(",\"cachedEmbedCode\":")) +
               "}";
-          data = jsonDecode(rawJson);
-          if (!data.containsKey("embedCode")) {
+          var embedData = jsonDecode(rawJson);
+          if (!embedData.containsKey("embedCode")) {
             return null;
           }
-          return LinkEmbedElement(data['embedCode'], data['thumbnailUrl']);
+
+          if(!embedData.containsKey("thumbnailUrl")){
+            var iframe = Document.html(embedData["embedCode"]).querySelector('iframe')!;
+            var url = iframe.attributes['src'];
+            return LinkEmbedElement(url.toString(), null);
+          }
+
+          if(embedData["thumbnailUrl"].contains("bing") || embedData["thumbnailUrl"].contains("sharepoint")){
+            return LinkEmbedElement(embedData['embedCode'], null);
+          }
+
+          return LinkEmbedElement(embedData['embedCode'], embedData['thumbnailUrl']);
         }
 
         //Parse file embed
@@ -97,7 +108,7 @@ abstract class EmbedElement extends HtmlElement {
 }
 
 class LinkEmbedElement extends EmbedElement {
-  String thumbnailUrl;
+  String? thumbnailUrl;
 
   LinkEmbedElement(String url, this.thumbnailUrl) : super(url, EmbedType.link);
 }
