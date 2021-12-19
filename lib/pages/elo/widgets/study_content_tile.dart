@@ -70,11 +70,9 @@ class _StudyContentTileState extends State<StudyContentTile> {
     return ChangeNotifierProvider.value(
         value: downloadManager,
         child: Consumer<DownloadManager>(
-            builder: (context, model, _) =>
-                model.hasTask(widget.studyContent.id)
-                    ? ChangeNotifierProvider.value(
-                        value: model.getTask(widget.studyContent.id)!,
-                        child: Consumer<DownloadTask>(
+            builder: (context, model, _) => ChangeNotifierProvider.value(
+                        value: model.getTask(widget.studyContent.id),
+                        child: Consumer<DownloadTask?>(
                             builder: (context, model, _) => ListTile(
                                   onLongPress: onLongPress,
                                   onTap: onTap,
@@ -82,13 +80,8 @@ class _StudyContentTileState extends State<StudyContentTile> {
                                   trailing: getDownloadIcon(task: model),
                                   title: Text(widget.studyContent.name),
                                 )))
-                    : ListTile(
-                        onLongPress: onLongPress,
-                        onTap: onTap,
-                        leading: getTileIcon(),
-                        trailing: getDownloadIcon(),
-                        title: Text(widget.studyContent.name),
-                      )));
+        ),
+    );
   }
 
   Widget? getTileIcon() {
@@ -109,11 +102,20 @@ class _StudyContentTileState extends State<StudyContentTile> {
       return const Icon(Icons.open_in_new);
     } else if (widget.studyContent.type == ItemType.file) {
       if (task != null) {
-        return SizedBox(
-          height: 24,
-          width: 24,
-          child: CircularProgressIndicator(
-              value: task.progress, color: Colors.yellow, strokeWidth: 3.0),
+        return Stack(
+          children: [
+            SizedBox(
+              height: 26,
+              width: 26,
+              child: CircularProgressIndicator(
+                  value: task.progress, color: Colors.yellow, strokeWidth: 3.0),
+            ),
+            const SizedBox(
+                height: 26,
+                width: 26,
+                child: Center(child: Icon(Icons.file_download)),
+            )
+          ],
         );
       } else if (isDownloaded()) {
         return const Icon(Icons.file_download_done_sharp);

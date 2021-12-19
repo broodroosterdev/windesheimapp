@@ -25,8 +25,9 @@ class DownloadTask extends ChangeNotifier {
         notifyListeners();
       },
     );
-    if (downloadSuccess)
+    if (downloadSuccess) {
       await File(tempDir.path + path + '.download').rename(tempDir.path + path);
+    }
   }
 
   void cancelDownload() {

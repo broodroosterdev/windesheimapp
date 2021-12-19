@@ -1,9 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
 import 'package:wind/model/handin_details.dart';
+import 'package:wind/providers.dart';
+import 'package:wind/services/download/download_manager.dart';
+import 'package:wind/services/download/download_task.dart';
 import 'package:wind/utils/time.dart';
 
 class HandinTile extends StatelessWidget {
   final HandinDetails details;
+
+  String get filePath => "/${details.id}/${details.submitFilename}";
 
   const HandinTile(this.details, {Key? key}) : super(key: key);
 
@@ -12,14 +21,17 @@ class HandinTile extends StatelessWidget {
     return ListTile(
       isThreeLine: true,
       leading: details.submitFilename == null
-          ? const Icon(Icons.upload_file)
+          ? const Icon(Icons.file_upload)
           : const Icon(Icons.file_present),
       title: Text(details.submitFilename ?? 'Nog geen document ingeleverd'),
       subtitle: Text(details.submitDate != null
           ? buildSubtitle()
           : 'Gebruik de site om een document in te leveren'),
-      trailing:
-          details.submitFilename == null ? null : const Icon(Icons.open_in_new),
+      trailing: SizedBox(
+        height: 24,
+        width: 24,
+        child: downloadIndicator(context),
+      ),
       onTap: onTap,
     );
   }
@@ -29,10 +41,59 @@ class HandinTile extends StatelessWidget {
         (details.plagiarism == null ? '' : 'Plagiaat: ${details.plagiarism}%');
   }
 
-  void onTap() {
+  void onTap() async {
     if (details.submitUrl == null) {
       return;
     }
+    if (downloadManager.hasTask(details.id)) {
+      downloadManager.cancelTask(details.id);
+    } else if (isDownloaded()) {
+      await OpenFile.open(tempDir.path + filePath);
+    } else {
+      downloadManager.addTask(
+        details.id,
+        DownloadTask(details.submitUrl!, filePath),
+      );
+    }
     //TODO: Add download for handin
+  }
+
+  Widget downloadIndicator(BuildContext context) {
+    return ChangeNotifierProvider.value(
+        value: downloadManager,
+        child: Consumer<DownloadManager>(
+            builder: (context, model, _) => ChangeNotifierProvider.value(
+                value: model.getTask(details.id),
+                child: Consumer<DownloadTask?>(
+                  builder: (context, model, _) => getDownloadIcon(task: model),
+                ))));
+  }
+
+  Widget getDownloadIcon({DownloadTask? task}) {
+    if (task != null) {
+      return Stack(
+        children: [
+          SizedBox(
+            height: 26,
+            width: 26,
+            child: CircularProgressIndicator(
+                value: task.progress, color: Colors.yellow, strokeWidth: 3.0),
+          ),
+          const SizedBox(
+            height: 26,
+            width: 26,
+            child: Center(child: Icon(Icons.file_download)),
+          )
+        ],
+      );
+    } else if (isDownloaded()) {
+      return const Icon(Icons.file_download_done_sharp);
+    } else {
+      return const Icon(Icons.download_sharp);
+    }
+  }
+
+  bool isDownloaded() {
+    return File(tempDir.path + filePath).existsSync();
   }
 }
