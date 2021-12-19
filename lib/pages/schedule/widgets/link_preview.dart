@@ -44,7 +44,7 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
                     : const Icon(Icons.link, size: 30),
               ),
               title: isReady
-                  ? Text(snapshot.data!.title)
+                  ? Text(snapshot.data!.title != "" ? snapshot.data!.title : "Link openen")
                   : const Text("Link laden"),
               subtitle: isReady
                   ? Text(snapshot.data!.domain)

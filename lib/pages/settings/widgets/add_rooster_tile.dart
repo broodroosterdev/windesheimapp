@@ -15,7 +15,7 @@ class AddRoosterTile extends StatelessWidget {
           const Icon(Icons.add),
           const SizedBox(width: 10),
           Text(
-            "Add new rooster",
+            "Rooster toevoegen",
             style: Theme.of(context).textTheme.subtitle1,
           )
         ]),

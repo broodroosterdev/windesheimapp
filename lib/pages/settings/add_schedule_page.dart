@@ -19,7 +19,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Add schedule')),
+        appBar: AppBar(title: const Text('Rooster toevoegen')),
         backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
         body: Column(children: [
           Padding(
@@ -59,7 +59,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                               title: Text(code));
                         });
                   } else {
-                    return const Text("Loading");
+                    return const Text("Laden...");
                   }
                 },
               ))

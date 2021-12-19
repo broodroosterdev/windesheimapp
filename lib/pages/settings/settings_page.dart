@@ -119,7 +119,7 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Pick a color!'),
+          title: const Text('Kies een kleur'),
           content: SingleChildScrollView(
             child: BlockPicker(
               pickerColor: schedule.color,
@@ -129,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text('Annuleren'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
