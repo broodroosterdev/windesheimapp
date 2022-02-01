@@ -91,7 +91,7 @@ class HandinTile extends StatelessWidget {
       if(details.submitUrl != null){
         return const Icon(Icons.download_sharp);
       } else {
-        return const Icon(Icons.file_download_off_sharp);
+        return const Icon(null);
       }
     }
   }
