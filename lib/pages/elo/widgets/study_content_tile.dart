@@ -113,7 +113,7 @@ class _StudyContentTileState extends State<StudyContentTile> {
             const SizedBox(
                 height: 26,
                 width: 26,
-                child: Center(child: Icon(Icons.file_download)),
+                child: Center(child: Icon(Icons.downloading_sharp)),
             )
           ],
         );

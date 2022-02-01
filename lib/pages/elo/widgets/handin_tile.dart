@@ -20,11 +20,11 @@ class HandinTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       isThreeLine: true,
-      leading: details.submitFilename == null
-          ? const Icon(Icons.file_upload)
-          : const Icon(Icons.file_present),
+      leading: details.hasSubmission
+          ? const Icon(Icons.file_present)
+          : const Icon(Icons.file_upload),
       title: Text(details.submitFilename ?? 'Nog geen document ingeleverd'),
-      subtitle: Text(details.submitDate != null
+      subtitle: Text(details.hasSubmission
           ? buildSubtitle()
           : 'Gebruik de site om een document in te leveren'),
       trailing: SizedBox(
@@ -55,7 +55,6 @@ class HandinTile extends StatelessWidget {
         DownloadTask(details.submitUrl!, filePath),
       );
     }
-    //TODO: Add download for handin
   }
 
   Widget downloadIndicator(BuildContext context) {
@@ -82,14 +81,18 @@ class HandinTile extends StatelessWidget {
           const SizedBox(
             height: 26,
             width: 26,
-            child: Center(child: Icon(Icons.file_download)),
+            child: Center(child: Icon(Icons.downloading)),
           )
         ],
       );
     } else if (isDownloaded()) {
       return const Icon(Icons.file_download_done_sharp);
     } else {
-      return const Icon(Icons.download_sharp);
+      if(details.submitUrl != null){
+        return const Icon(Icons.download_sharp);
+      } else {
+        return const Icon(Icons.file_download_off_sharp);
+      }
     }
   }
 

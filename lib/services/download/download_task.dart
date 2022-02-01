@@ -9,7 +9,7 @@ import '../../providers.dart';
 class DownloadTask extends ChangeNotifier {
   final String url;
   final String path;
-  double progress = 0;
+  double? progress;
   late CancelToken cancelToken;
 
   DownloadTask(this.url, this.path);

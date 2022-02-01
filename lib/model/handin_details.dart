@@ -24,4 +24,6 @@ class HandinDetails {
     int timestamp = int.parse(date.substring(6, date.length - 2));
     return DateTime.fromMillisecondsSinceEpoch(timestamp);
   }
+
+  get hasSubmission => submitDate != null;
 }
