@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:wind/model/les.dart';
+import 'package:wind/model/schedule.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 
 import '../../providers.dart';
@@ -34,13 +35,32 @@ class Lessen {
     return lessen;
   }
 
-  static Future<List<String>> getCodes() async {
+  static Future<List<Schedule>> getClassCodes() async {
     const String url = "https://windesheimapi.azurewebsites.net/api/v2/Klas";
     Response<dynamic> response = await makeRequest(url);
     final codes = (response.data as List<dynamic>)
         .map((e) => e as Map<String, dynamic>)
         .map((e) => e['id'] as String)
+        .map((code) => Schedule(code: code, type: ScheduleType.classCode))
         .toList();
+    return codes;
+  }
+
+  static Future<List<Schedule>> getCourseCodes() async {
+    const String url = "https://windesheimapi.azurewebsites.net/api/v2/Vak";
+    Response<dynamic> response = await makeRequest(url);
+    final codes = (response.data as List<dynamic>)
+        .map((e) => e as Map<String, dynamic>)
+        .map((e) => e['id'] as String)
+        .map((code) => Schedule(code: code, type: ScheduleType.courseCode))
+        .toList();
+    return codes;
+  }
+
+  static Future<List<Schedule>> getCodes() async {
+    final classCodes = await getClassCodes();
+    final courseCodes = await getCourseCodes();
+    final codes = [...classCodes, ...courseCodes];
     return codes;
   }
 }

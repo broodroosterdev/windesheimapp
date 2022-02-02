@@ -5,11 +5,13 @@ import 'package:wind/pages/schedule/widgets/bottom_navigator.dart';
 class WeekSelector extends StatefulWidget {
   final PageController pageController;
   final int page;
+  final int maxPages;
 
   const WeekSelector({
     Key? key,
     required this.pageController,
     required this.page,
+    required this.maxPages
   }) : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class _WeekSelectorState extends State<WeekSelector> {
         return BottomNavigator(
           onBack: previousPage,
           onForward: nextPage,
-          text: "Week ${widget.page + 1}/5",
+          text: "Week ${widget.page + 1}/${widget.maxPages}",
         );
       },
     );

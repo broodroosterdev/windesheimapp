@@ -49,7 +49,11 @@ class Les {
   List<String> docentnamen;
 
   Schedule? get schedule {
-    return prefs.schedules.firstWhere((les) => les.classCode == roostercode);
+    if(!prefs.schedules.any((schedule) => schedule.apiCode == roostercode)){
+      return null;
+    }
+
+    return prefs.schedules.firstWhere((schedule) => schedule.apiCode == roostercode);
   }
 
   Les(

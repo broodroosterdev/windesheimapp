@@ -13,7 +13,7 @@ class AddSchedulePage extends StatefulWidget {
 
 class _AddSchedulePageState extends State<AddSchedulePage> {
   final TextEditingController _controller = TextEditingController();
-  Future<List<String>> codesFuture = Lessen.getCodes();
+  Future<List<Schedule>> codesFuture = Lessen.getCodes();
   String? filterText;
 
   @override
@@ -37,12 +37,13 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
               child: FutureBuilder(
                 future: codesFuture,
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<String>> snapshot) {
+                    AsyncSnapshot<List<Schedule>> snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
-                    List<String> codes = snapshot.data!;
+                    List<Schedule> codes = snapshot.data!;
                     if (filterText != null && filterText != "") {
                       codes = codes.where((code) {
                         return code
+                            .code
                             .toLowerCase()
                             .contains(filterText!.toLowerCase());
                       }).toList();
@@ -56,7 +57,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                                 print("Pressed code: $code");
                                 selectCode(code);
                               },
-                              title: Text(code));
+                              title: Text("${code.code} (${typeToName(code.type)})"));
                         });
                   } else {
                     return const Text("Laden...");
@@ -66,11 +67,20 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         ]));
   }
 
-  void selectCode(String code) {
-    final schedule = Schedule(code: code, color: Colors.green);
+  void selectCode(Schedule selected) {
+    final schedule = selected;
     List<Schedule> schedules = prefs.schedules;
     schedules.add(schedule);
     prefs.schedules = schedules;
     Navigator.of(context).pop();
+  }
+
+  String typeToName(ScheduleType type){
+    switch(type){
+      case ScheduleType.courseCode:
+        return "Vak";
+      case ScheduleType.classCode:
+        return "Klas";
+    }
   }
 }

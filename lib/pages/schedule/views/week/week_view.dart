@@ -18,6 +18,8 @@ class WeekView extends StatefulWidget {
 }
 
 class _WeekViewState extends State<WeekView> {
+  static const maxPages = 10;
+
   final PageController _pageController = PageController();
 
   int pageNumber = 0;
@@ -29,7 +31,7 @@ class _WeekViewState extends State<WeekView> {
       children: [
         Expanded(
           child: PageView.builder(
-            itemCount: 5,
+            itemCount: maxPages,
             controller: _pageController,
             onPageChanged: (value) {
               setState(() => pageNumber = value);
@@ -50,6 +52,7 @@ class _WeekViewState extends State<WeekView> {
         WeekSelector(
           pageController: _pageController,
           page: pageNumber,
+          maxPages: maxPages,
         ),
       ],
     );
