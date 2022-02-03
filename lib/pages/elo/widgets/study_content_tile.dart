@@ -23,12 +23,29 @@ class StudyContentTile extends StatefulWidget {
 
 class _StudyContentTileState extends State<StudyContentTile> {
   void onLongPress() async {
-    if (widget.studyContent.type == ItemType.file) {
-      if (isDownloaded()) {
-        await File(tempDir.path + widget.studyContent.path!).delete();
-        setState(() {});
+    if (widget.studyContent.type == ItemType.file && isDownloaded()) {
+        var shouldDelete = await showDialog(context: context, builder: buildConfirmDeleteDialog);
+        if(shouldDelete) {
+          await File(tempDir.path + widget.studyContent.path!).delete();
+          setState(() {});
+        }
       }
-    }
+  }
+
+  Widget buildConfirmDeleteDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Bestand verwijderen?"),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text('CANCEL'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: Text('VERWIJDER'),
+        ),
+      ],
+    );
   }
 
   void onTap() async {
