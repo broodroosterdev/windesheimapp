@@ -100,7 +100,7 @@ class _NewsItemPageState extends State<NewsItemPage> {
             opacity: getTitleOpacityFromOffset(),
             child: Text(
               widget.newsItem.title,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
               maxLines: 1,
               overflow: TextOverflow.fade,
             ),
@@ -111,6 +111,12 @@ class _NewsItemPageState extends State<NewsItemPage> {
   }
 
   Widget buildFlexibleSpace() {
+    var textStyle = Theme.of(context).textTheme.headline6!.copyWith(
+        color: widget.newsItem.type == NewsType.announcement
+        ? Theme.of(context).textTheme.headline6!.color
+        : Colors.white
+    );
+
     return FlexibleSpaceBar(
       background: Stack(
         children: [
@@ -129,7 +135,7 @@ class _NewsItemPageState extends State<NewsItemPage> {
                 maxLines: 3,
                 softWrap: true,
                 overflow: TextOverflow.visible,
-                style: Theme.of(context).textTheme.headline6,
+                style: textStyle,
               ),
             ),
           ),
@@ -160,7 +166,7 @@ class _NewsItemPageState extends State<NewsItemPage> {
           )
         : DecoratedBox(
             decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.surface,
             ),
             child: Center(
               child: Column(

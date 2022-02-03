@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 import 'package:wind/utils/html_transform.dart';
 
@@ -15,11 +16,7 @@ class ImageEmbedElementPart extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.yellow,
-            ),
-          );
+          return LoadingIndicator();
         } else {
           return SizedBox(
             width: double.infinity,
