@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:wind/model/studyroute.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/pages/elo/widgets/study_route_tile.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/elo.dart';
@@ -52,11 +53,7 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
       appBar: AppBar(title: const Text('ELO')),
       drawer: AppDrawer(),
       body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.yellow,
-              ),
-            )
+          ? LoadingIndicator()
           : ImplicitlyAnimatedList<StudyRoute>(
               controller: scrollController,
               items: routes,
@@ -90,7 +87,7 @@ class _StudyRoutesPageState extends State<StudyRoutesPage> {
       SnackBar(
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
         content: Text(
           message,
           style: Theme.of(context).textTheme.subtitle1,

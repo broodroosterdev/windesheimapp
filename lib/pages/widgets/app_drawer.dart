@@ -17,8 +17,7 @@ class AppDrawer extends StatelessWidget {
             child: Text('Wind',
                 style: Theme.of(context)
                     .textTheme
-                    .headline3!
-                    .copyWith(color: Colors.black)),
+                    .headline3),
           ),
           ListTile(
               leading: Icon(Icons.calendar_today),

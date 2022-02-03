@@ -57,7 +57,6 @@ class _SchedulePageState extends State<SchedulePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Rooster')),
       drawer: AppDrawer(),
-      backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
       body: FutureBuilder<List<Les>?>(
         future: lessenFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Les>?> lessen) {

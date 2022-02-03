@@ -14,23 +14,26 @@ class BottomNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Expanded(
-          flex: 1,
-          child: TextButton(
-              onPressed: onBack,
-              child: const Icon(Icons.chevron_left, size: 48))),
-      Expanded(
-          flex: 4,
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-          )),
-      Expanded(
-          flex: 1,
-          child: TextButton(
-              onPressed: onForward,
-              child: const Icon(Icons.chevron_right, size: 48)))
-    ]);
+    return Container(
+      color: Theme.of(context).bottomAppBarColor,
+      child: Row(children: [
+        Expanded(
+            flex: 1,
+            child: TextButton(
+                onPressed: onBack,
+                child: const Icon(Icons.chevron_left, size: 48))),
+        Expanded(
+            flex: 4,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+            )),
+        Expanded(
+            flex: 1,
+            child: TextButton(
+                onPressed: onForward,
+                child: const Icon(Icons.chevron_right, size: 48)))
+      ]),
+    );
   }
 }

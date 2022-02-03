@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wind/model/handin_details.dart';
 import 'package:wind/pages/elo/widgets/document_view.dart';
 import 'package:wind/pages/elo/widgets/handin_tile.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/services/api/elo.dart';
 
 class StudyHandinPage extends StatefulWidget {
@@ -32,11 +33,7 @@ class _StudyHandinPageState extends State<StudyHandinPage> {
             builder:
                 (BuildContext context, AsyncSnapshot<HandinDetails> snapshot) {
               if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.yellow,
-                  ),
-                );
+                return LoadingIndicator();
               } else {
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

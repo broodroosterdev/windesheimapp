@@ -12,7 +12,7 @@ class TimeBox extends StatelessWidget {
     return Container(
         width: 80,
         height: 50,
-        color: Theme.of(context).backgroundColor.withAlpha(opacity),
+        color: Theme.of(context).dividerColor.withAlpha(opacity),
         child: Align(
           alignment: Alignment.center,
           child: Text(time,

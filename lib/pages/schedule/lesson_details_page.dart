@@ -38,20 +38,14 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: widget.color,
+        title: Text(widget.lesson.leeractiviteit.replaceAll(" ,", "")),
       ),
-      backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text(
-              widget.lesson.leeractiviteit.replaceAll(" ,", ""),
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
             Row(
               children: [
                 Icon(Icons.access_time,
@@ -89,6 +83,9 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                 children: [
                   Icon(Icons.person_outline,
                       size: 36, color: Theme.of(context).primaryColor),
+                  const SizedBox(
+                    width: 5,
+                  ),
                   Text(
                     docent,
                     style: Theme.of(context).textTheme.subtitle1,

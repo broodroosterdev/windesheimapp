@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/route_generator.dart';
@@ -12,16 +13,9 @@ Future main() async {
   runApp(
     MaterialApp(
       title: 'wind',
-      theme: ThemeData(
-        textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Colors.white))),
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.yellow, brightness: Brightness.dark),
-        primaryColor: const Color.fromRGBO(255, 203, 5, 1.0),
-        fontFamily: 'Roboto',
-      ),
+      theme: FlexThemeData.light(scheme: FlexScheme.bigStone, surfaceMode: FlexSurfaceMode.highSurfaceLowScaffold, blendLevel: 18),
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.bigStone, surfaceMode: FlexSurfaceMode.highSurfaceLowScaffold, blendLevel: 18),
+      themeMode: ThemeMode.system,
       initialRoute: '/',
       navigatorKey: navigatorKey,
       onGenerateRoute: RouteGenerator.generateRoute,

@@ -15,23 +15,23 @@ class StudyRouteTile extends StatelessWidget {
       onTap: () => Navigator.of(context)
           .pushNamed('/studycontent', arguments: {'studyRouteId': route.id}),
       leading: route.imageUrl != null ? getThumbnailImage() : getLetterImage(),
-      trailing: getFavouriteIcon(),
+      trailing: getFavouriteIcon(context),
       title: Text(route.name),
     );
   }
 
-  Widget getFavouriteIcon() {
+  Widget getFavouriteIcon(BuildContext context) {
     return IconButton(
       onPressed: onFavourite,
       icon: route.isFavorite
           ? const Icon(Icons.star)
           : const Icon(Icons.star_border_outlined),
+      color: route.isFavorite ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary
     );
   }
 
   Widget getLetterImage() {
     return CircleAvatar(
-      backgroundColor: Colors.yellow.shade800,
       child: Text(route.name[0]),
     );
   }
@@ -46,6 +46,9 @@ class StudyRouteTile extends StatelessWidget {
         return CircleAvatar(
           backgroundImage: provider,
         );
+      },
+      placeholder: (BuildContext context, String? url) {
+        return getLetterImage();
       },
       errorWidget: (BuildContext context, url, error) {
         return getLetterImage();

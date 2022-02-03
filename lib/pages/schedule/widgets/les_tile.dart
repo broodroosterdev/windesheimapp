@@ -26,16 +26,16 @@ class LesTile extends StatelessWidget {
                   children: [
                     TimeBox(
                       time: Time.getFormattedTime(les.starttijd),
-                      opacity: 100,
+                      opacity: 40,
                     ),
                     TimeBox(
                       time: Time.getFormattedTime(les.eindtijd),
-                      opacity: 50,
+                      opacity: 20,
                     ),
                   ])),
           Container(
             decoration: BoxDecoration(color: color),
-            width: 8,
+            width: 6,
             height: 100,
             margin: const EdgeInsets.only(right: 8),
           ),
@@ -48,7 +48,7 @@ class LesTile extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle1),
               const SizedBox(height: 5),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Icon(Icons.pin_drop, color: Colors.yellow[800]),
+                Icon(Icons.pin_drop, color: Theme.of(context).colorScheme.primary),
                 Expanded(
                   child: Text(les.lokaal,
                       overflow: TextOverflow.ellipsis,
@@ -58,7 +58,7 @@ class LesTile extends StatelessWidget {
               ]),
               const SizedBox(height: 5),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Icon(Icons.person, color: Colors.yellow[800]),
+                Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
                 Expanded(
                   child: Text(les.docentcode ?? les.docentnamen.join(", "),
                       overflow: TextOverflow.ellipsis,

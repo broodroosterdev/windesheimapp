@@ -49,12 +49,11 @@ class _LesElement extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Container(
         margin: const EdgeInsets.only(left: 15, right: 15),
-        color: Theme.of(context).backgroundColor.withAlpha(40),
+        color: Theme.of(context).colorScheme.surface,
         child: OpenContainer(
           transitionDuration: const Duration(milliseconds: 200),
-          closedColor: Theme.of(context).backgroundColor.withAlpha(40),
-          middleColor: Theme.of(context).backgroundColor.withAlpha(40),
-          openColor: const Color.fromRGBO(17, 18, 19, 1.0),
+          closedColor: Theme.of(context).colorScheme.surface,
+          openColor: Theme.of(context).backgroundColor,
           closedBuilder: (BuildContext context, VoidCallback open) => LesTile(
             les: les,
             color: color,

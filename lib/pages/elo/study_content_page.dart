@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/studycontent.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/pages/elo/widgets/study_content_tile.dart';
 import 'package:wind/services/api/elo.dart';
 
@@ -33,11 +34,7 @@ class _StudyContentPageState extends State<StudyContentPage> {
           builder: (BuildContext context,
               AsyncSnapshot<List<StudyContent>> snapshot) {
             if (!snapshot.hasData || snapshot.data == null) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.yellow,
-                ),
-              );
+              return LoadingIndicator();
             } else {
               final List<StudyContent> content = snapshot.data!;
               if (content.isNotEmpty) {
@@ -50,20 +47,21 @@ class _StudyContentPageState extends State<StudyContentPage> {
                   },
                 );
               } else {
-                return emptyFolder();
+                return emptyFolder(context);
               }
             }
           },
-        ));
+        ),
+    );
   }
 
-  Widget emptyFolder() {
+  Widget emptyFolder(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.folder, size: 60),
-          Text("Lege map"),
+        children: [
+          Icon(Icons.folder, size: 60, color: Theme.of(context).colorScheme.primary),
+          const Text("Lege map"),
         ],
       ),
     );

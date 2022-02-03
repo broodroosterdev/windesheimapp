@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 
 import '../../../providers.dart';
 
@@ -19,11 +20,7 @@ class _DocumentViewState extends State<DocumentView> {
       future: getPage(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.yellow,
-            ),
-          );
+          return LoadingIndicator();
         } else {
           return SingleChildScrollView(child: Html(data: snapshot.data));
         }
