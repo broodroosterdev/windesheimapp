@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/model/course_result.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/services/api/study.dart';
 
 import '../study_details_page.dart';
@@ -21,11 +22,7 @@ class _CourseListState extends State<CourseList> {
         future: Study.getCourseResults(widget.code),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.yellow,
-              ),
-            );
+            return LoadingIndicator();
           } else {
             List<CourseResult> results = snapshot.data;
             return Column(children: [...results.map(buildTile).toList()]);
@@ -53,14 +50,13 @@ class _CourseListState extends State<CourseList> {
                     style: result.result == null
                         ? Theme.of(context)
                             .textTheme
-                            .headline4!
-                            .copyWith(color: Colors.white)
-                        : Theme.of(context).textTheme.headline6,
+                            .headline4!.copyWith(color: Theme.of(context).colorScheme.secondary)
+                        : Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.secondary),
                     textAlign: TextAlign.center,
                   ),
                 )),
             title: Text(result.name),
-            subtitle: Text("${result.code} - ${result.ec} EC"),
+            subtitle: buildSubtitle(result),
           ),
         );
       },
@@ -68,5 +64,17 @@ class _CourseListState extends State<CourseList> {
         return StudyDetailsPage(result, widget.code);
       },
     );
+  }
+
+  Widget buildSubtitle(CourseResult result){
+    return Row(children: [
+      Text("${result.code} - ${result.ec} EC"),
+      SizedBox(width: 2,),
+      Visibility(
+        visible: result.passed,
+          child:
+            Icon(Icons.verified_sharp, size: 16, color: Theme.of(context).colorScheme.secondary),
+      )
+    ]);
   }
 }

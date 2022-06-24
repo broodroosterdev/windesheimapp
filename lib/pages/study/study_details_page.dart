@@ -54,11 +54,11 @@ class _StudyDetailsPageState extends State<StudyDetailsPage> {
                 ? Theme.of(context)
                     .textTheme
                     .headline2!
-                    .copyWith(color: Colors.white)
+                    .copyWith(color: Theme.of(context).colorScheme.secondary)
                 : Theme.of(context)
                     .textTheme
                     .headline5!
-                    .copyWith(color: Colors.white)),
+                .copyWith(color: Theme.of(context).colorScheme.secondary)),
         Visibility(
             visible: isGrade,
             child: Text(
@@ -82,10 +82,18 @@ class _StudyDetailsPageState extends State<StudyDetailsPage> {
           widget.result.code,
           style: Theme.of(context).textTheme.caption,
         ),
-        Text(
-          "${widget.result.ec} EC",
-          style: Theme.of(context).textTheme.subtitle1,
-        )
+        Row(children: [
+          Text(
+            "${widget.result.ec} EC",
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          SizedBox(width: 2,),
+          Visibility(
+            visible: widget.result.passed,
+            child:
+            const Icon(Icons.verified_sharp, size: 18),
+          )
+        ])
       ],
     );
   }

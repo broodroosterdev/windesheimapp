@@ -13,14 +13,14 @@ class ECCounter extends StatelessWidget {
     return Column(
       children: [
         Text(name, style: Theme.of(context).textTheme.subtitle1),
-        SizedBox(height: 10),
+        SizedBox(height: 7),
         CircularPercentIndicator(
-          radius: 90.0,
-          lineWidth: 8.0,
+          radius: 70.0,
+          lineWidth: 12.0,
           percent: ec.achieved / ec.toAchieve,
-          center: Text("${ec.achieved}/${ec.toAchieve}"),
-          progressColor: Colors.yellow,
-          backgroundColor: Theme.of(context).backgroundColor,
+          center: Text("${ec.achieved}/${ec.toAchieve}", style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).colorScheme.secondary),),
+          progressColor: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).cardColor,
         )
       ],
     );

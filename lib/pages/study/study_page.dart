@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/study_progress.dart';
+import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/pages/study/widgets/course_list.dart';
 import 'package:wind/pages/study/widgets/ec_counter.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
@@ -31,30 +32,26 @@ class _StudyPageState extends State<StudyPage> {
           future: future,
           builder: (context, AsyncSnapshot<StudyProgress> snapshot) {
             if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.yellow,
-                ),
-              );
+              return LoadingIndicator();
             } else {
               StudyProgress progress = snapshot.data!;
               return SingleChildScrollView(
                   child: Column(children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   progress.name,
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ECCounter(progress.propedeuse, "Propedeuse"),
-                    SizedBox(width: 30),
+                    const SizedBox(width: 30),
                     ECCounter(progress.study, "Complete studie"),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 SizedBox(
                     width: double.infinity,
                     child: Padding(
