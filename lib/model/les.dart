@@ -6,7 +6,7 @@ class Les {
   String id;
 
   //Lokaal nummer, ; separated: "C1.92;T2.19;T2.20"
-  String lokaal;
+  String? lokaal;
 
   //Timestamp in milliseconds (GMT is correcte tijd)
   DateTime starttijd;
@@ -76,7 +76,7 @@ class Les {
 
   Les.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        lokaal = json["lokaal"],
+        lokaal = json["lokaal"] == "" ? null : json["lokaal"],
         starttijd =
             DateTime.fromMillisecondsSinceEpoch(json["starttijd"], isUtc: true),
         eindtijd =

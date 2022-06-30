@@ -57,7 +57,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                                 print("Pressed code: $code");
                                 selectCode(code);
                               },
-                              title: Text("${code.code} (${typeToName(code.type)})"));
+                              title: Text("${code.code} (${code.type.apiName})"));
                         });
                   } else {
                     return const Text("Laden...");
@@ -73,14 +73,5 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
     schedules.add(schedule);
     prefs.schedules = schedules;
     Navigator.of(context).pop();
-  }
-
-  String typeToName(ScheduleType type){
-    switch(type){
-      case ScheduleType.courseCode:
-        return "Vak";
-      case ScheduleType.classCode:
-        return "Klas";
-    }
   }
 }

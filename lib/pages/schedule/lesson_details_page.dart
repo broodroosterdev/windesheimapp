@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/pages/schedule/widgets/link_preview.dart';
+import 'package:wind/pages/schedule/widgets/teacher_tile.dart';
 import 'package:wind/utils/time.dart';
 
 class LessonDetailsPage extends StatefulWidget {
@@ -45,7 +46,7 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
         child: Container(
           padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              ListView(children: [
             Row(
               children: [
                 Icon(Icons.access_time,
@@ -70,35 +71,33 @@ class _LessonDetailsPageState extends State<LessonDetailsPage> {
                   width: 5,
                 ),
                 Text(
-                  widget.lesson.lokaal,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  widget.lesson.lokaal ?? "Geen",
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(fontStyle: widget.lesson.lokaal == null ? FontStyle.italic : FontStyle.normal),
                 )
               ],
             ),
             const SizedBox(
               height: 10,
             ),
+            Text(
+              "Docent",
+              style: Theme.of(context).textTheme.headline6,
+            ),
             ...widget.lesson.docentnamen.map((docent) {
-              return Row(
-                children: [
-                  Icon(Icons.person_outline,
-                      size: 36, color: Theme.of(context).primaryColor),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    docent,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  )
-                ],
-              );
+              return TeacherTile(docent);
             }),
             const SizedBox(
               height: 20,
             ),
+            Text("Beschrijving",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             Text(
-              widget.lesson.publicatietekst,
-              style: Theme.of(context).textTheme.bodyText2,
+              widget.lesson.publicatietekst.isEmpty ? "Geen" : widget.lesson.publicatietekst,
+              style: Theme.of(context).textTheme.bodyText2?.copyWith(fontStyle: widget.lesson.lokaal == null ? FontStyle.italic : FontStyle.normal),
             ),
             const SizedBox(
               height: 20,

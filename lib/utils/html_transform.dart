@@ -23,6 +23,11 @@ class HtmlTransform {
   static HtmlElement? parseElement(Element child) {
     final Map<String, dynamic> data =
         jsonDecode(child.attributes['data-sp-controldata']!);
+
+    if(!data.containsKey('controlType')) {
+      return null;
+    }
+
     switch (data['controlType'] as int) {
       case 3:
         var rawJson = child.firstChild!.attributes['data-sp-webpartdata']!;

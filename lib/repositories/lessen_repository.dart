@@ -15,7 +15,7 @@ class LessenRepository {
           forceSync ||
           !lessonsCache.containsKey(schedule.code)) {
         if (await InternetConnectionChecker().hasConnection) {
-          final data = await Lessen.getLessen(schedule.code);
+          final data = await Lessen.getLessen(schedule);
           lessons.addAll(data);
           lessonsCache[schedule.code] = data;
           updated = true;

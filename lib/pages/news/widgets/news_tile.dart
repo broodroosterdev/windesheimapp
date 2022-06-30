@@ -53,7 +53,7 @@ class NewsTile extends StatelessWidget {
           return const ColoredBox(color: Colors.black);
         } else {
           return CachedNetworkImage(
-              memCacheHeight: 100,
+              memCacheHeight: MediaQuery.of(context).size.width.toInt(),
               fit: BoxFit.cover,
               imageUrl: item.imageUrl!,
               httpHeaders: {'Cookie': snapshot.data!});

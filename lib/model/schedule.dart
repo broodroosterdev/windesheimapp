@@ -8,7 +8,7 @@ class Schedule {
   Color color;
 
   String get apiCode {
-    return "${type.apiName}-$code";
+    return "${type.codeName}-$code";
   }
 
   Schedule({required this.code, required this.type, this.color = Colors.green});
@@ -37,14 +37,24 @@ class Schedule {
 
 enum ScheduleType {
   classCode,
-  courseCode
+  courseCode,
+  teacherCode
 }
 
 extension Names on ScheduleType {
-  String get apiName {
+  String get codeName {
     switch(this){
       case ScheduleType.classCode: return "Class";
       case ScheduleType.courseCode: return "Course";
+      case ScheduleType.teacherCode: return "Teacher";
+    }
+  }
+
+  String get apiName {
+    switch(this){
+      case ScheduleType.classCode: return "Klas";
+      case ScheduleType.courseCode: return "Vak";
+      case ScheduleType.teacherCode: return "Docent";
     }
   }
 }

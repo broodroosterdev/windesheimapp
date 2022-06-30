@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:wind/model/les.dart';
 import 'package:wind/model/schedule.dart';
@@ -23,9 +25,9 @@ class Lessen {
     return response;
   }
 
-  static Future<List<Les>> getLessen(String code) async {
+  static Future<List<Les>> getLessen(Schedule schedule) async {
     final String url =
-        "https://windesheimapi.azurewebsites.net/api/v2/Klas/$code/Les";
+        "https://windesheimapi.azurewebsites.net/api/v2/${schedule.type.apiName}/${schedule.code}/Les";
     Response<dynamic> response = await makeRequest(url);
 
     final rawLessen = (response.data as List<dynamic>)
@@ -53,6 +55,20 @@ class Lessen {
         .map((e) => e as Map<String, dynamic>)
         .map((e) => e['id'] as String)
         .map((code) => Schedule(code: code, type: ScheduleType.courseCode))
+        .toList();
+    return codes;
+  }
+
+  static Future<List<Schedule>> getTeacherCodes() async {
+    const String url = "https://windesheimapi.azurewebsites.net/api/v2/Docent";
+    Response<dynamic> response = await makeRequest(url);
+    final list = response.data as List<dynamic>;
+    String test = jsonEncode(list);
+    print(test);
+    final codes = (response.data as List<dynamic>)
+        .map((e) => e as Map<String, dynamic>)
+        .map((e) => e['id'] as String)
+        .map((code) => Schedule(code: code, type: ScheduleType.teacherCode))
         .toList();
     return codes;
   }
