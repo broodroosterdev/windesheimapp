@@ -5,8 +5,9 @@ import 'package:wind/services/auth/auth_manager.dart';
 import '../main.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({this.redirectRoute = "/rooster", Key? key}) : super(key: key);
 
+  final String redirectRoute;
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    navigatorKey.currentState!.pushNamed("/rooster");
+    navigatorKey.currentState!.pushNamed(widget.redirectRoute);
   }
 
   void showError(String error) {

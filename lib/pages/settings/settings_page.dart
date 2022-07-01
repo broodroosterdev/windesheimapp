@@ -5,6 +5,7 @@ import 'package:wind/model/schedule.dart';
 import 'package:wind/pages/settings/widgets/add_rooster_tile.dart';
 import 'package:wind/pages/settings/widgets/rooster_tile.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
+import 'package:wind/utils/schedule_helper.dart';
 
 import '../../preferences.dart';
 import '../../providers.dart';
@@ -101,51 +102,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void editRooster(int index) {
-    const availableColors = [
-      Colors.blue,
-      Colors.blueAccent,
-      Colors.yellow,
-      Colors.yellowAccent,
-      Colors.red,
-      Colors.redAccent,
-      Colors.green,
-      Colors.greenAccent,
-      Colors.purple,
-      Colors.purpleAccent,
-      Colors.white
-    ];
-    Schedule schedule = prefs.schedules[index];
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Kies een kleur'),
-          content: SingleChildScrollView(
-            child: BlockPicker(
-              pickerColor: schedule.color,
-              availableColors: availableColors,
-              onColorChanged: (color) => schedule.color = color,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Annuleren'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Opslaan'),
-              onPressed: () {
-                final List<Schedule> schedules = prefs.schedules;
-                schedules[index] = schedule;
-                prefs.schedules = schedules;
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+    ScheduleHelper.editScheduleColor(context, prefs.schedules[index], (schedule) {
+        final List<Schedule> schedules = prefs.schedules;
+        schedules[index] = schedule;
+        prefs.schedules = schedules;
+    });
   }
 }

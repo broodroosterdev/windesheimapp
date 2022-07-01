@@ -5,6 +5,8 @@ import 'package:wind/pages/elo/study_handin_page.dart';
 import 'package:wind/pages/elo/study_routes_page.dart';
 import 'package:wind/pages/login.dart';
 import 'package:wind/pages/news/news_page.dart';
+import 'package:wind/pages/onboarding/info_page.dart';
+import 'package:wind/pages/onboarding/setup_page.dart';
 import 'package:wind/pages/schedule/lesson_details_page.dart';
 import 'package:wind/pages/schedule/rooster.dart';
 import 'package:wind/pages/settings/add_schedule_page.dart';
@@ -24,7 +26,7 @@ class RouteGenerator {
         if (AuthManager.loggedIn) {
           return MaterialPageRoute(builder: (_) => SchedulePage());
         } else {
-          return MaterialPageRoute(builder: (_) => LoginPage());
+          return MaterialPageRoute(builder: (_) => InfoPage());
         }
       case '/rooster':
         return MaterialPageRoute(builder: (_) => SchedulePage());
@@ -60,6 +62,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const StudyPage());
       case '/news':
         return MaterialPageRoute(builder: (_) => const NewsPage());
+      case '/info':
+        return MaterialPageRoute(builder: (_) => const InfoPage());
+      case '/setup':
+        return MaterialPageRoute(builder: (_) => const SetupPage());
       default:
         return _errorRoute();
     }

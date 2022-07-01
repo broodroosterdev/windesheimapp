@@ -61,6 +61,8 @@ dependencies:
   flex_color_scheme: ^5.0.1
   avatars: ^3.0.2
   easy_image_viewer: ^1.0.4
+  introduction_screen: ^3.0.2
+  flutter_svg: ^0.23.0+1
 
 
 dev_dependencies:
@@ -87,3 +89,10 @@ flutter:
   assets:
     - assets/logo.png
     - assets/data/teachers.json
+    - assets/books.svg
+    - assets/login.svg
+    - assets/schedule.svg
+    - assets/study.svg
+    - assets/server.svg
+    - assets/settings.svg
+    - assets/download.svg

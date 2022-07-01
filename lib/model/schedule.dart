@@ -33,6 +33,28 @@ class Schedule {
       }
     }
   }
+
+  static ScheduleType? parseScheduleTypeFromWip(String? value){
+    for(ScheduleType type in ScheduleType.values){
+      if(type.codeName == value){
+        return type;
+      }
+    }
+  }
+
+  static const availableColors = [
+    Colors.blue,
+    Colors.blueAccent,
+    Colors.yellow,
+    Colors.yellowAccent,
+    Colors.red,
+    Colors.redAccent,
+    Colors.green,
+    Colors.greenAccent,
+    Colors.purple,
+    Colors.purpleAccent,
+    Colors.white
+  ];
 }
 
 enum ScheduleType {
