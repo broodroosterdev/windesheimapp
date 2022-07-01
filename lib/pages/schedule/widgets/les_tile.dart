@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/model/les.dart';
-import 'package:wind/pages/schedule/widgets/teacher_avatar.dart';
 import 'package:wind/pages/schedule/widgets/teacher_name.dart';
 import 'package:wind/utils/time.dart';
 
@@ -101,14 +99,10 @@ class LesTile extends StatelessWidget {
             padding: const EdgeInsets.only(right: 2.0),
             child: TeacherName(les.docentnamen[0]),
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 2.0),
-              child: Text("+"),
-          ),
-          ...les.docentnamen.skip(1).map((name) => Padding(
+          Padding(
             padding: const EdgeInsets.only(right: 2.0),
-            child: TeacherAvatar(name, border: true, size: 30),
-          ))
+              child: Text("+ ${les.docentnamen.length - 1}"),
+          ),
         ],
       );
     }

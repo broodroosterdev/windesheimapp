@@ -15,7 +15,7 @@ class TeacherAvatar extends StatelessWidget {
         future: AuthManager.getSharepointCookie(),
         builder: (context, AsyncSnapshot<String> snapshot) => Avatar(
             name: name,
-            border: border ? Border.all(color: Colors.white, width: 1.0) : null,
+            useCache: true,
             shape: AvatarShape.circle((size) / 2),
             sources: nameHasEmail() && snapshot.hasData ? [
                 GenericSource(NetworkImage(
