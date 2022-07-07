@@ -1,17 +1,13 @@
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/dom.dart';
+import 'package:result_type/result_type.dart';
 import 'package:wind/internal/auth_failure.dart';
-import 'package:wind/providers.dart';
 
 class EloAuth {
-  static void removeCookie() {
-    prefs.eloCookie = '';
-  }
 
-  static Future<Either<AuthFailure, String>> login(
+  static Future<Result<String, AuthFailure>> login(
       String username, String password) async {
     CookieJar jar = CookieJar();
     Dio dio = Dio();
@@ -63,7 +59,7 @@ class EloAuth {
     );
 
     if (response.headers['location'] == null) {
-      return Left(AuthFailure("Incorrect email or password"));
+      return Failure(AuthFailure("Incorrect email or password"));
     }
     response = await dio.get(response.headers['location']![0]);
 
@@ -108,6 +104,6 @@ class EloAuth {
     var cookies =
         await jar.loadForRequest(Uri.parse('https://elo.windesheim.nl'));
 
-    return Right(cookies[0].value);
+    return Success(cookies[0].value);
   }
 }

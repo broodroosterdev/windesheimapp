@@ -63,6 +63,8 @@ dependencies:
   easy_image_viewer: ^1.0.4
   introduction_screen: ^3.0.2
   flutter_svg: ^0.23.0+1
+  flutter_secure_storage: ^5.0.2
+  result_type: ^0.1.0
 
 
 dev_dependencies:

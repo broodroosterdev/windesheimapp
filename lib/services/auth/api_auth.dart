@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:dartz/dartz.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 import 'package:html/dom.dart';
 
-import 'package:cookie_jar/cookie_jar.dart';
+import 'package:result_type/result_type.dart';
 import 'package:wind/internal/auth_failure.dart';
 
 class ApiTokens {
@@ -16,7 +16,7 @@ class ApiTokens {
 }
 
 class ApiAuth {
-  static Future<Either<AuthFailure, ApiTokens>> login(
+  static Future<Result<ApiTokens, AuthFailure>> login(
       String username, String password) async {
     CookieJar cj = CookieJar();
     Dio dio = Dio();
@@ -45,7 +45,7 @@ class ApiAuth {
     String? redirectUrl = (response.data['Credentials']
         as Map<String, dynamic>)['FederationRedirectUrl'];
     if (redirectUrl == null) {
-      return Left(AuthFailure("Incorrect email"));
+      return Failure(AuthFailure("Incorrect email"));
     }
     response = await dio.post(
       redirectUrl,
@@ -63,7 +63,7 @@ class ApiAuth {
       ),
     );
     if (response.headers['location'] == null) {
-      return Left(AuthFailure("Incorrect email or password"));
+      return Failure(AuthFailure("Incorrect email or password"));
     }
     response = await dio.get(response.headers['location']![0].toString());
 
@@ -102,10 +102,10 @@ class ApiAuth {
     print(response.data);
     var tokens = ApiTokens(
         response.data['access_token'], response.data['refresh_token']);
-    return Right(tokens);
+    return Success(tokens);
   }
 
-  static Future<Either<AuthFailure, ApiTokens>> refreshToken(
+  static Future<Result<ApiTokens, AuthFailure>> refreshToken(
       String refreshToken) async {
     final response = await Dio().post(
         "https://login.microsoftonline.com/e36377b7-70c4-4493-a338-095918d327e9/oauth2/v2.0/token",
@@ -117,6 +117,6 @@ class ApiAuth {
         options: Options(contentType: Headers.formUrlEncodedContentType));
     var tokens = ApiTokens(
         response.data['access_token'], response.data['refresh_token']);
-    return Right(tokens);
+    return Success(tokens);
   }
 }

@@ -10,14 +10,14 @@ class News {
         options: Options(
             followRedirects: false,
             validateStatus: (status) => status! < 500,
-            headers: {"Authorization": "Bearer " + prefs.accessToken}));
+            headers: {"Authorization": "Bearer " + prefs.apiAccess}));
 
     if (response.statusCode != 200) {
       await AuthManager.refreshApi();
       response = await Dio().get(url,
           options: Options(
               followRedirects: false,
-              headers: {"Authorization": "Bearer " + prefs.accessToken}));
+              headers: {"Authorization": "Bearer " + prefs.apiAccess}));
     }
     return response;
   }

@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:result_type/result_type.dart';
 import 'package:wind/internal/auth_failure.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/auth/api_auth.dart';
@@ -13,78 +13,70 @@ class AuthManager {
     return prefs.sharepointCookie;
   }
 
-  static bool get loggedIn => prefs.eloCookie != '' && prefs.accessToken != '';
+  static bool get loggedIn => prefs.eloCookie != '' && prefs.apiAccess != '';
 
-  static Future<Either<AuthFailure, void>> loginElo(
+  static Future<Result<void, AuthFailure>> loginElo(
       String email, String password) async {
-    Either<AuthFailure, String> eloResponse =
+    Result<String, AuthFailure> eloResponse =
         await EloAuth.login(email, password);
-    return eloResponse.fold(
-      (l) {
-        print("error: " + l.message);
-        return Left(l);
-      },
-      (r) {
-        prefs.eloCookie = r;
-        return const Right(null);
-      },
-    );
+
+    if(eloResponse.isFailure){
+      print("error: ${eloResponse.failure.message}");
+      return Failure(eloResponse.failure);
+    } else {
+      await prefs.setEloCookie(eloResponse.success);
+      return Success(null);
+    }
   }
 
-  static Future<Either<AuthFailure, void>> loginApi(
+  static Future<Result<void, AuthFailure>> loginApi(
       String email, String password) async {
-    Either<AuthFailure, ApiTokens> apiResponse =
+    Result<ApiTokens, AuthFailure> apiResponse =
         await ApiAuth.login(email, password);
-    return apiResponse.fold(
-      (l) {
-        print("error: " + l.message);
-        return Left(l);
-      },
-      (r) {
-        prefs.email = email;
-        prefs.password = password;
-        prefs.accessToken = r.accessToken;
-        prefs.refreshToken = r.refreshToken;
-        return const Right(null);
-      },
-    );
+
+    if(apiResponse.isFailure){
+      print("error: " + apiResponse.failure.message);
+      return Failure(apiResponse.failure);
+    } else {
+      await prefs.setEmail(email);
+      await prefs.setPassword(password);
+      await prefs.setApiAccess(apiResponse.success.accessToken);
+      await prefs.setApiRefresh(apiResponse.success.refreshToken);
+      return Success(null);
+    }
   }
 
-  static Future<Either<AuthFailure, void>> refreshApi() async {
-    Either<AuthFailure, ApiTokens> apiResponse =
-        await ApiAuth.refreshToken(prefs.refreshToken);
-    return apiResponse.fold(
-      (l) {
-        print("error: " + l.message);
-        return Left(l);
-      },
-      (r) {
-        prefs.accessToken = r.accessToken;
-        prefs.refreshToken = r.refreshToken;
-        return const Right(null);
-      },
-    );
+  static Future<Result< void, AuthFailure>> refreshApi() async {
+    Result<ApiTokens, AuthFailure> apiResponse =
+        await ApiAuth.refreshToken(prefs.apiRefresh);
+    if(apiResponse.isFailure){
+      print("error: " + apiResponse.failure.message);
+      return Failure(apiResponse.failure);
+    } else {
+      await prefs.setApiAccess(apiResponse.success.accessToken);
+      await prefs.setApiRefresh(apiResponse.success.refreshToken);
+      return Success(null);
+    }
   }
 
-  static Future<Either<AuthFailure, void>> refreshElo() async {
-    return (await EloAuth.login(prefs.email, prefs.password)).fold((l) {
-      print("error: " + l.message);
-      return Left(l);
-    }, (r) {
-      prefs.eloCookie = r;
-      return const Right(null);
-    });
+  static Future<Result<void, AuthFailure>> refreshElo() async {
+    final Result<String, AuthFailure> result = await EloAuth.login(prefs.email, prefs.password);
+    if(result.isFailure){
+      print("error: " + result.failure.message);
+      return Failure(result.failure);
+    } else {
+      await prefs.setEloCookie(result.success);
+      return Success(null);
+    }
   }
 
   static Future refreshSharepoint() async {
     final cookie = await SharepointAuth.login(prefs.email, prefs.password);
-    prefs.sharepointCookie = cookie.cookie;
+    prefs.setSharepointCookie(cookie.cookie);
     prefs.sharepointExpiry = cookie.expiresAt;
   }
 
-  static logout() {
-    prefs.eloCookie = '';
-    prefs.accessToken = '';
-    prefs.refreshToken = '';
+  static Future logout() async {
+    await prefs.clear();
   }
 }

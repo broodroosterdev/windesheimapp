@@ -2,75 +2,96 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:wind/providers.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/les.dart';
 import 'model/schedule.dart';
 
+enum Preference {
+  apiAccess,
+  apiRefresh,
+  eloCookie,
+  email,
+  password,
+  sharepointCookie,
+  schedules,
+  lastSynced,
+  lessonsCache,
+  roosterView,
+  sharepointExpiry
+}
+
+
 class Preferences extends ChangeNotifier {
-  String _accessToken = sharedPrefs.accessToken;
+  late final SharedPreferences sharedPrefs;
+  late final FlutterSecureStorage securePrefs;
 
-  String get accessToken => _accessToken;
-
-  set accessToken(String value) {
-    _accessToken = value;
-    sharedPrefs.accessToken = value;
-    notifyListeners();
+  Future<String?> getSecureString(Preference preference) async{
+    return await securePrefs.read(key: preference.name);
   }
 
-  String _refreshToken = sharedPrefs.refreshToken;
-
-  String get refreshToken => _refreshToken;
-
-  set refreshToken(String value) {
-    _refreshToken = value;
-    sharedPrefs.refreshToken = value;
-    notifyListeners();
+  Future setSecureString(Preference preference, String string) async {
+    await securePrefs.write(key: preference.name, value: string);
   }
 
-  String _eloCookie = sharedPrefs.eloCookie;
-
-  String get eloCookie => _eloCookie;
-
-  set eloCookie(String value) {
-    _eloCookie = value;
-    sharedPrefs.eloCookie = value;
-    notifyListeners();
+  String? getString(Preference preference){
+    return sharedPrefs.getString(preference.name);
   }
 
-  String _schedules = sharedPrefs.schedules;
+  void setString(Preference preference, String value){
+    sharedPrefs.setString(preference.name, value);
+  }
 
-  List<Schedule> get schedules {
+  int? getInt(Preference preference){
+    return sharedPrefs.getInt(preference.name);
+  }
+
+  void setInt(Preference preference, int value){
+    sharedPrefs.setInt(preference.name, value);
+  }
+
+  Future clear() async {
+    await sharedPrefs.clear();
+    await securePrefs.deleteAll();
+    await initData();
+  }
+
+  Future init() async {
+    sharedPrefs = await SharedPreferences.getInstance();
+    securePrefs = const FlutterSecureStorage(
+      aOptions: AndroidOptions(
+        encryptedSharedPreferences: true
+      )
+    );
+    await initData();
+  }
+
+  Future initData() async {
+    _apiAccess = await getSecureString(Preference.apiAccess) ?? '';
+    _apiRefresh = await getSecureString(Preference.apiRefresh) ?? '';
+    _eloCookie = await getSecureString(Preference.eloCookie) ?? '';
+    _email = await getSecureString(Preference.email) ?? '';
+    _password = await getSecureString(Preference.password) ?? '';
+    _sharepointCookie = await getSecureString(Preference.sharepointCookie) ?? '';
+    _schedules = parseSchedules(getString(Preference.schedules) ?? '[]');
+    _lastSynced = DateTime.fromMillisecondsSinceEpoch(getInt(Preference.lastSynced) ?? 0);
+    _lessonsCache = parseLessonsCache(getString(Preference.lessonsCache) ?? '{}');
+    _roosterView = getString(Preference.roosterView) ?? 'week';
+    _sharepointExpiry = getInt(Preference.sharepointExpiry) ?? 0;
+  }
+
+  List<Schedule> parseSchedules(String json){
     List<Map<String, dynamic>> jsonList =
-        (jsonDecode(_schedules) as List<dynamic>)
-            .map((data) => data as Map<String, dynamic>)
-            .toList();
+    (jsonDecode(json) as List<dynamic>)
+        .map((data) => data as Map<String, dynamic>)
+        .toList();
     return jsonList.map((json) => Schedule.fromJson(json)).toList();
   }
 
-  set schedules(List<Schedule> value) {
-    final String json = jsonEncode(value);
-    _schedules = json;
-    sharedPrefs.schedules = json;
-    notifyListeners();
-  }
-
-  int _lastSynced = sharedPrefs.lastSynced;
-
-  DateTime get lastSynced => DateTime.fromMillisecondsSinceEpoch(_lastSynced);
-
-  set lastSynced(DateTime value) {
-    int timestamp = value.millisecondsSinceEpoch;
-    _lastSynced = timestamp;
-    sharedPrefs.lastSynced = timestamp;
-    notifyListeners();
-  }
-
-  String _lessonsCache = sharedPrefs.lessonsCache;
-
-  Map<String, List<Les>> get lessonsCache {
+  Map<String, List<Les>> parseLessonsCache(String json){
     Map<String, dynamic> jsonMap =
-        (jsonDecode(_lessonsCache) as Map<String, dynamic>);
+    (jsonDecode(json) as Map<String, dynamic>);
     Map<String, List<Les>> result = {};
     jsonMap.forEach((key, value) {
       result[key] = [];
@@ -81,60 +102,117 @@ class Preferences extends ChangeNotifier {
     return result;
   }
 
-  set lessonsCache(Map<String, List<Les>> value) {
-    final String json = jsonEncode(value);
-    _lessonsCache = json;
-    sharedPrefs.lessonsCache = json;
+  late String _apiAccess;
+
+  String get apiAccess => _apiAccess;
+
+  Future setApiAccess(String value) async {
+    _apiAccess = value;
+    await setSecureString(Preference.apiAccess, value);
     notifyListeners();
   }
 
-  String _roosterView = sharedPrefs.roosterView;
+  late String _apiRefresh;
+
+  String get apiRefresh => _apiRefresh;
+
+  Future setApiRefresh(String value) async {
+    _apiRefresh = value;
+    await setSecureString(Preference.apiRefresh, value);
+    notifyListeners();
+  }
+
+  late String _eloCookie;
+
+  String get eloCookie => _eloCookie;
+
+  Future setEloCookie(String value) async {
+    _eloCookie = value;
+    await setSecureString(Preference.eloCookie, value);
+    notifyListeners();
+  }
+
+
+  late String _email;
+
+  String get email => _email;
+
+  Future setEmail(String value) async {
+    _email = value;
+    await setSecureString(Preference.email, value);
+    notifyListeners();
+  }
+
+  late String _password;
+
+  String get password => _password;
+
+  Future setPassword(String value) async {
+    _password = value;
+    await setSecureString(Preference.email, value);
+    notifyListeners();
+  }
+
+  late String _sharepointCookie;
+
+  String get sharepointCookie => _sharepointCookie;
+
+  Future setSharepointCookie(String value) async {
+    _sharepointCookie = value;
+    await setSecureString(Preference.sharepointCookie, value);
+    notifyListeners();
+  }
+
+  late List<Schedule> _schedules;
+
+  List<Schedule> get schedules => _schedules;
+
+  set schedules(List<Schedule> value) {
+    final String json = jsonEncode(value);
+    _schedules = value;
+    setString(Preference.schedules, json);
+    notifyListeners();
+  }
+
+  late DateTime _lastSynced;
+
+  DateTime get lastSynced => _lastSynced;
+
+  set lastSynced(DateTime value) {
+    int timestamp = value.millisecondsSinceEpoch;
+    _lastSynced = value;
+    setInt(Preference.lastSynced, timestamp);
+    notifyListeners();
+  }
+
+  late Map<String, List<Les>> _lessonsCache;
+
+  Map<String, List<Les>> get lessonsCache => _lessonsCache;
+
+  set lessonsCache(Map<String, List<Les>> value) {
+    final String json = jsonEncode(value);
+    _lessonsCache = value;
+    setString(Preference.lessonsCache, json);
+    notifyListeners();
+  }
+
+  late String _roosterView;
 
   String get roosterView => _roosterView;
 
   set roosterView(String value) {
     _roosterView = value;
-    sharedPrefs.roosterView = value;
+    setString(Preference.roosterView, value);
     notifyListeners();
   }
 
-  String _email = sharedPrefs.email;
-
-  String get email => _email;
-
-  set email(String value) {
-    _email = value;
-    sharedPrefs.email = value;
-    notifyListeners();
-  }
-
-  String _password = sharedPrefs.password;
-
-  String get password => _password;
-
-  set password(String value) {
-    _password = value;
-    sharedPrefs.password = value;
-    notifyListeners();
-  }
-
-  String _sharepointCookie = sharedPrefs.sharepointCookie;
-
-  String get sharepointCookie => _sharepointCookie;
-
-  set sharepointCookie(String value){
-    _sharepointCookie = value;
-    sharedPrefs.sharepointCookie = value;
-    notifyListeners();
-  }
-
-  int _sharepointExpiry = sharedPrefs.sharepointExpiry;
+  late int _sharepointExpiry;
 
   int get sharepointExpiry => _sharepointExpiry;
 
   set sharepointExpiry(int value){
     _sharepointExpiry = value;
-    sharedPrefs.sharepointExpiry = value;
+    setInt(Preference.sharepointExpiry, value);
     notifyListeners();
   }
 }

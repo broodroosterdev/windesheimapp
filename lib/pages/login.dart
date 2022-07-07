@@ -42,19 +42,19 @@ class _LoginPageState extends State<LoginPage> {
     //Don't try both login's at once because this will cause a rapid deactivation of your password...
     var eloResponse = await AuthManager.loginElo(email, password);
 
-    if (eloResponse.isLeft()) {
-      eloResponse.fold((error) => showError(error.message), (_) {});
+    if (eloResponse.isFailure) {
+      showError(eloResponse.failure.message);
       return;
     }
 
     var apiResponse = await AuthManager.loginApi(email, password);
 
-    if (apiResponse.isLeft()) {
-      apiResponse.fold((error) => showError(error.message), (_) {});
+    if (apiResponse.isFailure) {
+      showError(apiResponse.failure.message);
       return;
     }
 
-    navigatorKey.currentState!.pushNamed(widget.redirectRoute);
+    await navigatorKey.currentState!.pushNamed(widget.redirectRoute);
   }
 
   void showError(String error) {

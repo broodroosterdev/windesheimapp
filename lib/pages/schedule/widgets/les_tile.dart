@@ -78,21 +78,6 @@ class LesTile extends StatelessWidget {
       return TeacherName(les.docentnamen[0]);
     }
 
-    if(les.docentnamen.length == 2){
-      return Row(mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: TeacherName(les.docentnamen[0]),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: TeacherName(les.docentnamen[1]),
-            )
-          ],
-      );
-    }
-
     return Row(mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
