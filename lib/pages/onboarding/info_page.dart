@@ -11,35 +11,54 @@ class InfoPage extends StatelessWidget {
     return IntroductionScreen(
       pages: [
         PageViewModel(
-          title: "Welkom bij Wind!",
-          body: "Met Wind kun je makkelijk alle Windesheim diensten gebruiken op je telefoon.",
-          image: SvgPicture.asset("assets/study.svg", height: MediaQuery.of(context).size.height / 3,)
-        ),
+            title: "Welkom bij Wind!",
+            body:
+                "Met Wind kun je makkelijk alle Windesheim diensten gebruiken op je telefoon.",
+            image: SvgPicture.asset(
+              "assets/study.svg",
+              height: MediaQuery.of(context).size.height / 3,
+            )),
         PageViewModel(
-            title: "Bekijk je roosters",
-            body: "Zie in een oogopslag wanneer je een les hebt, waar je naar toe moet of wie de les geeft.",
-            image: SvgPicture.asset("assets/schedule.svg", height: MediaQuery.of(context).size.height / 3,)
-        ),
+            title: "Over de app",
+            body:
+                "Deze app is geen officiele Windesheim app. Het gebruik hiervan is op eigen risico! Raadpleeg bij belangrijke zaken daarom altijd de officiële websites.",
+            image: SvgPicture.asset(
+              "assets/app.svg",
+              height: MediaQuery.of(context).size.height / 3,
+            )),
         PageViewModel(
-            title: "Bekijk je lesmateriaal op de ELO",
-            body: "Voor je les begint nog snel even de lesstof bekijken. Of in de trein de studiewijzer doorlezen, het kan allemaal.",
-            image: SvgPicture.asset("assets/books.svg", height: MediaQuery.of(context).size.height / 3,)
-        ),
+            title: "Waarschuwing",
+            body:
+                "Om te voorkomen dat je constant moet inloggen, worden je email en wachtwoord opgeslagen. Gebruik de app alleen op apparaten die je vertrouwt. Als je vragen hebt hierover, neem contact op met de ontwikkelaar.",
+            image: SvgPicture.asset(
+              "assets/warning.svg",
+              height: MediaQuery.of(context).size.height / 3,
+            )),
         PageViewModel(
             title: "Login met je Windesheim account",
-            body: "Voordat je gebruik kan maken van de app, log je in met je Windesheim account",
+            body:
+                "Voordat je gebruik kan maken van de app, moet je inloggen met je Windesheim account",
             footer: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50)),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginPage(redirectRoute: "/setup",)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const LoginPage(
+                          redirectRoute: "/setup",
+                        )));
               },
-              child: const Text("Login"),
+              child: const Text(
+                "Login",
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-            image: SvgPicture.asset("assets/login.svg", height: MediaQuery.of(context).size.height / 3,)
-        )
+            image: SvgPicture.asset(
+              "assets/login.svg",
+              height: MediaQuery.of(context).size.height / 3,
+            ))
       ],
       next: const Icon(Icons.arrow_forward_rounded),
-      skip: const Text("Sla over"),
-      showSkipButton: true,
+      showSkipButton: false,
       showDoneButton: false,
       showNextButton: true,
     );

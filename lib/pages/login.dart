@@ -68,8 +68,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
-      body: SingleChildScrollView(
-        child: Center(
+      body: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -83,12 +82,13 @@ class _LoginPageState extends State<LoginPage> {
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w600,
                         fontSize: 36)),
+                const SizedBox(height: 40),
                 TextField(
                   controller: usernameController,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.person),
                     labelText: "Email",
-                    // errorText: error,
+                    errorText: error,
                   ),
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (text) => changeEmail(text),
@@ -109,38 +109,30 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () =>
                           setState(() => visiblePassword = !visiblePassword),
                     ),
-                    errorText: error,
+                    errorText: error != null ? '' : null,
                   ),
                   onChanged: (text) => changePassword(text),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-                  child: SizedBox(
-                    width: 300,
-                    height: 70,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                                    Theme.of(context).primaryColor),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
                       ),
                       onPressed: loading ? null : login,
                       child: loading
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(color: Colors.black,)
                           : const Text(
                               "Inloggen",
                               style:
-                                  TextStyle(fontSize: 33, color: Colors.black),
+                                  TextStyle(fontSize: 20),
                             ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
         ),
-      ),
     );
   }
 }

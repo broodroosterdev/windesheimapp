@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:wind/model/schedule.dart';
 import 'package:wind/pages/elo/widgets/loading_indicator.dart';
-import 'package:wind/pages/settings/settings_page.dart';
 import 'package:wind/pages/settings/widgets/rooster_tile.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/api/Settings.dart';
@@ -45,17 +44,18 @@ class _SetupPageState extends State<SetupPage> {
         .toList();
     print(list);
     setState(() {schedules = list;});
+    prefs.schedules = schedules;
     setState(() {
       loading = false;
     });
   }
 
-  void onChange(int pageNumber) {
+  void onChange(int newPage) {
     setState(() => {
-      currentPage = pageNumber
+      currentPage = newPage
     });
 
-    if(pageNumber == 1){
+    if(newPage == 1){
       print("new schedules");
       getSchedules();
     }
@@ -70,12 +70,14 @@ class _SetupPageState extends State<SetupPage> {
             schedule: schedule,
             onDelete: () {
               setState(() => schedules.remove(schedule));
+              prefs.schedules = schedules;
             },
             onEdit: () => {
               ScheduleHelper.editScheduleColor(context, schedule, (schedule) {
                 setState(() {
                   schedules[schedules.indexWhere((e) => e.apiCode == schedule.apiCode)] = schedule;
                 });
+                prefs.schedules = schedules;
               })
             },
           )
@@ -91,7 +93,7 @@ class _SetupPageState extends State<SetupPage> {
         pages: [
           PageViewModel(
             title: "Importeer je gegevens",
-            body: "Je roosters kunnen worden opgehaald van WIP, zodat je gelijk aan de slag kunt. Wil je niks importeren, druk dan op sla over.",
+            body: "Je roosters worden opgehaald van WIP, zodat je gelijk aan de slag kunt.",
               image: SvgPicture.asset("assets/server.svg", height: MediaQuery.of(context).size.height / 3,)
           ),
           PageViewModel(
@@ -106,10 +108,6 @@ class _SetupPageState extends State<SetupPage> {
                       ...buildScheduleTiles(),
                     ],
                   ),
-              footer: ElevatedButton(onPressed: () {
-                prefs.schedules = schedules;
-                Navigator.pushNamedAndRemoveUntil(context, "/rooster", (route) => false);
-              }, child: const Text("Importeer")),
               image: SvgPicture.asset("assets/download.svg", height: MediaQuery.of(context).size.height / 5,)
           ),
           PageViewModel(
@@ -121,10 +119,10 @@ class _SetupPageState extends State<SetupPage> {
       skip: const Text("Sla over"),
       next: const Icon(Icons.arrow_forward_rounded),
       done: const Text("Okay"),
-      onDone: () => Navigator.pushNamedAndRemoveUntil(context, "/settings", (route) => false),
-      showSkipButton: true,
+      onDone: () => Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false),
+      showSkipButton: false,
       showDoneButton: true,
-      showNextButton: currentPage != 1,
+      showNextButton: true,
     );
   }
 }

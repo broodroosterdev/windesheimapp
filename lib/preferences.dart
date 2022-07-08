@@ -79,6 +79,19 @@ class Preferences extends ChangeNotifier {
     _lessonsCache = parseLessonsCache(getString(Preference.lessonsCache) ?? '{}');
     _roosterView = getString(Preference.roosterView) ?? 'week';
     _sharepointExpiry = getInt(Preference.sharepointExpiry) ?? 0;
+    if (kDebugMode) {
+      print("Secure prefs:");
+      var allSecure = await securePrefs.readAll();
+      for (var k in allSecure.keys) {
+        print("'$k': ${allSecure[k]}");
+      }
+
+      print("Unsecured prefs:");
+      var all = sharedPrefs.getKeys();
+      for (var k in all) {
+        print("'$k': ${sharedPrefs.get(k)}");
+      }
+    }
   }
 
   List<Schedule> parseSchedules(String json){
@@ -149,7 +162,7 @@ class Preferences extends ChangeNotifier {
 
   Future setPassword(String value) async {
     _password = value;
-    await setSecureString(Preference.email, value);
+    await setSecureString(Preference.password, value);
     notifyListeners();
   }
 
@@ -168,10 +181,10 @@ class Preferences extends ChangeNotifier {
   List<Schedule> get schedules => _schedules;
 
   set schedules(List<Schedule> value) {
-    final String json = jsonEncode(value);
     _schedules = value;
-    setString(Preference.schedules, json);
     notifyListeners();
+    final String json = jsonEncode(value);
+    setString(Preference.schedules, json);
   }
 
   late DateTime _lastSynced;

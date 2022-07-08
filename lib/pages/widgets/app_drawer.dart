@@ -14,10 +14,7 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
-            child: Text('Wind',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3),
+            child: Text('Wind', style: Theme.of(context).textTheme.headline3),
           ),
           ListTile(
               leading: Icon(Icons.calendar_today),
@@ -45,8 +42,8 @@ class AppDrawer extends StatelessWidget {
               title: Text('Nieuws'),
               onTap: () {
                 navigatorKey.currentState!
-                  .pushNamedAndRemoveUntil("/news", (_) => false);
-          }),
+                    .pushNamedAndRemoveUntil("/news", (_) => false);
+              }),
           ListTile(
               leading: Icon(Icons.settings_outlined),
               title: Text('Instellingen'),
@@ -58,9 +55,8 @@ class AppDrawer extends StatelessWidget {
               leading: Icon(Icons.exit_to_app),
               title: Text('Uitloggen'),
               onTap: () {
-                AuthManager.logout();
-                navigatorKey.currentState!
-                    .pushNamedAndRemoveUntil("/", (r) => false);
+                AuthManager.logout().then((_) => navigatorKey.currentState!
+                    .pushNamedAndRemoveUntil("/", (r) => false));
               }),
         ],
       ),

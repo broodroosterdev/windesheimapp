@@ -98,3 +98,6 @@ flutter:
     - assets/server.svg
     - assets/settings.svg
     - assets/download.svg
+    - assets/warning.svg
+    - assets/warning2.svg
+    - assets/app.svg
