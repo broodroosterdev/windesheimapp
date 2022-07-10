@@ -2,12 +2,13 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/route_generator.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await initProviders();
 
   runApp(
@@ -21,4 +22,5 @@ Future main() async {
       onGenerateRoute: RouteGenerator.generateRoute,
     ),
   );
+  FlutterNativeSplash.remove();
 }

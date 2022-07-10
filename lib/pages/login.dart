@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -83,15 +83,18 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w600,
                         fontSize: 36)),
                 const SizedBox(height: 40),
-                TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
-                    labelText: "Email",
-                    errorText: error,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: TextField(
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person),
+                      labelText: "Email",
+                      errorText: error,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (text) => changeEmail(text),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (text) => changeEmail(text),
                 ),
                 TextField(
                   obscureText: !visiblePassword,
@@ -121,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       onPressed: loading ? null : login,
                       child: loading
-                          ? const CircularProgressIndicator(color: Colors.black,)
+                          ? const CircularProgressIndicator()
                           : const Text(
                               "Inloggen",
                               style:

@@ -11,10 +11,7 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-            child: Text('Wind', style: Theme.of(context).textTheme.headline3),
+            child: Image.asset("assets/launcher_icon_transparent.png"),
           ),
           ListTile(
               leading: Icon(Icons.calendar_today),

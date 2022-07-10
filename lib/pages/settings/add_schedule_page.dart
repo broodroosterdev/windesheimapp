@@ -20,7 +20,6 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('Rooster toevoegen')),
-        backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
         body: Column(children: [
           Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),

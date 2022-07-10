@@ -23,7 +23,6 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Instellingen')),
       drawer: AppDrawer(),
-      backgroundColor: const Color.fromRGBO(17, 18, 19, 1.0),
       body: ChangeNotifierProvider.value(
         value: prefs,
         child: ListView(

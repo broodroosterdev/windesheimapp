@@ -65,6 +65,7 @@ dependencies:
   flutter_svg: ^0.23.0+1
   flutter_secure_storage: ^5.0.2
   result_type: ^0.1.0
+  flutter_native_splash: ^2.2.0+1
 
 
 dev_dependencies:
@@ -90,6 +91,7 @@ flutter:
 
   assets:
     - assets/logo.png
+    - assets/launcher_icon_transparent.png
     - assets/data/teachers.json
     - assets/books.svg
     - assets/login.svg
@@ -101,3 +103,9 @@ flutter:
     - assets/warning.svg
     - assets/warning2.svg
     - assets/app.svg
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/launcher_icon_transparent.png"
+  color_dark: "#121212"
+  image_dark: "assets/launcher_icon_transparent.png"
