@@ -258,10 +258,10 @@ class SubEntity {
   });
 
   final List<String>? subEntityClass;
-  final String href;
+  final String? href;
   final List<String> rel;
-  final String title;
-  final String type;
+  final String? title;
+  final String? type;
   final List<Action>? actions;
   final List<SubEntity>? entities;
   final List<Link>? links;
@@ -328,8 +328,8 @@ class Link {
   final List<String>? linkClass;
   final String href;
   final List<String> rel;
-  final String title;
-  final String type;
+  final String? title;
+  final String? type;
 
   factory Link.fromMap(Map<String, dynamic> json) => Link(
         linkClass: json["class"] == null

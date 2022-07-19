@@ -30,7 +30,7 @@ class Brightspace {
     final String url =
         "https://295785a6-7922-4ff5-b94f-71dc1e77ffc8.enrollments.api.brightspace.com/users/${prefs.brightspaceId}?excludeEnded=0&embedDepth=1&promotePins=1&pageSize=100";
     Response<dynamic> response = await makeRequest(url);
-    Entity entity = Entity.fromMap(response as Map<String, dynamic>);
+    Entity entity = Entity.fromMap(response.data as Map<String, dynamic>);
     List<Enrollment> enrollments =
         entity.entities?.map((e) => Enrollment.fromSubEntity(e)).toList() ?? [];
     return enrollments;
@@ -38,7 +38,7 @@ class Brightspace {
 
   static Future<Course> getCourse(String organizationUrl) async {
     Response<dynamic> response = await makeRequest(organizationUrl);
-    Entity entity = Entity.fromMap(response as Map<String, dynamic>);
+    Entity entity = Entity.fromMap(response.data as Map<String, dynamic>);
     return Course.fromEntity(entity);
   }
 }
@@ -52,7 +52,7 @@ class Enrollment {
 
   factory Enrollment.fromSubEntity(SubEntity subEntity) {
     bool pinned = subEntity.subEntityClass?.contains("pinned") ?? false;
-    String url = subEntity.href;
+    String url = subEntity.rel.first;
     String organizationUrl = subEntity.links!
         .firstWhere((l) =>
             l.rel.contains("https://api.brightspace.com/rels/organization"))
@@ -85,7 +85,7 @@ class Course {
         entity.getSubEntityWithClass("color")!.properties!["hexString"];
     var color = HexColor.fromHex(colorString);
 
-    var imageUrl = entity.getSubEntityWithClass("course-image")!.href;
+    var imageUrl = entity.getSubEntityWithClass("course-image")!.href!;
     return Course(props["name"], props["code"], startDate, endDate,
         props["isActive"], color, imageUrl);
   }
