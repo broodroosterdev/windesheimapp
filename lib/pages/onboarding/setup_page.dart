@@ -30,20 +30,24 @@ class _SetupPageState extends State<SetupPage> {
 
     await Future.delayed(const Duration(seconds: 2));
     final Map<String, dynamic> settings = await Settings.getSettings();
-    final List<dynamic> rawSchedules = jsonDecode(settings['Setting_Activity_selected']);
+    final List<dynamic> rawSchedules =
+        jsonDecode(settings['Setting_Activity_selected']);
 
-    var list = rawSchedules
-        .map((e) => e as Map<String, dynamic>)
-        .map((e) {
-          String type = e['type'];
-          String id = e['id'];
-          String colorString = settings["Setting_Activity_activityColor_$type-$id"] ?? "whgray";
-          print(colorString);
-          return Schedule(code: id, type: Schedule.parseScheduleTypeFromWip(type)!, color: ScheduleHelper.parseColorFromWIP(colorString));
-        })
-        .toList();
+    var list = rawSchedules.map((e) => e as Map<String, dynamic>).map((e) {
+      String type = e['type'];
+      String id = e['id'];
+      String colorString =
+          settings["Setting_Activity_activityColor_$type-$id"] ?? "whgray";
+      print(colorString);
+      return Schedule(
+          code: id,
+          type: Schedule.parseScheduleTypeFromWip(type)!,
+          color: ScheduleHelper.parseColorFromWIP(colorString));
+    }).toList();
     print(list);
-    setState(() {schedules = list;});
+    setState(() {
+      schedules = list;
+    });
     prefs.schedules = schedules;
     setState(() {
       loading = false;
@@ -51,37 +55,34 @@ class _SetupPageState extends State<SetupPage> {
   }
 
   void onChange(int newPage) {
-    setState(() => {
-      currentPage = newPage
-    });
+    setState(() => {currentPage = newPage});
 
-    if(newPage == 1){
+    if (newPage == 1) {
       print("new schedules");
       getSchedules();
     }
   }
 
-  List<Widget> buildScheduleTiles(){
+  List<Widget> buildScheduleTiles() {
     List<Widget> tiles = [];
     schedules.asMap().forEach((key, value) {
       Schedule schedule = value;
-      tiles.add(
-          RoosterTile(
-            schedule: schedule,
-            onDelete: () {
-              setState(() => schedules.remove(schedule));
-              prefs.schedules = schedules;
-            },
-            onEdit: () => {
-              ScheduleHelper.editScheduleColor(context, schedule, (schedule) {
-                setState(() {
-                  schedules[schedules.indexWhere((e) => e.apiCode == schedule.apiCode)] = schedule;
-                });
-                prefs.schedules = schedules;
-              })
-            },
-          )
-      );
+      tiles.add(RoosterTile(
+        schedule: schedule,
+        onDelete: () {
+          setState(() => schedules.remove(schedule));
+          prefs.schedules = schedules;
+        },
+        onEdit: () => {
+          ScheduleHelper.editScheduleColor(context, schedule, (schedule) {
+            setState(() {
+              schedules[schedules
+                  .indexWhere((e) => e.apiCode == schedule.apiCode)] = schedule;
+            });
+            prefs.schedules = schedules;
+          })
+        },
+      ));
     });
     return tiles;
   }
@@ -89,37 +90,45 @@ class _SetupPageState extends State<SetupPage> {
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
-        onChange: onChange,
-        pages: [
-          PageViewModel(
+      onChange: onChange,
+      pages: [
+        PageViewModel(
             title: "Importeer je gegevens",
-            body: "Je roosters worden opgehaald van WIP, zodat je gelijk aan de slag kunt.",
-              image: SvgPicture.asset("assets/server.svg", height: MediaQuery.of(context).size.height / 3,)
-          ),
-          PageViewModel(
+            body:
+                "Je roosters worden opgehaald van WIP, zodat je gelijk aan de slag kunt.",
+            image: SvgPicture.asset(
+              "assets/server.svg",
+              height: MediaQuery.of(context).size.height / 3,
+            )),
+        PageViewModel(
             decoration: const PageDecoration(imageFlex: 1, bodyFlex: 2),
             title: "Je opgehaalde rooster(s)",
-            bodyWidget:
-                loading ?
-                  LoadingIndicator()
-                :
-                  Column(
+            bodyWidget: loading
+                ? LoadingIndicator()
+                : Column(
                     children: [
                       ...buildScheduleTiles(),
                     ],
                   ),
-              image: SvgPicture.asset("assets/download.svg", height: MediaQuery.of(context).size.height / 5,)
-          ),
-          PageViewModel(
+            image: SvgPicture.asset(
+              "assets/download.svg",
+              height: MediaQuery.of(context).size.height / 5,
+            )),
+        PageViewModel(
             title: "Zelf je roosters aanpassen?",
-            body: "Als je rooster wil toevoegen of aanpassen, kun je dit doen in het tabje 'Instellingen'.",
-              image: SvgPicture.asset("assets/settings.svg", height: MediaQuery.of(context).size.height / 3,)
-          )
-        ],
+            body:
+                "Als je rooster wil toevoegen of aanpassen, kun je dit doen in het tabje 'Instellingen'.",
+            image: SvgPicture.asset(
+              "assets/settings.svg",
+              height: MediaQuery.of(context).size.height / 3,
+            ))
+      ],
       skip: const Text("Sla over"),
-      next: const Icon(Icons.arrow_forward_rounded),
+      next: Visibility(
+          visible: !loading, child: const Icon(Icons.arrow_forward_rounded)),
       done: const Text("Okay"),
-      onDone: () => Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false),
+      onDone: () =>
+          Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false),
       showSkipButton: false,
       showDoneButton: true,
       showNextButton: true,
