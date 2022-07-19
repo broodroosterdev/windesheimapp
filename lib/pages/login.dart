@@ -62,73 +62,70 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Image(image: AssetImage('assets/logo.png')),
-                const Text("Windesheim",
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 203, 5, 1.0),
-                        fontFamily: 'Noto Sans',
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 36)),
-                const SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: TextField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
-                      labelText: "Email",
-                      errorText: error,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (text) => changeEmail(text),
-                  ),
-                ),
-                TextField(
-                  obscureText: !visiblePassword,
-                  controller: passwordController,
-                  keyboardType: TextInputType.visiblePassword,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(image: AssetImage('assets/logo.png')),
+              const Text("Windesheim",
+                  style: TextStyle(
+                      color: Color.fromRGBO(255, 203, 5, 1.0),
+                      fontFamily: 'Noto Sans',
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 36)),
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: TextField(
+                  controller: usernameController,
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.password),
-                    labelText: "Wachtwoord",
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        visiblePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () =>
-                          setState(() => visiblePassword = !visiblePassword),
-                    ),
-                    errorText: error != null ? '' : null,
+                    prefixIcon: const Icon(Icons.person),
+                    labelText: "Email",
+                    errorText: error,
                   ),
-                  onChanged: (text) => changePassword(text),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (text) => changeEmail(text),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                      ),
-                      onPressed: loading ? null : login,
-                      child: loading
-                          ? const CircularProgressIndicator()
-                          : const Text(
-                              "Inloggen",
-                              style:
-                                  TextStyle(fontSize: 20),
-                            ),
+              ),
+              TextField(
+                obscureText: !visiblePassword,
+                controller: passwordController,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.password),
+                  labelText: "Wachtwoord",
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      visiblePassword ? Icons.visibility : Icons.visibility_off,
                     ),
+                    onPressed: () =>
+                        setState(() => visiblePassword = !visiblePassword),
                   ),
-              ],
-            ),
+                  errorText: error != null ? '' : null,
+                ),
+                onChanged: (text) => changePassword(text),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: loading ? null : login,
+                  child: loading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          "Inloggen",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }
