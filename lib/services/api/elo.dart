@@ -3,7 +3,6 @@ import 'package:wind/model/handin_details.dart';
 import 'package:wind/model/studycontent.dart';
 import 'package:wind/model/studyroute.dart';
 import 'package:wind/services/auth/auth_manager.dart';
-import 'package:wind/services/auth/elo_auth.dart';
 
 import '../../providers.dart';
 
@@ -63,7 +62,7 @@ class ELO {
   }
 
   static Future<void> toggleFavourite(int studyRouteId) async {
-    final String url =
+    const String url =
         "https://elo.windesheim.nl/Home/StudyRoute/StudyRoute/ToggleFavorite";
     Response<dynamic> response = await Dio().post(url,
         data: {'studyrouteId': studyRouteId},

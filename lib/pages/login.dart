@@ -5,7 +5,8 @@ import 'package:wind/services/auth/auth_manager.dart';
 import '../main.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({this.redirectRoute = "/rooster", Key? key}) : super(key: key);
+  const LoginPage({this.redirectRoute = "/rooster", Key? key})
+      : super(key: key);
 
   final String redirectRoute;
   @override
@@ -38,14 +39,6 @@ class _LoginPageState extends State<LoginPage> {
       loading = true;
       error = null;
     });
-
-    //Don't try both login's at once because this will cause a rapid deactivation of your password...
-    var eloResponse = await AuthManager.loginElo(email, password);
-
-    if (eloResponse.isFailure) {
-      showError(eloResponse.failure.message);
-      return;
-    }
 
     var apiResponse = await AuthManager.loginApi(email, password);
 

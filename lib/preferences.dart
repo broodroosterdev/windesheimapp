@@ -15,19 +15,22 @@ enum Preference {
   email,
   password,
   sharepointCookie,
+  brightspaceAccess,
+  brightspaceId,
+  //Non secured preferences
+  brightspaceExpiry,
+  sharepointExpiry,
   schedules,
   lastSynced,
   lessonsCache,
-  roosterView,
-  sharepointExpiry
+  roosterView
 }
-
 
 class Preferences extends ChangeNotifier {
   late final SharedPreferences sharedPrefs;
   late final FlutterSecureStorage securePrefs;
 
-  Future<String?> getSecureString(Preference preference) async{
+  Future<String?> getSecureString(Preference preference) async {
     return await securePrefs.read(key: preference.name);
   }
 
@@ -35,19 +38,19 @@ class Preferences extends ChangeNotifier {
     await securePrefs.write(key: preference.name, value: string);
   }
 
-  String? getString(Preference preference){
+  String? getString(Preference preference) {
     return sharedPrefs.getString(preference.name);
   }
 
-  void setString(Preference preference, String value){
+  void setString(Preference preference, String value) {
     sharedPrefs.setString(preference.name, value);
   }
 
-  int? getInt(Preference preference){
+  int? getInt(Preference preference) {
     return sharedPrefs.getInt(preference.name);
   }
 
-  void setInt(Preference preference, int value){
+  void setInt(Preference preference, int value) {
     sharedPrefs.setInt(preference.name, value);
   }
 
@@ -60,10 +63,7 @@ class Preferences extends ChangeNotifier {
   Future init() async {
     sharedPrefs = await SharedPreferences.getInstance();
     securePrefs = const FlutterSecureStorage(
-      aOptions: AndroidOptions(
-        encryptedSharedPreferences: true
-      )
-    );
+        aOptions: AndroidOptions(encryptedSharedPreferences: true));
     await initData();
   }
 
@@ -73,12 +73,20 @@ class Preferences extends ChangeNotifier {
     _eloCookie = await getSecureString(Preference.eloCookie) ?? '';
     _email = await getSecureString(Preference.email) ?? '';
     _password = await getSecureString(Preference.password) ?? '';
-    _sharepointCookie = await getSecureString(Preference.sharepointCookie) ?? '';
-    _schedules = parseSchedules(getString(Preference.schedules) ?? '[]');
-    _lastSynced = DateTime.fromMillisecondsSinceEpoch(getInt(Preference.lastSynced) ?? 0);
-    _lessonsCache = parseLessonsCache(getString(Preference.lessonsCache) ?? '{}');
-    _roosterView = getString(Preference.roosterView) ?? 'week';
+    _sharepointCookie =
+        await getSecureString(Preference.sharepointCookie) ?? '';
+    _brightspaceAccess =
+        await getSecureString(Preference.brightspaceAccess) ?? '';
+    _brightspaceId = await getSecureString(Preference.brightspaceId) ?? '';
     _sharepointExpiry = getInt(Preference.sharepointExpiry) ?? 0;
+    _brightspaceExpiry = getInt(Preference.brightspaceExpiry) ?? 0;
+    _schedules = parseSchedules(getString(Preference.schedules) ?? '[]');
+    _lastSynced =
+        DateTime.fromMillisecondsSinceEpoch(getInt(Preference.lastSynced) ?? 0);
+    _lessonsCache =
+        parseLessonsCache(getString(Preference.lessonsCache) ?? '{}');
+    _roosterView = getString(Preference.roosterView) ?? 'week';
+
     if (kDebugMode) {
       print("Secure prefs:");
       var allSecure = await securePrefs.readAll();
@@ -94,17 +102,15 @@ class Preferences extends ChangeNotifier {
     }
   }
 
-  List<Schedule> parseSchedules(String json){
-    List<Map<String, dynamic>> jsonList =
-    (jsonDecode(json) as List<dynamic>)
+  List<Schedule> parseSchedules(String json) {
+    List<Map<String, dynamic>> jsonList = (jsonDecode(json) as List<dynamic>)
         .map((data) => data as Map<String, dynamic>)
         .toList();
     return jsonList.map((json) => Schedule.fromJson(json)).toList();
   }
 
-  Map<String, List<Les>> parseLessonsCache(String json){
-    Map<String, dynamic> jsonMap =
-    (jsonDecode(json) as Map<String, dynamic>);
+  Map<String, List<Les>> parseLessonsCache(String json) {
+    Map<String, dynamic> jsonMap = (jsonDecode(json) as Map<String, dynamic>);
     Map<String, List<Les>> result = {};
     jsonMap.forEach((key, value) {
       result[key] = [];
@@ -145,7 +151,6 @@ class Preferences extends ChangeNotifier {
     notifyListeners();
   }
 
-
   late String _email;
 
   String get email => _email;
@@ -173,6 +178,44 @@ class Preferences extends ChangeNotifier {
   Future setSharepointCookie(String value) async {
     _sharepointCookie = value;
     await setSecureString(Preference.sharepointCookie, value);
+    notifyListeners();
+  }
+
+  late int _sharepointExpiry;
+
+  int get sharepointExpiry => _sharepointExpiry;
+
+  set sharepointExpiry(int value) {
+    _sharepointExpiry = value;
+    setInt(Preference.sharepointExpiry, value);
+    notifyListeners();
+  }
+
+  late String _brightspaceAccess;
+
+  String get brightspaceAccess => _brightspaceAccess;
+
+  Future setBrightspaceAccess(String value) async {
+    _brightspaceAccess = value;
+    await setSecureString(Preference.brightspaceAccess, value);
+    notifyListeners();
+  }
+
+  late String _brightspaceId;
+  String get brightspaceId => _brightspaceId;
+  Future setBrightspaceId(String value) async {
+    _brightspaceId = value;
+    await setSecureString(Preference.brightspaceId, value);
+    notifyListeners();
+  }
+
+  late int _brightspaceExpiry;
+
+  int get brightspaceExpiry => _brightspaceExpiry;
+
+  set brightspaceExpiry(int value) {
+    _brightspaceExpiry = value;
+    setInt(Preference.brightspaceExpiry, value);
     notifyListeners();
   }
 
@@ -216,16 +259,6 @@ class Preferences extends ChangeNotifier {
   set roosterView(String value) {
     _roosterView = value;
     setString(Preference.roosterView, value);
-    notifyListeners();
-  }
-
-  late int _sharepointExpiry;
-
-  int get sharepointExpiry => _sharepointExpiry;
-
-  set sharepointExpiry(int value){
-    _sharepointExpiry = value;
-    setInt(Preference.sharepointExpiry, value);
     notifyListeners();
   }
 }
