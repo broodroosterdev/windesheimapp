@@ -5,6 +5,9 @@ import 'package:wind/services/auth/auth_manager.dart';
 import '../../providers.dart';
 
 class News {
+  static String get studentCode =>
+      prefs.email.replaceAll('@student.windesheim.nl', '');
+
   static Future<Response<dynamic>> makeRequest(String url) async {
     Response<dynamic> response = await Dio().get(url,
         options: Options(
@@ -41,7 +44,7 @@ class News {
 
   static Future<List<NewsItem>> getNewsItems() async {
     final String url =
-        "https://windesheimapi.azurewebsites.net/api/v2/Persons/s1144816/NewsItems"
+        "https://windesheimapi.azurewebsites.net/api/v2/Persons/$studentCode/NewsItems"
         "?onlydata=true&culture=NL&onlyNotExpired=true&\$orderby=WH_lastmodified desc"
         "&\$filter=WH_endDate ge datetime'${DateTime.now().toIso8601String()}'";
     final Response response = await makeRequest(url);
