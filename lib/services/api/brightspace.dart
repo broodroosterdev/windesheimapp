@@ -6,58 +6,91 @@ import 'package:wind/providers.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 
 class Brightspace {
-  static Future<Response<dynamic>> makeRequest(String url) async {
+  static Future<Response<dynamic>> makeRequest(RequestOptions options) async {
     String token = await AuthManager.getBrightspaceToken();
-    Response<dynamic> response = await Dio().get(url,
-        options: Options(
-            followRedirects: false,
-            validateStatus: (status) => status! < 500,
-            headers: {"Authorization": "Bearer $token"}));
+    options.headers.putIfAbsent("Authorization", () => "Bearer $token");
+    options.followRedirects = false;
+    options.validateStatus = (status) => status! < 500;
+    Response<dynamic> response = await Dio().fetch(options);
 
     if (response.statusCode != 200 || response.data.runtimeType == String) {
       await AuthManager.refreshBrightspace();
       String token = await AuthManager.getBrightspaceToken();
-      response = await Dio().get(url,
-          options: Options(
-              followRedirects: false,
-              validateStatus: (status) => status! < 500,
-              headers: {"Authorization": "Bearer=$token"}));
+      options.headers.update("Authorization", (value) => "Bearer $token");
+      response = await Dio().fetch(options);
     }
     return response;
   }
 
-  static Future<List<Enrollment>> getEnrollments() async {
+  static Future<List<CourseItem>> getCourseItems() async {
     final String url =
         "https://295785a6-7922-4ff5-b94f-71dc1e77ffc8.enrollments.api.brightspace.com/users/${prefs.brightspaceId}?excludeEnded=0&embedDepth=1&promotePins=1&pageSize=100";
-    Response<dynamic> response = await makeRequest(url);
+    Response<dynamic> response = await makeRequest(RequestOptions(path: url, method: Method.GET.name));
     Entity entity = Entity.fromMap(response.data as Map<String, dynamic>);
-    List<Enrollment> enrollments =
-        entity.entities?.map((e) => Enrollment.fromSubEntity(e)).toList() ?? [];
-    return enrollments;
+
+    List<CourseItem> items = [];
+    List<SubEntity> subs = entity.entities ?? [];
+
+    items = await Future.wait(
+        subs.map(Enrollment.fromSubEntity)
+        .map((enrollment) =>
+            getCourse(enrollment.organizationUrl)
+                .then((course) => CourseItem(enrollment, course))
+        )
+    );
+
+    return items;
   }
 
   static Future<Course> getCourse(String organizationUrl) async {
-    Response<dynamic> response = await makeRequest(organizationUrl);
+    Response<dynamic> response = await makeRequest(RequestOptions(path: organizationUrl, method: Method.GET.name));
     Entity entity = Entity.fromMap(response.data as Map<String, dynamic>);
     return Course.fromEntity(entity);
   }
+
+  static Future<Response<dynamic>> executeAction(Action action) async {
+    Map<String, dynamic>? body;
+    if(action.fields != null){
+      body = {};
+      for(Field field in action.fields!){
+        body.putIfAbsent(field.name, () => field.value);
+      }
+    }
+    Response<dynamic> response = await makeRequest(
+        RequestOptions(path: action.href!, method: action.method?.name ?? "GET", data: body == null ? null : FormData.fromMap(body)));
+    return response;
+  }
+}
+
+class CourseItem {
+  Enrollment enrollment;
+  Course course;
+
+  CourseItem(this.enrollment, this.course);
 }
 
 class Enrollment {
   bool pinned;
   String url;
   String organizationUrl;
+  Action togglePinAction;
 
-  Enrollment(this.pinned, this.url, this.organizationUrl);
+
+  Enrollment(this.pinned, this.url, this.organizationUrl, this.togglePinAction);
 
   factory Enrollment.fromSubEntity(SubEntity subEntity) {
     bool pinned = subEntity.subEntityClass?.contains("pinned") ?? false;
-    String url = subEntity.rel.first;
+    String url = subEntity.links!
+        .firstWhere((l) =>
+        l.rel.contains("self"))
+        .href;
     String organizationUrl = subEntity.links!
         .firstWhere((l) =>
             l.rel.contains("https://api.brightspace.com/rels/organization"))
         .href;
-    return Enrollment(pinned, url, organizationUrl);
+    Action togglePin = subEntity.actions!.first;
+
+    return Enrollment(pinned, url, organizationUrl, togglePin);
   }
 }
 

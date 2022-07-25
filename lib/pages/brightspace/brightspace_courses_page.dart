@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:wind/model/siren/entity.dart';
 import 'package:wind/pages/brightspace/widgets/enrollment_tile.dart';
 import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
@@ -16,8 +17,7 @@ class BrightspaceCoursesPage extends StatefulWidget {
 class _BrightspaceCoursesPageState extends State<BrightspaceCoursesPage> {
   ScrollController scrollController = ScrollController();
   bool isLoading = true;
-  late List<Enrollment> enrollments;
-  late Map<String, Future<Course>> courses;
+  late List<CourseItem> items;
 
   @override
   void initState() {
@@ -27,32 +27,12 @@ class _BrightspaceCoursesPageState extends State<BrightspaceCoursesPage> {
 
   Future loadRoutes() async {
     setState(() => isLoading = true);
-    await downloadAndSetEnrollments();
+    var response = await Brightspace.getCourseItems();
+    response.sort((a, b) => a.course.name.compareTo(b.course.name));
+    setState(() => items = response);
     setState(() {
       isLoading = false;
     });
-  }
-
-  Future downloadAndSetEnrollments() async {
-    var response = await Brightspace.getEnrollments();
-    setState(() {
-      enrollments = [
-        ...response.where((enrollment) => enrollment.pinned),
-        ...response.where((enrollment) => !enrollment.pinned)
-      ];
-    });
-    downloadAndSetCourses();
-  }
-
-  downloadAndSetCourses() {
-    Map<String, Future<Course>> map = {};
-    for (Enrollment e in enrollments) {
-      setState(() {
-        map.putIfAbsent(
-            e.organizationUrl, () => Brightspace.getCourse(e.organizationUrl));
-      });
-    }
-    setState(() => courses = map);
   }
 
   @override
@@ -62,32 +42,42 @@ class _BrightspaceCoursesPageState extends State<BrightspaceCoursesPage> {
       drawer: AppDrawer(),
       body: isLoading
           ? LoadingIndicator()
-          : ImplicitlyAnimatedList<Enrollment>(
+          : ImplicitlyAnimatedList<CourseItem>(
               controller: scrollController,
-              items: enrollments,
-              areItemsTheSame: (a, b) => a.url == b.url,
+              items: [
+                ...items.where((item) => item.enrollment.pinned),
+                ...items.where((item) => !item.enrollment.pinned)
+              ],
+              areItemsTheSame: (a, b) => a.course.code == b.course.code,
               itemBuilder: (context, animation, item, index) {
                 return SizeFadeTransition(
                     sizeFraction: 0.7,
                     curve: Curves.easeInOut,
                     animation: animation,
-                    child: EnrollmentTile(
-                        item, courses[item.organizationUrl]!, () async {}));
+                    child: EnrollmentTile(item.enrollment, item.course, () => pinItem(item)));
               },
             ),
     );
   }
 
-  /*
-  Future<void> pinItem(Enrollment item) async {
-    await ELO.toggleFavourite(item.id);
-    showSnackbar(item.isFavorite
-        ? "${item.name} verwijderd van favorieten"
-        : "${item.name} toegevoegd aan favorieten");
-    await downloadAndSetEnrollments();
+  Future<void> pinItem(CourseItem item) async {
+    var response = await Brightspace.executeAction(item.enrollment.togglePinAction);
+    if(response.statusCode != 200){
+      showSnackbar("Kon het vak niet ${item.enrollment.pinned ? "losmaken" : "vastzetten"}");
+      return;
+    }
+
+    SubEntity entity = SubEntity.fromMap(response.data as Map<String, dynamic>);
+    var enrollment = Enrollment.fromSubEntity(entity);
+    var index = items.indexWhere((i) => i.course.code == item.course.code);
+
+    setState(() {
+      items[index].enrollment = enrollment;
+    });
+
     await scrollController.animateTo(0.0,
         duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
-  }*/
+  }
 
   void showSnackbar(String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
