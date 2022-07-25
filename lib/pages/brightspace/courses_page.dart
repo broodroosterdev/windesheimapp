@@ -7,14 +7,14 @@ import 'package:wind/pages/elo/widgets/loading_indicator.dart';
 import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/brightspace.dart';
 
-class BrightspaceCoursesPage extends StatefulWidget {
-  const BrightspaceCoursesPage({Key? key}) : super(key: key);
+class CoursesPage extends StatefulWidget {
+  const CoursesPage({Key? key}) : super(key: key);
 
   @override
-  _BrightspaceCoursesPageState createState() => _BrightspaceCoursesPageState();
+  _CoursesPageState createState() => _CoursesPageState();
 }
 
-class _BrightspaceCoursesPageState extends State<BrightspaceCoursesPage> {
+class _CoursesPageState extends State<CoursesPage> {
   ScrollController scrollController = ScrollController();
   bool isLoading = true;
   late List<CourseItem> items;
