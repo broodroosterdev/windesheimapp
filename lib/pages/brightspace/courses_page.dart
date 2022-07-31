@@ -4,8 +4,8 @@ import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:wind/model/siren/entity.dart';
 import 'package:wind/pages/brightspace/widgets/enrollment_tile.dart';
 import 'package:wind/pages/elo/widgets/loading_indicator.dart';
-import 'package:wind/pages/widgets/app_drawer.dart';
 import 'package:wind/services/api/brightspace.dart';
+import 'package:wind/pages/widgets/page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({Key? key}) : super(key: key);
@@ -37,10 +37,9 @@ class _CoursesPageState extends State<CoursesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Brightspace')),
-      drawer: AppDrawer(),
-      body: isLoading
+    return AppPage(
+      title: 'Brightspace',
+      child: isLoading
           ? LoadingIndicator()
           : ImplicitlyAnimatedList<CourseItem>(
               controller: scrollController,
@@ -54,16 +53,18 @@ class _CoursesPageState extends State<CoursesPage> {
                     sizeFraction: 0.7,
                     curve: Curves.easeInOut,
                     animation: animation,
-                    child: EnrollmentTile(item.enrollment, item.course, () => pinItem(item)));
+                    child: EnrollmentTile(item, () => pinItem(item)));
               },
             ),
     );
   }
 
   Future<void> pinItem(CourseItem item) async {
-    var response = await Brightspace.executeAction(item.enrollment.togglePinAction);
-    if(response.statusCode != 200){
-      showSnackbar("Kon het vak niet ${item.enrollment.pinned ? "losmaken" : "vastzetten"}");
+    var response =
+        await Brightspace.executeAction(item.enrollment.togglePinAction);
+    if (response.statusCode != 200) {
+      showSnackbar(
+          "Kon het vak niet ${item.enrollment.pinned ? "losmaken" : "vastzetten"}");
       return;
     }
 

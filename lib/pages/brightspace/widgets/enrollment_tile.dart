@@ -4,30 +4,32 @@ import 'package:wind/providers.dart';
 import 'package:wind/services/api/brightspace.dart';
 
 class EnrollmentTile extends StatelessWidget {
-  final Enrollment enrollment;
-  final Course course;
+  final CourseItem item;
   final Function() onPin;
-  const EnrollmentTile(this.enrollment, this.course, this.onPin, {Key? key}) : super(key: key);
-
+  const EnrollmentTile(this.item, this.onPin, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          CachedNetworkImage(
-            height: 170,
-            imageUrl:
-            "${course.imageUrl}/tile-high-density-mid-size.jpg",
-            httpHeaders: {"Authorization": prefs.brightspaceAccess},
-          ),
-          ListTile(
-            title: Text(course.name),
-            subtitle: Text(course.code),
-            trailing: pinIcon(context),
-          ),
-        ],
+    return InkWell(
+      onTap: () =>
+          Navigator.of(context).pushNamed('/course', arguments: {'item': item}),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              height: 170,
+              imageUrl:
+                  "${item.course.imageUrl}/tile-high-density-mid-size.jpg",
+              httpHeaders: {"Authorization": prefs.brightspaceAccess},
+            ),
+            ListTile(
+              title: Text(item.course.name),
+              subtitle: Text(item.course.code),
+              trailing: pinIcon(context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -35,11 +37,10 @@ class EnrollmentTile extends StatelessWidget {
   Widget pinIcon(BuildContext context) {
     return IconButton(
       icon: Icon(
-          enrollment.pinned ? Icons.push_pin : Icons.push_pin_outlined,
+          item.enrollment.pinned ? Icons.push_pin : Icons.push_pin_outlined,
           color:
-          enrollment.pinned ? null : Theme.of(context).primaryColor),
+              item.enrollment.pinned ? null : Theme.of(context).primaryColor),
       onPressed: onPin,
     );
   }
-
 }

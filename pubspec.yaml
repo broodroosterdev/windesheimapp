@@ -66,6 +66,7 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   result_type: ^0.1.0
   flutter_native_splash: ^2.2.0+1
+  flutter_hooks: ^0.18.5+1
 
 
 dev_dependencies:
