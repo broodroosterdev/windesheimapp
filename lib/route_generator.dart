@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wind/pages/brightspace/course_page.dart';
-import 'package:wind/pages/brightspace/courses_page.dart';
 import 'package:wind/pages/elo/study_content_page.dart';
 import 'package:wind/pages/elo/study_document_page.dart';
 import 'package:wind/pages/elo/study_handin_page.dart';
@@ -41,14 +39,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SettingsPage());
       case '/add-schedule':
         return MaterialPageRoute(builder: (_) => AddSchedulePage());
-      case '/enrollments':
-        return MaterialPageRoute(builder: (_) => CoursesPage());
-      case '/course':
-        final arguments = args as Map<String, dynamic>;
-        return MaterialPageRoute(
-            builder: (_) => CoursePage(
-                  courseItem: arguments['item'],
-                ));
       case '/studyroutes':
         return MaterialPageRoute(builder: (_) => StudyRoutesPage());
       case '/studycontent':

@@ -2,7 +2,6 @@ import 'package:result_type/result_type.dart';
 import 'package:wind/internal/auth_failure.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/auth/api_auth.dart';
-import 'package:wind/services/auth/brightspace_auth.dart';
 import 'package:wind/services/auth/sharepoint_auth.dart';
 
 import 'elo_auth.dart';
@@ -51,34 +50,6 @@ class AuthManager {
       await prefs.setApiRefresh(apiResponse.success.refreshToken);
       return Success(null);
     }
-  }
-
-  static Future<Result<void, AuthFailure>> loginBrightspace(
-      String email, String password) async {
-    Result<BrightSpaceToken, AuthFailure> brightspaceResponse =
-        await BrightspaceAuth.login(email, password);
-
-    if (brightspaceResponse.isFailure) {
-      print("error: " + brightspaceResponse.failure.message);
-      return Failure(brightspaceResponse.failure);
-    } else {
-      await prefs.setBrightspaceAccess(brightspaceResponse.success.token);
-      await prefs.setBrightspaceId(brightspaceResponse.success.userId);
-      prefs.brightspaceExpiry = brightspaceResponse.success.expiresAt;
-      return Success(null);
-    }
-  }
-
-  static Future<String> getBrightspaceToken() async {
-    if (DateTime.fromMillisecondsSinceEpoch(prefs.brightspaceExpiry * 1000)
-        .isBefore(DateTime.now())) {
-      await refreshBrightspace();
-    }
-    return prefs.brightspaceAccess;
-  }
-
-  static Future<Result<void, AuthFailure>> refreshBrightspace() async {
-    return await loginBrightspace(prefs.email, prefs.password);
   }
 
   static Future<String> getSharepointCookie() async {

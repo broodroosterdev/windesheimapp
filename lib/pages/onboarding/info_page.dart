@@ -13,7 +13,7 @@ class InfoPage extends StatelessWidget {
         PageViewModel(
             title: "Welkom bij Wind!",
             body:
-                "Met Wind kun je makkelijk alle Windesheim diensten gebruiken op je telefoon.",
+                "Met Wind kun je makkelijk Windesheim diensten gebruiken op je telefoon.",
             image: SvgPicture.asset(
               "assets/study.svg",
               height: MediaQuery.of(context).size.height / 3,
