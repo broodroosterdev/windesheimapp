@@ -26,12 +26,6 @@ class AppDrawer extends StatelessWidget {
                 navigatorKey.currentState!.popAndPushNamed("/studyroutes");
               }),
           ListTile(
-              leading: Icon(Icons.menu_book_outlined),
-              title: Text('Brightspace'),
-              onTap: () {
-                navigatorKey.currentState!.popAndPushNamed("/enrollments");
-              }),
-          ListTile(
               leading: Icon(Icons.school_outlined),
               title: Text('Studie'),
               onTap: () {
