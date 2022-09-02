@@ -27,14 +27,20 @@ class LesTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                        Text(Time.getFormattedTime(les.starttijd),
+                      Text(Time.getFormattedTime(les.starttijd),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline5!
-                        ),
+                          style: Theme.of(context).textTheme.headline5!),
                       Text(Time.getFormattedTime(les.eindtijd),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).textTheme.headline6?.color?.withOpacity(0.5))
-                      ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      ?.color
+                                      ?.withOpacity(0.5))),
                     ]),
               )),
           Container(
@@ -54,41 +60,56 @@ class LesTile extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle1),
               ),
               const SizedBox(height: 5),
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Icon(Icons.pin_drop, color: Theme.of(context).colorScheme.primary, size: 28),
-                Expanded(
-                  child: Text(les.lokaal ?? "Leeg",
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
-                      style: Theme.of(context).textTheme.subtitle2?.copyWith(fontStyle: les.lokaal == null ? FontStyle.italic : FontStyle.normal)),
-                )
-              ]),
-              buildTeacherRow(context)
+              _informationRow(
+                context,
+                Icons.pin_drop,
+                Text(les.lokaal ?? "Leeg",
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                        fontStyle: les.lokaal == null
+                            ? FontStyle.italic
+                            : FontStyle.normal)),
+              ),
+              _informationRow(context, Icons.person, buildTeacherRow(context))
             ]),
           ),
         ]);
   }
 
-  Widget buildTeacherRow(BuildContext context){
-    if(les.docentcode != null){
-      return TeacherName(les.docentcode!);
+  Widget _informationRow(BuildContext context, IconData icon, Widget widget) {
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Icon(icon, color: Theme.of(context).colorScheme.primary, size: 28),
+      Expanded(
+        child: widget,
+      )
+    ]);
+  }
+
+  Widget buildTeacherRow(BuildContext context) {
+    if (les.docentnamen.isEmpty) {
+      return Text("Geen",
+          style: Theme.of(context)
+              .textTheme
+              .subtitle2
+              ?.copyWith(fontStyle: FontStyle.italic));
     }
 
-    if(les.docentnamen.length == 1){
-      return TeacherName(les.docentnamen[0]);
+    if (les.docentnamen.length == 1) {
+      return Row(children: [TeacherName(les.docentnamen[0])]);
     }
 
-    return Row(mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 2.0),
-            child: TeacherName(les.docentnamen[0]),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 2.0),
-              child: Text("+ ${les.docentnamen.length - 1}"),
-          ),
-        ],
-      );
-    }
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 2.0),
+          child: TeacherName(les.docentnamen[0]),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 2.0),
+          child: Text("+ ${les.docentnamen.length - 1}"),
+        ),
+      ],
+    );
+  }
 }

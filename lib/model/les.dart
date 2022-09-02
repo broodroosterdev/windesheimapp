@@ -15,9 +15,6 @@ class Les {
   //Whether the lesson has changed
   bool changed;
 
-  // Docentcode, vaak null
-  String? docentcode;
-
   // Date with timezone offset: "2021-09-06T00:00:00Z"
   DateTime roosterdatum;
 
@@ -49,11 +46,12 @@ class Les {
   List<String> docentnamen;
 
   Schedule? get schedule {
-    if(!prefs.schedules.any((schedule) => schedule.apiCode == roostercode)){
+    if (!prefs.schedules.any((schedule) => schedule.apiCode == roostercode)) {
       return null;
     }
 
-    return prefs.schedules.firstWhere((schedule) => schedule.apiCode == roostercode);
+    return prefs.schedules
+        .firstWhere((schedule) => schedule.apiCode == roostercode);
   }
 
   Les(
@@ -62,7 +60,6 @@ class Les {
       this.starttijd,
       this.eindtijd,
       this.changed,
-      this.docentcode,
       this.roosterdatum,
       this.commentaar,
       this.leeractiviteit,
@@ -82,7 +79,6 @@ class Les {
         eindtijd =
             DateTime.fromMillisecondsSinceEpoch(json["eindtijd"], isUtc: true),
         changed = json["changed"],
-        docentcode = json["docentcode"],
         roosterdatum = DateTime.parse(json["roosterdatum"]),
         commentaar = json["commentaar"],
         leeractiviteit = json["leeractiviteit"],
@@ -101,7 +97,6 @@ class Les {
     json['starttijd'] = starttijd.millisecondsSinceEpoch;
     json['eindtijd'] = eindtijd.millisecondsSinceEpoch;
     json['changed'] = changed;
-    json['docentcode'] = docentcode;
     json['roosterdatum'] = roosterdatum.toIso8601String();
     json['commentaar'] = commentaar;
     json['leeractiviteit'] = leeractiviteit;
