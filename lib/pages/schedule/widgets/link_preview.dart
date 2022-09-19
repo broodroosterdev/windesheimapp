@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,7 +37,9 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri);
                 } else {
-                  print("Cant launch ${widget.url}");
+                  developer.log("Cant launch ${widget.url}",
+                      time: DateTime.now(),
+                      name: "link_preview -> ListTile.onTap");
                 }
               },
               leading: SizedBox(
