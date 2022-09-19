@@ -30,8 +30,9 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
           return Card(
             child: ListTile(
               onTap: () async {
-                if (await canLaunch(widget.url)) {
-                  await launch(widget.url);
+                var uri = Uri.parse(widget.url);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
                 } else {
                   print("Cant launch ${widget.url}");
                 }
@@ -44,7 +45,9 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
                     : const Icon(Icons.link, size: 30),
               ),
               title: isReady
-                  ? Text(snapshot.data!.title != "" ? snapshot.data!.title : "Link openen")
+                  ? Text(snapshot.data!.title != ""
+                      ? snapshot.data!.title
+                      : "Link openen")
                   : const Text("Link laden"),
               subtitle: isReady
                   ? Text(snapshot.data!.domain)
