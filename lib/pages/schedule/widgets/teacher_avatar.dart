@@ -1,10 +1,13 @@
 import 'package:avatars/avatars.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wind/providers.dart';
 import 'package:wind/services/auth/auth_manager.dart';
 
 class TeacherAvatar extends StatelessWidget {
-  const TeacherAvatar(this.name, {this.size = 24, this.border = false, Key? key}) : super(key: key);
+  const TeacherAvatar(this.name,
+      {this.size = 24, this.border = false, Key? key})
+      : super(key: key);
 
   final String name;
   final int size;
@@ -12,27 +15,30 @@ class TeacherAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: AuthManager.getSharepointCookie(),
-        builder: (context, AsyncSnapshot<String> snapshot) => Avatar(
-            name: name,
-            useCache: true,
-            shape: AvatarShape.circle((size) / 2),
-            sources: nameHasEmail() && snapshot.hasData ? [
-                GenericSource(NetworkImage(
-                nameToUrl(),
-                headers: {'Cookie': snapshot.data!},
-              ))
-            ] : null,
-          ),
-      );
+      future: AuthManager.getSharepointCookie(),
+      builder: (context, AsyncSnapshot<String> snapshot) => Avatar(
+        name: name,
+        useCache: true,
+        shape: AvatarShape.circle((size) / 2),
+        sources: nameHasEmail() && snapshot.hasData
+            ? [
+                GenericSource(CachedNetworkImageProvider(
+                  nameToUrl(),
+                  headers: {'Cookie': snapshot.data!},
+                ))
+              ]
+            : null,
+      ),
+    );
   }
 
-  bool nameHasEmail(){
+  bool nameHasEmail() {
     return teacherMailMap.containsKey(name);
   }
 
-  String nameToUrl(){
-    String url = "https://liveadminwindesheim.sharepoint.com/_layouts/15/userphoto.aspx?size=S&username=${teacherMailMap[name]}";
+  String nameToUrl() {
+    String url =
+        "https://liveadminwindesheim.sharepoint.com/_layouts/15/userphoto.aspx?size=S&username=${teacherMailMap[name]}";
 
     return url;
   }
