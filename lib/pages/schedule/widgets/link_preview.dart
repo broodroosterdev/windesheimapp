@@ -13,10 +13,12 @@ class LinkPreviewTile extends StatefulWidget {
 
 class _LinkPreviewTileState extends State<LinkPreviewTile> {
   late Future<WebInfo> future;
+  late Uri uri;
 
   @override
   void initState() {
     super.initState();
+    uri = Uri.parse(widget.url);
     future = LinkPreview.scrapeFromURL(widget.url);
   }
 
@@ -30,7 +32,6 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
           return Card(
             child: ListTile(
               onTap: () async {
-                var uri = Uri.parse(widget.url);
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri);
                 } else {
@@ -49,9 +50,7 @@ class _LinkPreviewTileState extends State<LinkPreviewTile> {
                       ? snapshot.data!.title
                       : "Link openen")
                   : const Text("Link laden"),
-              subtitle: isReady
-                  ? Text(snapshot.data!.domain)
-                  : Text(Uri.parse(widget.url).host),
+              subtitle: isReady ? Text(snapshot.data!.domain) : Text(uri.host),
               trailing: const Icon(Icons.open_in_new),
             ),
           );
